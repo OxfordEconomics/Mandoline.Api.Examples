@@ -13,6 +13,7 @@ import datetime
 
 SELECTION_ID = 'd581f360-d0fa-40f3-a41e-0735db10f8c6'
 API_KEY = '566dbac8-d0c2-4248-a0ed-ca3a8ce4df5c'
+BAD_URL_BASE = 'https://services.oxfordeconomics.com/api-error'
 
 # sample selection for post body
 sampleSelect = {
@@ -112,10 +113,16 @@ def download_test(client, id):
 
 
 if __name__ == '__main__':
-    client = Client(API_KEY)
+    # baseline functinoality demo
+    #client = Client(API_KEY)
 
-    download_test(client, SELECTION_ID)
-    update_selection_test(client, SELECTION_ID)
-    databank_test(client)
-    get_selection_test(client, SELECTION_ID)
-    login_test(client)
+    #download_test(client, SELECTION_ID)
+    #update_selection_test(client, SELECTION_ID)
+    #databank_test(client)
+    #get_selection_test(client, SELECTION_ID)
+    #login_test(client)
+
+
+    # error handling demo
+    #client = Client(API_KEY, BAD_URL_BASE)
+    #databank_test(client)

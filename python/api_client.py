@@ -179,3 +179,24 @@ class Client(object):
             return {}
 
         return data
+
+
+    # creates new saved selection 
+    # takes: Selection dictionary to be created
+    # returns: json dictionary of newly created Selection 
+    def create_selection(self, selection_object):
+        try:
+            r = requests.poast(self._url('savedselections'), 
+                    headers=self._header(), data=json.dumps(selection_object) )
+
+        except requests.exceptions.HTTPError as e:
+            print(e)
+            return {}
+
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return {}
+
+        return r.json()
+
+
