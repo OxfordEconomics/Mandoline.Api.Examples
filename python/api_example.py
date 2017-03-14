@@ -61,11 +61,11 @@ def databank_test(client):
     databank_list = client.get_databanks()
 
     for db in databank_list:
-        print(db['Name'], end=' - ')
+        print('\t{}'.format(db['Name']), end=' - ')
 
         regions = client.get_databank_regions(db['DatabankCode'])
 
-        print(len(regions.json()['Regions']))
+        print(len(regions['Regions']))
 
 
 # demos the GET functionality of the Selection endpoint 
@@ -73,12 +73,7 @@ def get_selection_test(client, id):
     print('\n\n--Demo: get selection--')
 
     selection = client.get_selection(id)
-    if(selection.status_code >= 300):
-        print('There was an error making your request...')
-        return
-
-    selection = selection.json()
-    print('{0} - {1}'.format(selection['Name'], selection['Id']))
+    print('\t{0} - {1}'.format(selection['Name'], selection['Id']))
     print(selection)
 
 
@@ -90,12 +85,7 @@ def login_test(client):
     passwd = getpass.getpass('Password: ')
     
     user = client.user_login(user, passwd)
-    if(selection.status_code >= 300):
-        print('There was an error making your request...')
-        return
-
-    user = user.json()
-    print('{0} {1} - Saved selections:'.format(user['FirstName'], user['LastName']))
+    print('  {0} {1} - Saved selections:'.format(user['FirstName'], user['LastName']))
     for selection in user['SavedSelections']:
         print('\t{0} - Id:{1}'.format(selection['Name'], selection['Id']))
 
@@ -105,38 +95,27 @@ def update_selection_test(client, id):
     print('\n\n--Demo: put selection--')
 
     selection = client.get_selection(id)
-    if(selection.status_code >= 300):
-        print('There was an error making your request. Code: ' + str(selection.status_code))
-        return
-    selection = selection.json()
     print('\tOld selection: {0}'.format(selection['Name']))
 
-    selection['Name'] = 'SampleSelection - (Updated: ' + '{:%Y/%m/%d %H:%M}'.format(datetime.datetime.now()) + ')'
+    selection['Name'] = ('SampleSelection - (Updated: ' + 
+        '{:%Y/%m/%d %H:%M}'.format(datetime.datetime.now()) + ')')
     selection = client.update_selection(selection)
-    if(selection.status_code >= 300):
-        print('There was an error making your request. Code: ' + str(selection.status_code))
-        return
-
     selection = client.get_selection(id)
-    if(selection.status_code >= 300):
-        print('There was an error making your request. Code: ' + str(selection.status_code))
-        return
-    selection = selection.json()
     print('\tUpdated selection: {0}'.format(selection['Name']))
 
 
 
 # demos the POST functionality of the Download endpoint 
 def download_test(client, id):
-    r = client.get_download(client.get_selection(SELECTION_ID).json())
+    r = client.get_download(client.get_selection(SELECTION_ID))
     print(len(r))
 
 
 if __name__ == '__main__':
     client = Client(API_KEY)
 
-    # download_test(client, SELECTION_ID)
-    # update_selection_test(client, SELECTION_ID)
+    download_test(client, SELECTION_ID)
+    update_selection_test(client, SELECTION_ID)
     databank_test(client)
-    # get_selection_test(client, SELECTION_ID)
-    # login_test(client)
+    get_selection_test(client, SELECTION_ID)
+    login_test(client)

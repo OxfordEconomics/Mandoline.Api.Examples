@@ -128,7 +128,7 @@ class Client(object):
 
     # updates a saved selection with given selection id (see above)
     # takes: selection object with id that corresponds to already existing non-temporary saved selection
-    # returns: json dictionary of updated Selection
+    # returns: blank json dictionary
     def update_selection(self, selection_object):
         try:
             r = requests.put(self._url('savedselections', selection_object['Id']), 
@@ -142,7 +142,7 @@ class Client(object):
             print(e)
             return {}
 
-        return r.json()
+        return {}
 
 
     # returns: well-formed download url based on page and pagesize 
@@ -167,8 +167,7 @@ class Client(object):
             data = new_data
             while len(new_data) == pagesize:
                 page += 1
-                response = self._get_download(selection, page, pagesize)
-                new_data = response.json()
+                new_data = self._get_download(selection, page, pagesize)
                 data.append(new_data)
 
         except requests.exceptions.HTTPError as e:
