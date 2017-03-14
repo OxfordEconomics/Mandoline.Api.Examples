@@ -32,15 +32,17 @@ class Client(object):
     def _url(self, *path):
         url = self._base_url
         for q in path:
-            url += '/' + q
+            if q != "":
+                url += '/' + q
         return url 
 
 
-    # get a full list of the databanks available as well as the number of countries for each
-    # returns: list of json dictionaries of Databanks 
-    def get_databanks(self):
+    # ta;es: (optional) Databank id
+    # return: json dictionary of available databanks or the one that matches the
+    #         given id
+    def get_databanks(self, id=""):
         try:
-            r = requests.get(self._url('databank'), headers=self._header())
+            r = requests.get(self._url('databank', id), headers=self._header())
             r.raise_for_status()
 
         except requests.exceptions.HTTPError as e:
@@ -72,6 +74,24 @@ class Client(object):
         return r.json()
 
 
+    # get a full list of a databank's available variables
+    # takes: databank id
+    # returns: json dictionary of Variables
+    def get_databank_variables(self, id):
+        try:
+            r = requests.get(self._url('variable', id), headers=self._header())
+
+        except requests.exceptions.HTTPError as e:
+            print(e)
+            return {}
+
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return {}
+
+        return r.json()
+
+
     # takes: username, pass
     # returns: json dictionary of validated User 
     def user_login(self, username, passwd):
@@ -79,6 +99,25 @@ class Client(object):
                     'Password': passwd }
         try:
             r = requests.post(self._url('users'), headers=self._header(), data=json.dumps(payload) )
+
+        except requests.exceptions.HTTPError as e:
+            print(e)
+            return {}
+
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return {}
+
+        return r.json()
+
+
+    # takes: (optional) user id 
+    # returns: json dictionary of User with given id. if id is left blank,
+    #          then the User data corresponding to the current active
+    #          api_token
+    def get_user(self, id="me"):
+        try:
+            r = requests.get(self._url('users',id), headers=self._header() )
 
         except requests.exceptions.HTTPError as e:
             print(e)
@@ -106,6 +145,23 @@ class Client(object):
             return {}
 
         return r.json()
+
+
+    # takes: selection id
+    # returns: blank dictionary
+    def delete_selection(self, id):
+        try:
+            r = requests.delete(self._url('savedselections', id), headers=self._header())
+
+        except requests.exceptions.HTTPError as e:
+            print(e)
+            return {}
+
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return {}
+
+        return {} 
 
 
     # gets saved selection with given selection id (see above)
@@ -186,7 +242,7 @@ class Client(object):
     # returns: json dictionary of newly created Selection 
     def create_selection(self, selection_object):
         try:
-            r = requests.poast(self._url('savedselections'), 
+            r = requests.post(self._url('savedselections'), 
                     headers=self._header(), data=json.dumps(selection_object) )
 
         except requests.exceptions.HTTPError as e:

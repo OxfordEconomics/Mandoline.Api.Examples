@@ -91,6 +91,16 @@ def login_test(client):
         print('\t{0} - Id:{1}'.format(selection['Name'], selection['Id']))
 
 
+# demos the POST functionality of the User endpoint 
+def get_user_test(client):
+    print('\n\n--Demo: get user--')
+
+    user = client.get_user()
+    print('  {0} {1} - Saved selections:'.format(user['FirstName'], user['LastName']))
+    for selection in user['SavedSelections']:
+        print('\t{0} - Id:{1}'.format(selection['Name'], selection['Id']))
+
+
 # demos the PUT functionality of the Selection endpoint 
 def update_selection_test(client, id):
     print('\n\n--Demo: put selection--')
@@ -112,15 +122,68 @@ def download_test(client, id):
     print(len(r))
 
 
+# demos the POST functionality of the Selection endpoint, creating a new selection
+def create_selection_test(client):
+    print('\n\n--Demo: create selection--')
+    sampleSelect['Name'] = ('SampleSelection - (Created: ' + 
+            '{:%Y/%m/%d %H:%M}'.format(datetime.datetime.now()) + ')')
+    r = client.create_selection(sampleSelect)
+    print('\t{}'.format(r['Name']), end=' : ')
+    print(r['Id'])
+
+
+# demos the GET functionality of the Variable endpoint
+def get_variables_test(client):
+    print('\n\n--Demo: get variables: {}--'.format(sampleSelect['DatabankCode']))
+    var_list = client.get_databank_variables(sampleSelect['DatabankCode'])
+    for var in var_list['Variables']:
+        print('\t{}'.format(var['VariableName']))
+
+
+# demos the GET functionality of the Region endpoint
+def get_regions_test(client):
+    print('\n\n--Demo: get regions: {}--'.format(sampleSelect['DatabankCode']))
+    reg_list = client.get_databank_regions(sampleSelect['DatabankCode'])
+    for reg in reg_list['Regions']:
+        print('\t{}'.format(reg['Name']))
+
+
+# demos the DELETE functionality of the Selection endpoint, creating a new selection
+# and then deleting it
+def delete_selection_test(client):
+    print('\n\n--Demo: delete selection--')
+    sampleSelect['Name'] = ('SampleSelection - (Created: ' + 
+            '{:%Y/%m/%d %H:%M}'.format(datetime.datetime.now()) + ')')
+    r = client.create_selection(sampleSelect)
+    id = r['Id']
+    print('\tSelection created with id: {}'.format(id))
+
+    print('\tDeleting selection with id: {}...'.format(id))
+    r = client.delete_selection(id)
+
+    print('\tAttempting to get selection with id: {}...'.format(id))
+    r = client.get_selection(id)
+    try:
+        print('Selection still exists with id:{}'.format(r['Id']))
+    except KeyError: 
+        print('\tSelection deleted successfully')
+
+
+
 if __name__ == '__main__':
     # baseline functinoality demo
-    #client = Client(API_KEY)
+    client = Client(API_KEY)
 
+    #create_selection_test(client)
     #download_test(client, SELECTION_ID)
     #update_selection_test(client, SELECTION_ID)
     #databank_test(client)
     #get_selection_test(client, SELECTION_ID)
     #login_test(client)
+    #get_user_test(client)
+    #delete_selection_test(client)
+    #get_variables_test(client)
+    get_regions_test(client)
 
 
     # error handling demo
