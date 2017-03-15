@@ -9,6 +9,7 @@ import json
 import datetime
 
 
+STAGING_BASE = 'http://oeweu3w-pwb-001.cloudapp.net/api'
 DEFAULT_BASE = 'https://services.oxfordeconomics.com/api'
 
 class Client(object):
@@ -37,58 +38,30 @@ class Client(object):
         return url 
 
 
-    # ta;es: (optional) Databank id
+    # takes: (optional) Databank id
     # return: json dictionary of available databanks or the one that matches the
     #         given id
-    def get_databanks(self, id=""):
-        try:
-            r = requests.get(self._url('databank', id), headers=self._header())
-            r.raise_for_status()
-
-        except requests.exceptions.HTTPError as e:
-            print(e)
-            return {}
-
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return {}
-
+    def get_databanks(self, db_id=""):
+        r = requests.get(self._url('databank', db_id), headers=self._header())
+        r.raise_for_status()
         return r.json()
 
 
     # get a full list of a databank's available regions
     # takes: databank id
     # returns: json dictionary of Regions 
-    def get_databank_regions(self, id):
-        try:
-            r = requests.get(self._url('region', id), headers=self._header())
-
-        except requests.exceptions.HTTPError as e:
-            print(e)
-            return {}
-
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return {}
-
+    def get_databank_regions(self, db_id):
+        r = requests.get(self._url('region', db_id), headers=self._header())
+        r.raise_for_status()
         return r.json()
 
 
     # get a full list of a databank's available variables
     # takes: databank id
     # returns: json dictionary of Variables
-    def get_databank_variables(self, id):
-        try:
-            r = requests.get(self._url('variable', id), headers=self._header())
-
-        except requests.exceptions.HTTPError as e:
-            print(e)
-            return {}
-
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return {}
-
+    def get_databank_variables(self, db_id):
+        r = requests.get(self._url('variable', db_id), headers=self._header())
+        r.raise_for_status()
         return r.json()
 
 
@@ -97,17 +70,8 @@ class Client(object):
     def user_login(self, username, passwd):
         payload = { 'Username': username,
                     'Password': passwd }
-        try:
-            r = requests.post(self._url('users'), headers=self._header(), data=json.dumps(payload) )
-
-        except requests.exceptions.HTTPError as e:
-            print(e)
-            return {}
-
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return {}
-
+        r = requests.post(self._url('users'), headers=self._header(), data=json.dumps(payload) )
+        r.raise_for_status()
         return r.json()
 
 
@@ -115,124 +79,84 @@ class Client(object):
     # returns: json dictionary of User with given id. if id is left blank,
     #          then the User data corresponding to the current active
     #          api_token
-    def get_user(self, id="me"):
-        try:
-            r = requests.get(self._url('users',id), headers=self._header() )
-
-        except requests.exceptions.HTTPError as e:
-            print(e)
-            return {}
-
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return {}
-
+    def get_user(self, u_id="me"):
+        r = requests.get(self._url('users', u_id), headers=self._header() )
+        r.raise_for_status()
         return r.json()
 
 
     # takes: selection id
     # returns: json dictionary of Selection 
-    def get_selection(self, id):
-        try:
-            r = requests.get(self._url('savedselections', id), headers=self._header())
-
-        except requests.exceptions.HTTPError as e:
-            print(e)
-            return {}
-
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return {}
-
+    def get_selection(self, s_id):
+        r = requests.get(self._url('savedselections', s_id), headers=self._header())
+        r.raise_for_status()
         return r.json()
 
 
     # takes: selection id
-    # returns: blank dictionary
-    def delete_selection(self, id):
-        try:
-            r = requests.delete(self._url('savedselections', id), headers=self._header())
-
-        except requests.exceptions.HTTPError as e:
-            print(e)
-            return {}
-
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return {}
-
-        return {} 
+    def delete_selection(self, s_id):
+        r = requests.delete(self._url('savedselections', s_id), headers=self._header())
+        r.raise_for_status()
 
 
     # gets saved selection with given selection id (see above)
     # returns: json dictinoary of new Selection
     def create_selection(self, selection_object):
-        try:
-            r = requests.post(self._url('savedselections'), headers=self._headers(), 
-                data=json.dumps(selection_object) )
-
-        except requests.exceptions.HTTPError as e:
-            print(e)
-            return {}
-
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return {}
-
+        r = requests.post(self._url('savedselections'), headers=self._headers(), 
+            data=json.dumps(selection_object) )
+        r.raise_for_status()
         return r.json()
 
 
     # updates a saved selection with given selection id (see above)
     # takes: selection object with id that corresponds to already existing non-temporary saved selection
-    # returns: blank json dictionary
     def update_selection(self, selection_object):
-        try:
-            r = requests.put(self._url('savedselections', selection_object['Id']), 
-                    headers=self._header(), data=json.dumps(selection_object) )
-
-        except requests.exceptions.HTTPError as e:
-            print(e)
-            return {}
-
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return {}
-
-        return {}
+        r = requests.put(self._url('savedselections', selection_object['Id']), 
+                headers=self._header(), data=json.dumps(selection_object) )
+        r.raise_for_status()
 
 
+
+    # takes: page index and page size (i.e. number of download elements per page)
+    #        and a selection, either in the form of a dictioanry or id string
     # returns: well-formed download url based on page and pagesize 
-    def _download_url(self, page, pagesize):
-        return self._url('download?includeMetadata=true&page={0}+&pagesize={1}').format(page,pagesize)
+    def _download_url(self, page, pagesize, s_id='?'):
+        if s_id != '?':
+            s_id = '/' + s_id + '?'
+        return self._url('download{0}includeMetadata=true&page={1}+&pagesize={2}').format(s_id, 
+                page, pagesize)
 
 
+    # takes: page index and page size (i.e. number of download elements per page)
+    #        and a selection, either in the form of a dictioanry or id string
     # returns: single page of downloaded data as json dictionary
     def _get_download(self, selection, page, pagesize=5):
-        r = requests.post(self._download_url(page, pagesize), headers=self._header(), json=selection)
-        r.raise_for_status() # in case of bad request: pass http exceptions up to calling func
-        return r.json()
+        if isinstance(selection, str):
+            r = requests.get(self._download_url(page, pagesize, selection), 
+                    headers=self._header(), json=selection)
+            r.raise_for_status() # in case of bad request: pass http exceptions up to calling func
+            return r.json()
+        else:
+            r = requests.post(self._download_url(page, pagesize), 
+                    headers=self._header(), json=selection)
+            r.raise_for_status() # in case of bad request: pass http exceptions up to calling func
+            return r.json()
 
   
+    # takes: page size (i.e. number of download elements per page)
+    #        and a selection in the form of a dictioanry or id string
     # downloads multiple pages of data based on provided Selection
     # returns: json dictionary of Download data
     def get_download(self, selection, pagesize=5):
+
         page = 0
+        new_data = self._get_download(selection, page, pagesize)
+        data = new_data
 
-        try:
+        while len(new_data) == pagesize:
+            page += 1
             new_data = self._get_download(selection, page, pagesize)
-            data = new_data
-            while len(new_data) == pagesize:
-                page += 1
-                new_data = self._get_download(selection, page, pagesize)
-                data.append(new_data)
-
-        except requests.exceptions.HTTPError as e:
-            print(e)
-            return {}
-
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return {}
+            data.append(new_data)
 
         return data
 
@@ -241,18 +165,64 @@ class Client(object):
     # takes: Selection dictionary to be created
     # returns: json dictionary of newly created Selection 
     def create_selection(self, selection_object):
-        try:
-            r = requests.post(self._url('savedselections'), 
-                    headers=self._header(), data=json.dumps(selection_object) )
-
-        except requests.exceptions.HTTPError as e:
-            print(e)
-            return {}
-
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return {}
+        r = requests.post(self._url('savedselections'), 
+                headers=self._header(), data=json.dumps(selection_object) )
+        r.raise_for_status()
 
         return r.json()
+
+
+    # downloads data set to file based on selection provided 
+    # takes: Selection dictionary or id string to be created
+    # returns: ...
+    def queue_download(self, selection):
+        if isinstance(selection, str):
+            r = requests.get(self._url('queuedownload', selection), headers=self._header() )
+        else:
+            r = requests.post(self._url('queuedownload'), headers=self._header(), selection=json.dumps(selection) )
+
+        r.raise_for_status()
+        return r.json()
+       
+    
+    # takes: download id, returned from queue download method
+    # returns: boolean indicating readiness
+    def check_queue(self, ready_url):
+        r = requests.get(ready_url, headers=self._header() )
+        r.raise_for_status()
+        return r.json()
+
+    
+    # takes: selection id and dictionary holding configuration
+    # returns: a dataseries shaped based on the provided configuration as a 2-dimensional 
+    #          list of json dictionaries (i.e. one for each cell in the table)
+    def get_shaped_download(self, s_id, config_dict):
+        r = requests.post(self._url('shapeddownload', s_id), headers=self._header(), data=json.dumps(config_dict))
+        r.raise_for_status()
+        return r.json()
+
+    
+    # takes: databank code string
+    # returns: a json dictionary representing full tree of locations available in databank
+    def get_location_tree(self, databank_code):
+        r = requests.get(self._url('tree/Locations_' + databank_code), headers=self._header())
+        r.raise_for_status()
+        return r.json()
+
+    
+    # takes: databank code string
+    # returns: a json dictionary representing full tree of indicators available in databank
+    def get_indicators_tree(self, databank_code):
+        r = requests.get(self._url('tree/Indicators_' + databank_code), headers=self._header())
+        r.raise_for_status()
+        return r.json()
+
+
+# same as above; uses staging base url for testing
+class StagingClient(Client):
+
+    def __init__(self, api_key = "", base_url = STAGING_BASE):
+        self.api_key = api_key
+        self._base_url = base_url
 
 
