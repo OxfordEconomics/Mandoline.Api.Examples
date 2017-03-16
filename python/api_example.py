@@ -237,7 +237,6 @@ def delete_selection_test(client):
 # demos the queue download endpoint
 def queue_download_test(client, selection):
     print('\n\n--Demo: queue download--')
-    # print('Attempting to download {}...'.format(s_id))
     q_download = client.queue_download([selection])
     print(json.dumps(q_download, indent=3, sort_keys=True))
 
@@ -246,6 +245,14 @@ def queue_download_test(client, selection):
         print('Checking to see whether download is ready...')
 
     print('Download ready at: {}'.format(q_download['Url']))
+
+
+
+# demos the file download endpoint
+def file_download_test(client, selection):
+    print('\n\n--Demo: file download--')
+    f_download = client.download_file([selection])
+    print(f_download['data'])
 
 
 
@@ -295,7 +302,8 @@ if __name__ == '__main__':
     # delete_selection_test(client)
     # get_variables_test(client)
     # get_regions_test(client)
-    queue_download_test(client, sampleSelect)
+    # queue_download_test(client, sampleSelect)
+    file_download_test(client, sampleSelect)
     # shaped_download_test(client, SELECTION_ID)
     # indicator_tree_test(client)
     # location_tree_test(client)
