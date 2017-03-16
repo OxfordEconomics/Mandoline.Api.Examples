@@ -65,7 +65,7 @@ namespace ExampleMandolineAPI
                     Download.RunRequestDownloadAsync(output);
                     break;
                 case ("GetSavedSelection"):
-                    SavedSelection.RunGetSavedSelection(output);
+                    SavedSelection.RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID,output);
                     break;
                 case ("UpdateSavedSelection"):
                     SavedSelection.RunUpdateSavedSelection(output);

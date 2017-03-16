@@ -10,6 +10,12 @@ namespace ExampleMandolineAPI
 {
     public static class AppConstants 
     {
+        static AppConstants()
+        {
+            _API_TOKEN = null;
+            _SAVED_SELECTION_ID = Guid.Empty;
+        }
+
         // user's api token - default must be set before compile
         private static string _API_TOKEN { get; set; }
         public static string API_TOKEN
@@ -26,7 +32,19 @@ namespace ExampleMandolineAPI
         }
 
         // id that examples will use in pulling sample selections
-        public static string SAVED_SELECTION_ID { get { return ConfigurationManager.AppSettings["SELECTION_ID"] ?? "SELECTION_ID not found";  } }
+        private static Guid _SAVED_SELECTION_ID { get; set; }
+        public static Guid SAVED_SELECTION_ID 
+        {
+            get
+            {
+                if (_SAVED_SELECTION_ID == Guid.Empty) _SAVED_SELECTION_ID = new Guid(ConfigurationManager.AppSettings["SELECTION_ID"]); // set this in AppSettings.config
+                return _SAVED_SELECTION_ID;
+            }
+            set
+            {
+                if (value != null) _SAVED_SELECTION_ID = value;
+            }
+        }
 
         // simple example selection: draws GDP and inflation data from the US, the UK, France, and Germany 
         public class SampleSelect : SelectionDto {

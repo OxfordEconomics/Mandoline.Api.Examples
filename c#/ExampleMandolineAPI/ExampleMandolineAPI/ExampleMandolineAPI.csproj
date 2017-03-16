@@ -84,7 +84,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain\SavedSelection.cs" />
-    <Compile Include="Domain\Table.cs" />
+    <Compile Include="Clients\GUI\Table.cs" />
     <Compile Include="Domain\User.cs" />
     <EmbeddedResource Include="Clients\GUI\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

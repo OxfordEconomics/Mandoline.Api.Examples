@@ -25,7 +25,7 @@ namespace ExampleMandolineAPI
                 Console.WriteLine("STATUS: {0}...", t.Result.Reason);
 
                 // update table
-                RunGetSavedSelection(output);
+                RunGetSavedSelection(t.Result.Result.Id, output);
 
             },TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -42,7 +42,7 @@ namespace ExampleMandolineAPI
             Table.SelectionTable dt = new Table.SelectionTable();
 
             // change selection object for update
-            sampleSelect.Id = new Guid(AppConstants.SAVED_SELECTION_ID);
+            sampleSelect.Id = AppConstants.SAVED_SELECTION_ID;
             sampleSelect.Name = "Selection - Updated: " + DateTime.Now;
 
             // set up api object for making call
@@ -52,17 +52,19 @@ namespace ExampleMandolineAPI
             api.UpdateSavedSelectionAsync(sampleSelect.Id, sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t => {
                 Console.WriteLine("STATUS: {0}...", t.Result.Reason);
                 Console.WriteLine("DESC: {0}...", t.Result.Description);
-                Console.WriteLine("RESULT: {0}...", t.Result.ToString());
 
                 // update table
-                RunGetSavedSelection(output);
+                RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID, output);
 
             },TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         // creates a new saved selection based on SelectionDto sampleSelect 
-        public static void RunGetSavedSelection(Output output)
+        // takes output object, selection id
+        public static void RunGetSavedSelection(Guid s_id, Output output)
         {
+            Console.WriteLine(string.Format("Checking selection with id={0}...", s_id));
+
             // get our sample selection
             SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
@@ -73,7 +75,7 @@ namespace ExampleMandolineAPI
             var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
 
             // queue asynchronous api call
-            api.GetSavedSelection(new Guid(AppConstants.SAVED_SELECTION_ID)).ContinueWith(t => {
+            api.GetSavedSelection(s_id).ContinueWith(t => {
                 Console.WriteLine("STATUS: {0}...", t.Result.Reason);
 
                 output.PrintData(t.Result.Result);
