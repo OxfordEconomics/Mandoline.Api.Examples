@@ -111,7 +111,7 @@ namespace ExampleMandolineAPI
             statusLabelVisible = false;
 
             // change current user's access token
-            Settings.API_TOKEN = token;
+            AppConstants.API_TOKEN = token;
 
         }
 
