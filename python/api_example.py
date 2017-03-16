@@ -14,34 +14,97 @@ from requests import exceptions
 import time
 import json
 
-SELECTION_ID = '4bf94447-6b9b-479f-babf-14cd015a9642'
+SELECTION_ID = '2c140fbb-4624-4004-927e-621734f3cb93'
 API_KEY = '566dbac8-d0c2-4248-a0ed-ca3a8ce4df5c'
 BAD_URL_BASE = 'https://services.oxfordeconomics.com/api-error'
 
+# deprecated sample selection
+# sampleSelect = {
+#                 'DatabankCode': 'WDMacro',
+#                 'MeasureCode': 'L',
+#                 'StartYear': 2015,
+#                 'EndYear': 2021,
+#                 'StackedQuarters': 'false',
+#                 'Frequency': 'Annual',
+#                 'Sequence': 'EarliestToLatest',
+#                 'Precision': 1,
+#                 'TransposeColumns': 'false',
+#                 'IsTemporarySelection': 'False',
+#                 'Order': 'IndicatorLocation',
+#                 'GroupingMode': 'false',
+#                 'Regions': [{'DatabankCode': 'WDMacro',
+#                              'RegionCode': 'GBR'},
+#                             {'DatabankCode': 'WDMacro',
+#                              'RegionCode': 'USA'}],
+#                 'Variables': [{'ProductTypeCode': 'WMC',
+#                                'VariableCode': 'GDP$',
+#                                'MeasureCodes': ['L','PY','DY']},
+#                               {'ProductTypeCode': 'WMC',
+#                                'VariableCode': 'CPI',
+#                                'MeasureCodes': ['L']}]}
+
+
 # sample selection for post body
 sampleSelect = {
-                'DatabankCode': 'WDMacro',
-                'MeasureCode': 'L',
-                'StartYear': 2015,
-                'EndYear': 2021,
-                'StackedQuarters': 'false',
-                'Frequency': 'Annual',
-                'Sequence': 'EarliestToLatest',
-                'Precision': 1,
-                'TransposeColumns': 'false',
-                'IsTemporarySelection': 'False',
-                'Order': 'IndicatorLocation',
-                'GroupingMode': 'false',
-                'Regions': [{'DatabankCode': 'WDMacro',
-                             'RegionCode': 'GBR'},
-                            {'DatabankCode': 'WDMacro',
-                             'RegionCode': 'USA'}],
-                'Variables': [{'ProductTypeCode': 'WMC',
-                               'VariableCode': 'GDP$',
-                               'MeasureCodes': ['L','PY','DY']},
-                              {'ProductTypeCode': 'WMC',
-                               'VariableCode': 'CPI',
-                               'MeasureCodes': ['L']}]}
+    "ContactId": "jamesmills@oxfordeconomics.com",
+    "DatabankCode": "WDMacro",
+    "EndYear": 2021,
+    "Format": 0,
+    "Frequency": "Annual",
+    "GroupingMode": 'false',
+    "Id": "2c140fbb-4624-4004-927e-621734f3cb93",
+    "IndicatorSortOrder": "AlphabeticalOrder",
+    "IsDatafeed": 'false',
+    "IsTemporarySelection": 'false',
+    "LastUpdate": "2017-03-16T15:01:01.557",
+    "LegacyDatafeedFileStructure": 'false',
+    "ListingType": "Private",
+    "LocationSortOrder": "AlphabeticalOrder",
+    "MeasureCode": "L",
+    "Name": "Selection - Updated: 3/16/2017 11:00:50 AM",
+    "Order": "IndicatorLocation",
+    "Precision": 1,
+    "Regions": [
+         {
+             "DatabankCode": "WDMacro",
+             "RegionCode": "DEU"
+         },
+         {
+             "DatabankCode": "WDMacro",
+             "RegionCode": "FRA"
+         },
+         {
+             "DatabankCode": "WDMacro",
+             "RegionCode": "GBR"
+         },
+         {
+             "DatabankCode": "WDMacro",
+             "RegionCode": "USA"
+         }
+    ],
+    "SelectionType": "QuerySelection",
+    "Sequence": "EarliestToLatest",
+    "StackedQuarters": 'false',
+    "StartYear": 2015,
+    "Variables": [
+        {
+            "MeasureCodes": [
+                "L"
+            ],
+            "ProductTypeCode": "WMC",
+            "VariableCode": "CPI"
+        },
+        {
+            "MeasureCodes": [
+                "L",
+                "PY",
+                "DY"
+            ],
+            "ProductTypeCode": "WMC",
+            "VariableCode": "GDP$"
+        }
+    ]
+}
 
 
 # demos the Databank and Region endpoints
@@ -172,10 +235,11 @@ def delete_selection_test(client):
 
 
 # demos the queue download endpoint
-def queue_download_test(client, s_id):
+def queue_download_test(client, selection):
     print('\n\n--Demo: queue download--')
-    print('Attempting to download {}...'.format(s_id))
-    q_download = client.queue_download(client.get_selection(s_id))
+    # print('Attempting to download {}...'.format(s_id))
+    q_download = client.queue_download([selection])
+    print(json.dumps(q_download, indent=3, sort_keys=True))
 
     while client.check_queue(q_download['ReadyUrl']) == False:
         time.sleep(5)
@@ -221,9 +285,9 @@ if __name__ == '__main__':
     # baseline functinoality demo
     client = StagingClient(API_KEY)
 
-    login_test(client)
-    create_selection_test(client)
-    download_test(client, SELECTION_ID)
+    # login_test(client)
+    # create_selection_test(client)
+    # download_test(client, SELECTION_ID)
     # update_selection_test(client, SELECTION_ID)
     # databank_test(client, sampleSelect['DatabankCode'])
     # get_selection_test(client, SELECTION_ID)
@@ -231,7 +295,7 @@ if __name__ == '__main__':
     # delete_selection_test(client)
     # get_variables_test(client)
     # get_regions_test(client)
-    # queue_download_test(client, SELECTION_ID)
+    queue_download_test(client, sampleSelect)
     # shaped_download_test(client, SELECTION_ID)
     # indicator_tree_test(client)
     # location_tree_test(client)

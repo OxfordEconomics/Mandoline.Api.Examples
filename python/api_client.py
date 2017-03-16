@@ -173,13 +173,21 @@ class Client(object):
 
 
     # downloads data set to file based on selection provided 
-    # takes: Selection dictionary or id string to be created
+    # takes: Selection dictionary list or id string to be created, and file format and name
+    #        note, however, that file_format and name are only used when selection
+    #        is sent as POST i.e. when it is provided as a dictionary instead of by
+    #        id number
     # returns: ...
-    def queue_download(self, selection):
+    def queue_download(self, selection, file_format="csv", name="databank_download"):
+        payload = {
+                "format": file_format,
+                "name": name, 
+                "selections": selection
+                }
         if isinstance(selection, str):
             r = requests.get(self._url('queuedownload', selection), headers=self._header() )
         else:
-            r = requests.post(self._url('queuedownload'), headers=self._header(), selection=json.dumps(selection) )
+            r = requests.post(self._url('queuedownload'), headers=self._header(), data=json.dumps(payload) )
 
         r.raise_for_status()
         return r.json()
