@@ -15,10 +15,10 @@ namespace ExampleMandolineAPI
         public static void RunRequestDownloadAsync(Output output)
         {
             // get our sample selection
-            SelectionDto sampleSelect = Settings.SampleSelect.GetInstance();
+            SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", Settings.API_TOKEN);
+            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
 
             string filename = "SampleDownload-" + DateTime.Now.ToString("yyyyMMddHHmm") + ".csv";
 
@@ -45,10 +45,10 @@ namespace ExampleMandolineAPI
         public static void RunDownloadFileAsync(Output output)
         {
             // get our sample selection
-            SelectionDto sampleSelect = Settings.SampleSelect.GetInstance();
+            SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", Settings.API_TOKEN);
+            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
 
             // set up download request
             var req = new ControllerDownloadRequestDto()
@@ -71,13 +71,13 @@ namespace ExampleMandolineAPI
         public static void RunDownloadAsync(Output output)
         {
             // get our sample selection
-            SelectionDto sampleSelect = Settings.SampleSelect.GetInstance();
+            SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // set the number of items (i.e. in this case DataseriesDto objects) to be included in each page of data
             const int PAGE_SIZE = 5;
 
             // initialize api object
-            var api = new ApiClient("https://services.oxfordeconomics.com/", Settings.API_TOKEN);
+            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
 
             // queue api requests till all pages of data have been received
             // first section here returns a list of data series objects

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Mandoline.Api.Client.ServiceModels;
+using System.Configuration;
 
 namespace ExampleMandolineAPI
 {
-    public static class Settings 
+    public static class AppConstants 
     {
         // user's api token - default must be set before compile
         private static string _API_TOKEN { get; set; }
@@ -15,7 +16,7 @@ namespace ExampleMandolineAPI
         {
             get
             {
-                if (_API_TOKEN == null) _API_TOKEN = "566dbac8-d0c2-4248-a0ed-ca3a8ce4df5c"; // default API_TOKEN value (set this before compile)
+                if (_API_TOKEN == null) _API_TOKEN = ConfigurationManager.AppSettings["API_TOKEN"] ?? "API_TOKEN not found"; // set this in AppSettings.config
                 return _API_TOKEN;
             }
             set
@@ -25,7 +26,7 @@ namespace ExampleMandolineAPI
         }
 
         // id that examples will use in pulling sample selections
-        public static string SAVED_SELECTION_ID { get { return "d581f360-d0fa-40f3-a41e-0735db10f8c6"; } }
+        public static string SAVED_SELECTION_ID { get { return ConfigurationManager.AppSettings["SELECTION_ID"] ?? "SELECTION_ID not found";  } }
 
         // simple example selection: draws GDP and inflation data from the US, the UK, France, and Germany 
         public class SampleSelect : SelectionDto {

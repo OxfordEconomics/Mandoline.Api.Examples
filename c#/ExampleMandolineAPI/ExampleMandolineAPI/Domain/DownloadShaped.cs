@@ -16,10 +16,10 @@ namespace ExampleMandolineAPI
         static public void RunDownloadShapedStreamAsync(Output output)
         {
             // get our sample selection
-            SelectionDto sampleSelect = Settings.SampleSelect.GetInstance();
+            SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", Settings.API_TOKEN);
+            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
 
             // set up simple configuration for shape request
             var config = new ShapeConfigurationDto()
@@ -47,10 +47,10 @@ namespace ExampleMandolineAPI
         static public void RunDownloadShapedAsync(Output output)
         {
             // get our sample selection
-            SelectionDto sampleSelect = Settings.SampleSelect.GetInstance();
+            SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", Settings.API_TOKEN);
+            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
 
             // set up simple configuration for shape request
             var config = new ShapeConfigurationDto()

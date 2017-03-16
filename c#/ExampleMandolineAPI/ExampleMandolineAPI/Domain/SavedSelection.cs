@@ -15,10 +15,10 @@ namespace ExampleMandolineAPI
         public static void RunCreateSavedSelection(Output output)
         {
             // get our sample selection
-            SelectionDto sampleSelect = Settings.SampleSelect.GetInstance();
+            SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", Settings.API_TOKEN);
+            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
 
             // queue asynchronous api call
             api.CreateSavedSelectionAsync(sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t => {
@@ -36,17 +36,17 @@ namespace ExampleMandolineAPI
         public static void RunUpdateSavedSelection(Output output)
         {
             // get our sample selection
-            SelectionDto sampleSelect = Settings.SampleSelect.GetInstance();
+            SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // create table for displaying selection data
             Table.SelectionTable dt = new Table.SelectionTable();
 
             // change selection object for update
-            sampleSelect.Id = new Guid(Settings.SAVED_SELECTION_ID);
+            sampleSelect.Id = new Guid(AppConstants.SAVED_SELECTION_ID);
             sampleSelect.Name = "Selection - Updated: " + DateTime.Now;
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", Settings.API_TOKEN);
+            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
 
             // queue asynchronous api call
             api.UpdateSavedSelectionAsync(sampleSelect.Id, sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t => {
@@ -64,16 +64,16 @@ namespace ExampleMandolineAPI
         public static void RunGetSavedSelection(Output output)
         {
             // get our sample selection
-            SelectionDto sampleSelect = Settings.SampleSelect.GetInstance();
+            SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // create table for displaying selection data
             Table.SelectionTable dt = new Table.SelectionTable();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", Settings.API_TOKEN);
+            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
 
             // queue asynchronous api call
-            api.GetSavedSelection(new Guid(Settings.SAVED_SELECTION_ID)).ContinueWith(t => {
+            api.GetSavedSelection(new Guid(AppConstants.SAVED_SELECTION_ID)).ContinueWith(t => {
                 Console.WriteLine("STATUS: {0}...", t.Result.Reason);
 
                 output.PrintData(t.Result.Result);
