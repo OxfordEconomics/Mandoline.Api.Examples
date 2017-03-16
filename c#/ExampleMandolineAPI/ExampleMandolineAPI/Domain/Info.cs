@@ -16,7 +16,7 @@ namespace ExampleMandolineAPI
         public static void RunGetDatabanksAsync(Output output)
         {
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue asynchronous api call
             api.GetDatabanksAsync().ContinueWith(t => {
@@ -32,7 +32,7 @@ namespace ExampleMandolineAPI
         public static void RunGetVariablesAsync(Output output)
         {
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue asynchronous api call
             api.GetVariablesAsync("WDMacro").ContinueWith(t => {

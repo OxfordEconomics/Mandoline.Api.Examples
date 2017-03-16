@@ -19,7 +19,7 @@ namespace ExampleMandolineAPI
             SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // set up simple configuration for shape request
             var config = new ShapeConfigurationDto()
@@ -50,7 +50,7 @@ namespace ExampleMandolineAPI
             SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // set up simple configuration for shape request
             var config = new ShapeConfigurationDto()

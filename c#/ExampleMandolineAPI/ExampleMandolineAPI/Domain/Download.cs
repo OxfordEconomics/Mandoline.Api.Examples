@@ -18,7 +18,7 @@ namespace ExampleMandolineAPI
             SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             string filename = "SampleDownload-" + DateTime.Now.ToString("yyyyMMddHHmm") + ".csv";
 
@@ -48,7 +48,7 @@ namespace ExampleMandolineAPI
             SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // set up download request
             var req = new ControllerDownloadRequestDto()
@@ -77,7 +77,7 @@ namespace ExampleMandolineAPI
             const int PAGE_SIZE = 5;
 
             // initialize api object
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue api requests till all pages of data have been received
             // first section here returns a list of data series objects

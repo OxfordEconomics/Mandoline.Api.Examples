@@ -18,7 +18,7 @@ namespace ExampleMandolineAPI
             SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue asynchronous api call
             api.CreateSavedSelectionAsync(sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t => {
@@ -46,7 +46,7 @@ namespace ExampleMandolineAPI
             sampleSelect.Name = "Selection - Updated: " + DateTime.Now;
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue asynchronous api call
             api.UpdateSavedSelectionAsync(sampleSelect.Id, sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t => {
@@ -72,7 +72,7 @@ namespace ExampleMandolineAPI
             Table.SelectionTable dt = new Table.SelectionTable();
 
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue asynchronous api call
             api.GetSavedSelection(s_id).ContinueWith(t => {

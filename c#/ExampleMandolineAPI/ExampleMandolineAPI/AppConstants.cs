@@ -14,6 +14,7 @@ namespace ExampleMandolineAPI
         {
             _API_TOKEN = null;
             _SAVED_SELECTION_ID = Guid.Empty;
+            BASE_URL = ConfigurationManager.AppSettings["BASE_URL"];
         }
 
         // user's api token - default must be set before compile
@@ -45,6 +46,8 @@ namespace ExampleMandolineAPI
                 if (value != null) _SAVED_SELECTION_ID = value;
             }
         }
+
+        public static string BASE_URL { get; }
 
         // simple example selection: draws GDP and inflation data from the US, the UK, France, and Germany 
         public class SampleSelect : SelectionDto {

@@ -14,7 +14,7 @@ namespace ExampleMandolineAPI
         public static void RunGetUserAsync(Output output) 
         {
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue asynchronous api call
             api.GetUserAsync().ContinueWith(t => {
@@ -32,7 +32,7 @@ namespace ExampleMandolineAPI
         public static void RunLoginAsync(Output output, string user, string pass)
         {
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue asynchronous api call
             api.LoginAsync(user, pass, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t => {
@@ -48,7 +48,7 @@ namespace ExampleMandolineAPI
         public static void RunGetAllUsersAsync(Output output) 
         {
             // set up api object for making call
-            var api = new ApiClient("https://services.oxfordeconomics.com/", AppConstants.API_TOKEN);
+            var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue asynchronous api call
             api.GetAllUsersAsync().ContinueWith(t => {

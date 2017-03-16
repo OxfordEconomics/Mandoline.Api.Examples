@@ -52,6 +52,9 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Replify">
+      <HintPath>..\..\..\..\..\Visual Studio 2015\Projects\Replify\Replify-master\Replify\bin\Debug\Replify.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
       <Private>True</Private>
@@ -70,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\CLI\Commands.cs" />
     <Compile Include="Domain\DownloadShaped.cs" />
     <Compile Include="Clients\GUI\Output.cs" />
     <Compile Include="AppConstants.cs" />
@@ -126,7 +130,6 @@
     <Content Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Clients\CLI\" />
     <Folder Include="Tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
