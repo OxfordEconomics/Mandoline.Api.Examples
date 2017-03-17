@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Mandoline.Api.Client;
 using Replify;
+using Core;
 
-namespace ExampleMandolineAPI
+namespace Client.Repl
 {
     public class UserCommand : IReplCommand
     {

@@ -1,0 +1,41 @@
+curl -v -H "Accept: application/json" -X OPTIONS http://localhost:64763/api/databank
+
+curl -i -POST -H "Content-Type:application/json; charset=utf-8" -d "{username:'eileenasaclient',password:'eileenclientpass'}" http://localhost:64763/api/users/login
+
+curl -v -H "Accept: application/json" http://localhost:64763/api/users/vinsehmi
+curl -v -H "Accept: application/json" http://localhost:64763/api/selection/10354
+
+curl -i -POST -H "Content-Type:application/json; charset=utf-8" -d "{username:'eileenasaclient',password:'eileenclientpass'}" http://localhost:64763/api/users/login
+
+
+<!-- Sample selection json -->
+
+{	Name: "Test - test selection",
+    DatabankCode: "WDMacro",
+    MeasureCode: "L",
+    StartYear: 1990,
+    EndYear: 2020,
+
+    StackedQuarters: false,
+    Frequency: "Annual",
+    Sequence: "EarliestToLatest",
+    Precision: 1,
+    Order: "IndicatorLocation",
+    GroupingMode: false,
+    Regions:  [
+            { DatabankCode: "WDMacro", RegionCode: "GBR" },
+	{ DatabankCode: "WDMacro", RegionCode: "FRA" },
+            { DatabankCode: "WDMacro", RegionCode: "DEU" }
+    ],
+    Variables: [
+        { ProductTypeCode: "WMC", VariableCode: "GDP$", MeasureCode: "L" }
+    ]      
+};
+
+
+
+
+curl -i -POST -H "api_key:B9AA7F95-497A-464C-9630-327FCD3055E3" -H "Content-Type:application/json; charset=utf-8" -d "{ Name: 'Test - test selection', DatabankCode: 'WDMacro', MeasureCode: 'L', StartYear: 1990, EndYear: 2020, StackedQuarters: false, Frequency: 'Annual', Sequence: 'EarliestToLatest', Precision: 1, Order: 'IndicatorLocation', GroupingMode: false, Regions: [ { DatabankCode: 'WDMacro', RegionCode: 'GBR' }, { DatabankCode: 'WDMacro', RegionCode: 'FRA' }, { DatabankCode: 'WDMacro', RegionCode: 'DEU' } ], Variables: [ { ProductTypeCode: 'WMC', VariableCode: 'GDP$', MeasureCode: 'L' } ] }" http://localhost:64763/api/savedselections
+
+
+curl -i -X DELETE -H "api_key:B9AA7F95-497A-464C-9630-327FCD3055E3" http://localhost:64763/api/savedselections/2876c32c-8125-4cbc-8a2d-a227d0b23765 

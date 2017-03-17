@@ -3,24 +3,66 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Mandoline.Api.Client.ServiceModels;
 using Mandoline.Api.Client.Models;
 using System.Data;
+using System.Threading;
 using Core;
 
-namespace Client.Repl
+namespace Client.Gui
 {
 
-    // this implementation of Output directs output to console
-    class ConsoleOutput : Output
+
+    // this implementation of Output directs output to a DataGridView
+    // for a Windows Form application
+    class GridOutput : Core.Output
     {
+        public Form1 f { get; set; } // to access the main form object
+
+        // getters and setters for updating form fields
+        private bool statusLabelVisible
+        {   
+            set
+            {
+                f.label1.Visible = value;
+            }
+        }
+
         // for updating status text
         private string statusLabelText
         {   
             set
             {
-                Console.WriteLine(value);
+                if(value != null) f.label1.Text = value;
             }
+        }
+
+        // delegate for passing data source in thread-safe way
+        private delegate void ObjectDelegate(object newData);
+
+        // for updating the datagridview's data source
+        private Object dgv {
+            set
+            {
+                Console.WriteLine("Updating data grid...");
+                if (f.dataGridView1.InvokeRequired)
+                {
+                    ObjectDelegate d = new ObjectDelegate(t => { this.f.dataGridView1.DataSource = t; });
+                    f.Invoke(d, value);
+                }
+                else
+                {
+                    f.dataGridView1.DataSource = value;
+                }
+            }
+        }
+
+        // constructor, must take windows form object to update load status and gridview
+        public GridOutput(Form1 f)
+        {
+            this.f = f;
+
         }
 
         public override void UpdateStatus(string v)
@@ -30,18 +72,7 @@ namespace Client.Repl
 
         public override void UpdateStatus(bool v)
         {
-        }
-
-        public void printTable(DataTable table)
-        {
-            foreach(DataRow row in table.Rows)
-            {
-                for(int x = 0; x < table.Columns.Count; x++)
-                {
-                    Console.Write(string.Format("{}\t", row[x].ToString()));
-                }
-                Console.WriteLine();
-            }
+            this.statusLabelVisible = v;
         }
 
         // updates gridview with selection object information
@@ -56,34 +87,74 @@ namespace Client.Repl
 
             // pass databanks list to DataGridView object
             dt.Rows.Add(output.Id, output.Name, output.DatabankCode, output.MeasureCode, output.DownloadUrl);
+            dgv = dt;
 
-            printTable(dt);
+            // hide loading indicator
+            statusLabelVisible = false;
         }
 
         // process login output
         public override void PrintData(Mandoline.Api.Client.Models.User u, string token)
         {
-            PrintData(u);
+            // append user info to list, so that we can pass to the DataGridView object
+            var output = new List<Mandoline.Api.Client.Models.User>();
+            output.Add(u);
+
+            // pass user list to DataGridView object
+            dgv = output;
+
+            // hide loading indicator
+            statusLabelVisible = false;
+
+            // change current user's access token
+            AppConstants.API_TOKEN = token;
+
         }
 
         // process output for multi user response
         public override void PrintData(IEnumerable<Mandoline.Api.Client.Models.User> ul)
         {
-            foreach (Mandoline.Api.Client.Models.User u in ul) Console.WriteLine("\t{0} {1} - Selections: {2}", u.FirstName, u.LastName, u.SavedSelections.Count());
+            // pass user list to DataGridView object
+            dgv = ul;
+
+            // hide loading indicator
+            statusLabelVisible = false;
+
         }
                 
         // process output for login response
         public override void PrintData(Mandoline.Api.Client.Models.User u)
         {
-            Console.WriteLine("{0} {1} - Saved selections:", u.FirstName, u.LastName);
-            foreach (ResourceLink<Selection> s in u.SavedSelections) Console.WriteLine("\t{0}: {1}", s.Name, s.Id);
+            Console.WriteLine("User has {0} saved selections...", u.SavedSelections.ToList().Count);
+            foreach (ResourceLink<Selection> s in u.SavedSelections) Console.WriteLine("{0}: {1}", s.Name, s.Id);
+
+            // append user info to list, so that we can pass to the DataGridView object
+            var output = new List<Mandoline.Api.Client.Models.User>();
+            output.Add(u);
+
+            // pass user list to DataGridView object
+            dgv = output;
+
+            // hide loading indicator
+            statusLabelVisible = false;
 
         }
 
         // process output for list of databanks
         public override void PrintData(IEnumerable<Databank> ld)
         {
-            foreach (DatabankDto d in ld) Console.WriteLine("{}\t{}\t{}", d.DatabankCode, d.Name);
+            // parse results into databanks list
+            var output = new List<Databank>();
+            foreach(Databank m in ld)
+            {
+                output.Add(m);
+            }
+
+            // pass databanks list to DataGridView object
+            dgv = output;
+
+            // hide loading indicator
+            statusLabelVisible = false;
         }
 
         // process output for collection of variables
@@ -93,8 +164,10 @@ namespace Client.Repl
 
             // pass list to DataGridView object
             foreach(VariableDto v in vc.Variables) dt.AddRow(v);
+            dgv = dt;
 
-            printTable(dt);
+            // hide loading indicator
+            statusLabelVisible = false;
 
         }
 
@@ -104,16 +177,20 @@ namespace Client.Repl
             var dt = new DataTable();
             dt.Columns.Add("Data");
             dt.Rows.Add(s);
-            printTable(dt);
+            dgv = dt;
 
+            // hide loading indicator
+            statusLabelVisible = false;
         }
 
         // shaped table output
         public override void PrintData(ShapedStreamResult result)
         {
             var dt = new Table.ShapeTable(result);
-            printTable(dt);
+            dgv = dt;
 
+            // hide loading indicator
+            statusLabelVisible = false;
         }
 
         // output for download request
@@ -124,8 +201,10 @@ namespace Client.Repl
 
             // check to see whether download is ready and process output
             dt.Rows.Add(filename, "CSV", response.ReadyUrl, ready);
-            printTable(dt);
+            dgv = dt;
 
+            // hide loading indicator
+            statusLabelVisible = false;
         }
 
         // output for downloads
@@ -165,9 +244,12 @@ namespace Client.Repl
             }
 
             // update the DataGridView with the data table
-            printTable(dt);
+            dgv = dt;
 
+            // hide loading indicator
+            statusLabelVisible = false;
         }
 
     }
+
 }
