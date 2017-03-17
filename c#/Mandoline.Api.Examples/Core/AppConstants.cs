@@ -23,7 +23,7 @@ namespace Core
         {
             get
             {
-                if (_API_TOKEN == null) _API_TOKEN = ConfigurationManager.AppSettings["API_TOKEN"] ?? "API_TOKEN not found"; // set this in AppSettings.config
+                if (_API_TOKEN == null) _API_TOKEN = ConfigurationManager.AppSettings["API_TOKEN"] ?? null; // set this in AppSettings.config
                 return _API_TOKEN;
             }
             set

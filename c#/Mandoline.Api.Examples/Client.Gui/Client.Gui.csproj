@@ -89,7 +89,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="AppSettings.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="AppSettings.config.example" />
     <None Include="packages.config" />
