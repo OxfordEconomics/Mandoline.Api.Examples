@@ -7,78 +7,20 @@ using System.Windows.Forms;
 using Mandoline.Api.Client.ServiceModels;
 using Mandoline.Api.Client.Models;
 using System.Data;
-using System.Threading;
 
 namespace ExampleMandolineAPI 
 {
-    public abstract class Output
+
+    // this implementation of Output directs output to console
+    class ConsoleOutput : Output
     {
-        // handles load status indicator, text and visibility
-        public abstract void UpdateStatus(bool v);
-        public abstract void UpdateStatus(string v);
-
-        // handles updating datagridview source
-        public abstract void PrintData(List<DataseriesDto> ld);
-        public abstract void PrintData(string s);
-        public abstract void PrintData(ControllerDownloadResponseDto response, string filename, string s);
-        public abstract void PrintData(ShapedStreamResult result);
-        public abstract void PrintData(VariableCollectionDto vc);
-        public abstract void PrintData(IEnumerable<Databank> ld);
-        public abstract void PrintData(Mandoline.Api.Client.Models.User u);
-        public abstract void PrintData(IEnumerable<Mandoline.Api.Client.Models.User> ul);
-        public abstract void PrintData(Mandoline.Api.Client.Models.User u, string token);
-        public abstract void PrintData(SelectionDto s);
-    }
-
-    // this implementation of Output directs output to a DataGridView
-    // for a Windows Form application
-    class GridOutput : Output
-    {
-        public Form1 f { get; set; } // to access the main form object
-
-        // getters and setters for updating form fields
-        private bool statusLabelVisible
-        {   
-            set
-            {
-                f.label1.Visible = value;
-            }
-        }
-
         // for updating status text
         private string statusLabelText
         {   
             set
             {
-                if(value != null) f.label1.Text = value;
+                Console.WriteLine(value);
             }
-        }
-
-        // delegate for passing data source in thread-safe way
-        private delegate void ObjectDelegate(object newData);
-
-        // for updating the datagridview's data source
-        private Object dgv {
-            set
-            {
-                Console.WriteLine("Updating data grid...");
-                if (f.dataGridView1.InvokeRequired)
-                {
-                    ObjectDelegate d = new ObjectDelegate(t => { this.f.dataGridView1.DataSource = t; });
-                    f.Invoke(d, value);
-                }
-                else
-                {
-                    f.dataGridView1.DataSource = value;
-                }
-            }
-        }
-
-        // constructor, must take windows form object to update load status and gridview
-        public GridOutput(Form1 f)
-        {
-            this.f = f;
-
         }
 
         public override void UpdateStatus(string v)
@@ -88,7 +30,18 @@ namespace ExampleMandolineAPI
 
         public override void UpdateStatus(bool v)
         {
-            this.statusLabelVisible = v;
+        }
+
+        public void printTable(DataTable table)
+        {
+            foreach(DataRow row in table.Rows)
+            {
+                for(int x = 0; x < table.Columns.Count; x++)
+                {
+                    Console.Write(string.Format("{}\t", row[x].ToString()));
+                }
+                Console.WriteLine();
+            }
         }
 
         // updates gridview with selection object information
@@ -103,74 +56,34 @@ namespace ExampleMandolineAPI
 
             // pass databanks list to DataGridView object
             dt.Rows.Add(output.Id, output.Name, output.DatabankCode, output.MeasureCode, output.DownloadUrl);
-            dgv = dt;
 
-            // hide loading indicator
-            statusLabelVisible = false;
+            printTable(dt);
         }
 
         // process login output
         public override void PrintData(Mandoline.Api.Client.Models.User u, string token)
         {
-            // append user info to list, so that we can pass to the DataGridView object
-            var output = new List<Mandoline.Api.Client.Models.User>();
-            output.Add(u);
-
-            // pass user list to DataGridView object
-            dgv = output;
-
-            // hide loading indicator
-            statusLabelVisible = false;
-
-            // change current user's access token
-            AppConstants.API_TOKEN = token;
-
+            PrintData(u);
         }
 
         // process output for multi user response
         public override void PrintData(IEnumerable<Mandoline.Api.Client.Models.User> ul)
         {
-            // pass user list to DataGridView object
-            dgv = ul;
-
-            // hide loading indicator
-            statusLabelVisible = false;
-
+            foreach (Mandoline.Api.Client.Models.User u in ul) Console.WriteLine("\t{0}: {1}", u.FirstName, u.LastName, u.SavedSelections.Count());
         }
                 
         // process output for login response
         public override void PrintData(Mandoline.Api.Client.Models.User u)
         {
-            Console.WriteLine("User has {0} saved selections...", u.SavedSelections.ToList().Count);
-            foreach (ResourceLink<Selection> s in u.SavedSelections) Console.WriteLine("{0}: {1}", s.Name, s.Id);
-
-            // append user info to list, so that we can pass to the DataGridView object
-            var output = new List<Mandoline.Api.Client.Models.User>();
-            output.Add(u);
-
-            // pass user list to DataGridView object
-            dgv = output;
-
-            // hide loading indicator
-            statusLabelVisible = false;
+            Console.WriteLine("{} {} - Saved selections:", u.FirstName, u.LastName);
+            foreach (ResourceLink<Selection> s in u.SavedSelections) Console.WriteLine("\t{0}: {1}", s.Name, s.Id);
 
         }
 
         // process output for list of databanks
         public override void PrintData(IEnumerable<Databank> ld)
         {
-            // parse results into databanks list
-            var output = new List<Databank>();
-            foreach(Databank m in ld)
-            {
-                output.Add(m);
-            }
-
-            // pass databanks list to DataGridView object
-            dgv = output;
-
-            // hide loading indicator
-            statusLabelVisible = false;
+            foreach (DatabankDto d in ld) Console.WriteLine("{}\t{}\t{}", d.DatabankCode, d.Name);
         }
 
         // process output for collection of variables
@@ -180,10 +93,8 @@ namespace ExampleMandolineAPI
 
             // pass list to DataGridView object
             foreach(VariableDto v in vc.Variables) dt.AddRow(v);
-            dgv = dt;
 
-            // hide loading indicator
-            statusLabelVisible = false;
+            printTable(dt);
 
         }
 
@@ -193,20 +104,16 @@ namespace ExampleMandolineAPI
             var dt = new DataTable();
             dt.Columns.Add("Data");
             dt.Rows.Add(s);
-            dgv = dt;
+            printTable(dt);
 
-            // hide loading indicator
-            statusLabelVisible = false;
         }
 
         // shaped table output
         public override void PrintData(ShapedStreamResult result)
         {
             var dt = new Table.ShapeTable(result);
-            dgv = dt;
+            printTable(dt);
 
-            // hide loading indicator
-            statusLabelVisible = false;
         }
 
         // output for download request
@@ -217,10 +124,8 @@ namespace ExampleMandolineAPI
 
             // check to see whether download is ready and process output
             dt.Rows.Add(filename, "CSV", response.ReadyUrl, ready);
-            dgv = dt;
+            printTable(dt);
 
-            // hide loading indicator
-            statusLabelVisible = false;
         }
 
         // output for downloads
@@ -260,12 +165,9 @@ namespace ExampleMandolineAPI
             }
 
             // update the DataGridView with the data table
-            dgv = dt;
+            printTable(dt);
 
-            // hide loading indicator
-            statusLabelVisible = false;
         }
 
     }
-
 }

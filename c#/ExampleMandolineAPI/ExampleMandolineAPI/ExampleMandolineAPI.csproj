@@ -36,6 +36,16 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClearScript, Version=5.4.7.0, Culture=neutral, PublicKeyToken=935d0c957da47c73, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClearScript.V8.5.4.7\lib\net40\ClearScript.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ClearScriptV8-32">
+      <HintPath>..\..\..\..\..\Visual Studio 2015\Projects\Replify\Replify-master\Replify\bin\Debug\ClearScriptV8-32.dll</HintPath>
+    </Reference>
+    <Reference Include="ClearScriptV8-64">
+      <HintPath>..\..\..\..\..\Visual Studio 2015\Projects\Replify\Replify-master\Replify\bin\Debug\ClearScriptV8-64.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -74,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\CLI\Commands.cs" />
+    <Compile Include="Clients\CLI\Output.cs" />
     <Compile Include="Domain\DownloadShaped.cs" />
     <Compile Include="Clients\GUI\Output.cs" />
     <Compile Include="AppConstants.cs" />
@@ -107,6 +118,11 @@
     <None Include="AppSettings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Licenses\ClearScript.main.license" />
+    <None Include="Licenses\v8.main.license" />
+    <None Include="Licenses\v8.strongtalk.license" />
+    <None Include="Licenses\v8.v8.license" />
+    <None Include="Licenses\v8.valgrind.license" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -133,6 +149,13 @@
     <Folder Include="Tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+if not exist "$(TargetDir)" md "$(TargetDir)"
+xcopy /s /y "$(SolutionDir)packages\ClearScript.V8.5.4.7\tools\native\x86\*.*" "$(TargetDir)"
+if not exist "$(TargetDir)" md "$(TargetDir)"
+xcopy /s /y "$(SolutionDir)packages\ClearScript.V8.5.4.7\tools\native\amd64\*.*" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

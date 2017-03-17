@@ -27,7 +27,7 @@ namespace ExampleMandolineAPI
                 // update table
                 RunGetSavedSelection(t.Result.Result.Id, output);
 
-            },TaskScheduler.FromCurrentSynchronizationContext());
+            });
         }
 
         // updates saved selection based on id and SelectionDto sampleSelect 
@@ -56,7 +56,7 @@ namespace ExampleMandolineAPI
                 // update table
                 RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID, output);
 
-            },TaskScheduler.FromCurrentSynchronizationContext());
+            });
         }
 
         // creates a new saved selection based on SelectionDto sampleSelect 
@@ -80,7 +80,7 @@ namespace ExampleMandolineAPI
 
                 output.PrintData(t.Result.Result);
 
-            },TaskScheduler.FromCurrentSynchronizationContext());
+            });
         }
 
 

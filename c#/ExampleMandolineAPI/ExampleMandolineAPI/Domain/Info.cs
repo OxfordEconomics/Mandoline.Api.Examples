@@ -25,7 +25,7 @@ namespace ExampleMandolineAPI
                 // process output
                 output.PrintData(t.Result.Result);
 
-            },TaskScheduler.FromCurrentSynchronizationContext());
+            });
         }
 
         // get variables for a given databank code
@@ -41,7 +41,7 @@ namespace ExampleMandolineAPI
                 // process data
                 output.PrintData(t.Result.Result);
 
-            },TaskScheduler.FromCurrentSynchronizationContext());
+            });
         }
 
     }

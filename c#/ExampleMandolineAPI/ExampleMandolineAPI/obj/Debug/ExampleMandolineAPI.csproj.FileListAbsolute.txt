@@ -35,3 +35,8 @@ C:\Users\James Mills.OEF\Documents\Code\examples_api\c#\ExampleMandolineAPI\Exam
 C:\Users\James Mills.OEF\Documents\Code\examples_api\c#\ExampleMandolineAPI\ExampleMandolineAPI\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 C:\Users\James Mills.OEF\Documents\Code\examples_api\c#\ExampleMandolineAPI\ExampleMandolineAPI\obj\Debug\ExampleMandolineAPI.csproj.GenerateResource.Cache
 C:\Users\James Mills.OEF\Documents\Code\examples_api\c#\ExampleMandolineAPI\ExampleMandolineAPI\bin\Debug\AppSettings.config
+C:\Users\James Mills.OEF\Documents\Code\examples_api\c#\ExampleMandolineAPI\ExampleMandolineAPI\bin\Debug\Replify.dll
+C:\Users\James Mills.OEF\Documents\Code\examples_api\c#\ExampleMandolineAPI\ExampleMandolineAPI\bin\Debug\ClearScript.dll
+C:\Users\James Mills.OEF\Documents\Code\examples_api\c#\ExampleMandolineAPI\ExampleMandolineAPI\bin\Debug\Replify.pdb
+C:\Users\James Mills.OEF\Documents\Code\examples_api\c#\ExampleMandolineAPI\ExampleMandolineAPI\bin\Debug\ClearScriptV8-32.dll
+C:\Users\James Mills.OEF\Documents\Code\examples_api\c#\ExampleMandolineAPI\ExampleMandolineAPI\bin\Debug\ClearScriptV8-64.dll

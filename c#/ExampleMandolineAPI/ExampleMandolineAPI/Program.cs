@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Replify;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,12 +17,15 @@ namespace ExampleMandolineAPI
         [STAThread]
         static void Main()
         {
-            // Application.EnableVisualStyles();
-            // Application.SetCompatibleTextRenderingDefault(false);
-            // Form1 f = new Form1();
-            // Application.Run(f);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Form1 f = new Form1();
+            Application.Run(f);
 
             // Entry point fo REPL command line interface
+            // var repl = new ClearScriptRepl();
+            // repl.AddHostType("Console", typeof(Console));
+            // repl.StartReplLoop();
 
         }
         

@@ -11,11 +11,17 @@ namespace ExampleMandolineAPI
     public class UserCommand : IReplCommand
     {
 
-        public UserCommand(ApiClient client)
+        private Output output;
+
+        public UserCommand()
         {
-            var api = new ApiClient();
+            this.output = new ConsoleOutput();
         }
 
+        public void GetUser()
+        {
+            User.RunGetUserAsync(this.output); 
+        }
 
     }
 }

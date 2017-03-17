@@ -37,7 +37,7 @@ namespace ExampleMandolineAPI
                 });
 
 
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            });
 
         }
 
@@ -63,7 +63,7 @@ namespace ExampleMandolineAPI
                 Console.WriteLine("STATUS: {0}...", t.Result.Reason);
                 output.PrintData(t.Result.Result);
 
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            });
 
         }
 
@@ -112,7 +112,7 @@ namespace ExampleMandolineAPI
 				// process data
                 output.PrintData(t.Result);
 
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            });
 
         }
 

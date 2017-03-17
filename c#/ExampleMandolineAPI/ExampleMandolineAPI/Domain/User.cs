@@ -25,7 +25,8 @@ namespace ExampleMandolineAPI
                 lu.Add(t.Result.Result);
                 output.PrintData(lu);
 
-            },TaskScheduler.FromCurrentSynchronizationContext());
+            });
+
         }
 
         // passes login credentials to the api, which returns a user object
@@ -40,7 +41,7 @@ namespace ExampleMandolineAPI
                 if (t.Result.Failed == false) output.PrintData(t.Result.Result, t.Result.Result.ApiKey);
                 else output.UpdateStatus("Operation failed. Check input.");
 
-            },TaskScheduler.FromCurrentSynchronizationContext());
+            });
         }
 
         // downloads all user data, loading up onto the DataGridView
@@ -56,7 +57,7 @@ namespace ExampleMandolineAPI
                 if (t.Result.Failed == false) output.PrintData(t.Result.Result);
                 else output.UpdateStatus("Operation failed. Check input.");
 
-            },TaskScheduler.FromCurrentSynchronizationContext());
+            });
 
         }
 

@@ -39,7 +39,7 @@ namespace ExampleMandolineAPI
                 output.PrintData(t.Result.Result);
 
             // now check to see whether that download is ready
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            });
 
         }
 
@@ -70,7 +70,7 @@ namespace ExampleMandolineAPI
                 output.PrintData(t.Result.Result);
 
             // now check to see whether that download is ready
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            });
 
         }
     }
