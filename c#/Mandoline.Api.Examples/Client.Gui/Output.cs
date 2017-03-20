@@ -62,7 +62,7 @@ namespace Client.Gui
         public GridOutput(Form1 f)
         {
             this.f = f;
-
+            this.isAsync = true;
         }
 
         public override void UpdateStatus(string v)
