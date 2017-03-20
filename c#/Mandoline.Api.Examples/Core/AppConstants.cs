@@ -47,7 +47,7 @@ namespace Core
             }
         }
 
-        public static string BASE_URL { get; }
+        public static string BASE_URL { get; set; }
 
         // simple example selection: draws GDP and inflation data from the US, the UK, France, and Germany 
         public class SampleSelect : SelectionDto {
