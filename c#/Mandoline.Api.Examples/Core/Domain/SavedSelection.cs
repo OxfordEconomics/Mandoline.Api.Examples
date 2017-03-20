@@ -12,7 +12,7 @@ namespace Core
     public class SavedSelection
     {
         // creates a new saved selection based on SelectionDto sampleSelect 
-        public static void RunCreateSavedSelection(Output output)
+        public static async Task RunCreateSavedSelection(Output output)
         {
             // get our sample selection
             SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
@@ -21,19 +21,20 @@ namespace Core
             var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue asynchronous api call
-            api.CreateSavedSelectionAsync(sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t => {
-                Console.WriteLine("STATUS: {0}...", t.Result.Reason);
-
-                // update table
-                RunGetSavedSelection(t.Result.Result.Id, output);
-
-            });
+            if (output.isAsync)
+                await api.CreateSavedSelectionAsync(sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t => 
+                    RunGetSavedSelection(t.Result.Result.Id, output));
+            else
+            {
+                var result = api.CreateSavedSelectionAsync(sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).GetAwaiter().GetResult();
+                RunGetSavedSelection(result.Result.Id, output).RunSync();
+            }
         }
 
         // updates saved selection based on id and SelectionDto sampleSelect 
         // note: the selection object passed into this must have the id field set
         //       i.e. it isn't enough just to include the id in the function params
-        public static void RunUpdateSavedSelection(Output output)
+        public static async Task RunUpdateSavedSelection(Output output)
         {
             // get our sample selection
             SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
@@ -49,19 +50,21 @@ namespace Core
             var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue asynchronous api call
-            api.UpdateSavedSelectionAsync(sampleSelect.Id, sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t => {
-                Console.WriteLine("STATUS: {0}...", t.Result.Reason);
-                Console.WriteLine("DESC: {0}...", t.Result.Description);
+            if (output.isAsync)
+                await api.UpdateSavedSelectionAsync(sampleSelect.Id, sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t =>
+                    RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID, output));
+            else
+            {
+                var result = api.UpdateSavedSelectionAsync(sampleSelect.Id, sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token)
+                    .GetAwaiter().GetResult();
+                RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID, output).RunSync();
+            }
 
-                // update table
-                RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID, output);
-
-            });
         }
 
         // creates a new saved selection based on SelectionDto sampleSelect 
         // takes output object, selection id
-        public static void RunGetSavedSelection(Guid s_id, Output output)
+        public static async Task RunGetSavedSelection(Guid s_id, Output output)
         {
             Console.WriteLine(string.Format("Checking selection with id={0}...", s_id));
 
@@ -75,12 +78,14 @@ namespace Core
             var api = new ApiClient(AppConstants.BASE_URL, AppConstants.API_TOKEN);
 
             // queue asynchronous api call
-            api.GetSavedSelection(s_id).ContinueWith(t => {
-                Console.WriteLine("STATUS: {0}...", t.Result.Reason);
+            if (output.isAsync)
+                await api.GetSavedSelection(s_id).ContinueWith(t => output.PrintData(t.Result.Result));
+            else
+            {
+                var result = api.GetSavedSelection(s_id).GetAwaiter().GetResult();
+                output.PrintData(result.Result);
+            }
 
-                output.PrintData(t.Result.Result);
-
-            });
         }
 
 

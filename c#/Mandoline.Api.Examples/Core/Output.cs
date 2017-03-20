@@ -8,8 +8,20 @@ using Mandoline.Api.Client.Models;
 
 namespace Core
 {
+    // use this when isAsync is set to false, i.e. when output
+    // is expected to come synchronously. runs async Task functions
+    // as though they were void, blocking unnecessary await warning 
+    public static class VoidTaskExtension
+    {
+        public static void RunSync(this Task task) { }
+    }
+
     public abstract class Output
     {
+        // used to determine whether running function should wait for
+        // this AND api call
+        public bool isAsync;
+
         // handles load status indicator, text and visibility
         public abstract void UpdateStatus(bool v);
         public abstract void UpdateStatus(string v);

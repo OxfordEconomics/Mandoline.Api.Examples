@@ -13,7 +13,7 @@ namespace Core
     public class DownloadShaped
     {
         // runs simple shaped stream download
-        static public void RunDownloadShapedStreamAsync(Output output)
+        static public async Task RunDownloadShapedStreamAsync(Output output)
         {
             // get our sample selection
             SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
@@ -32,19 +32,20 @@ namespace Core
             };
 
             // queue asynchronous api call
-            api.DownloadShapedStreamAsync(sampleSelect, config, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t => {
-                Console.WriteLine("STATUS: {0}...", t.Result.Reason);
-
-                // process output
-                output.PrintData(t.Result.Result);
-
-            // now check to see whether that download is ready
-            });
+            if (output.isAsync)
+                await api.DownloadShapedStreamAsync(sampleSelect, config, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t =>
+                    // process output
+                    output.PrintData(t.Result.Result));
+            else
+            {
+                var result = api.DownloadShapedStreamAsync(sampleSelect, config, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).GetAwaiter().GetResult();
+                output.PrintData(result.Result);
+            }
 
         }
 
         // runs simple shaped download
-        static public void RunDownloadShapedAsync(Output output)
+        static public async Task RunDownloadShapedAsync(Output output)
         {
             // get our sample selection
             SelectionDto sampleSelect = AppConstants.SampleSelect.GetInstance();
@@ -63,14 +64,15 @@ namespace Core
             };
 
             // queue asynchronous api call
-            api.DownloadShapedAsync(sampleSelect, config, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t => {
-                Console.WriteLine("STATUS: {0}...", t.Result.Reason);
-
-                // process output
-                output.PrintData(t.Result.Result);
-
-            // now check to see whether that download is ready
-            });
+            if (output.isAsync)
+                await api.DownloadShapedAsync(sampleSelect, config, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t =>
+                    // process output
+                    output.PrintData(t.Result.Result));
+            else
+            {
+                var result = api.DownloadShapedAsync(sampleSelect, config, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).GetAwaiter().GetResult();
+                output.PrintData(result.Result);
+            }
 
         }
     }

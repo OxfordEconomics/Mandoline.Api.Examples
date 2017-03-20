@@ -43,7 +43,7 @@ namespace Client.Gui
 
         }
 
-        private void buttonSubmit_Click(object sender, EventArgs e)
+        private async void buttonSubmit_Click(object sender, EventArgs e)
         {
             label1.Text = "Running " + comboBox1.Text + "...";
             label1.Visible = true;
@@ -51,43 +51,43 @@ namespace Client.Gui
             switch (comboBox1.Text)
             {
                 case ("DownloadShaped"):
-                    DownloadShaped.RunDownloadShapedAsync(output);
+                    await DownloadShaped.RunDownloadShapedAsync(output);
                     break;
                 case ("DownloadShapedStream"):
-                    DownloadShaped.RunDownloadShapedStreamAsync(output);
+                    await DownloadShaped.RunDownloadShapedStreamAsync(output);
                     break;
                 case ("DownloadFile"):
-                    Download.RunDownloadFileAsync(output);
+                    await Download.RunDownloadFileAsync(output);
                     break;
                 case ("GetVariables"):
-                    Info.RunGetVariablesAsync(output);
+                    await Info.RunGetVariablesAsync(output);
                     break;
                 case ("RequestDownload"):
-                    Download.RunRequestDownloadAsync(output);
+                    await Download.RunRequestDownloadAsync(output);
                     break;
                 case ("GetSavedSelection"):
-                    SavedSelection.RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID,output);
+                    await SavedSelection.RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID,output);
                     break;
                 case ("UpdateSavedSelection"):
-                    SavedSelection.RunUpdateSavedSelection(output);
+                    await SavedSelection.RunUpdateSavedSelection(output);
                     break;
                 case ("CreateSavedSelection"):
-                    SavedSelection.RunCreateSavedSelection(output);
+                    await SavedSelection.RunCreateSavedSelection(output);
                     break;
                 case ("GetAllUsers"):
-                    Core.User.RunGetAllUsersAsync(output);
+                    await Core.User.RunGetAllUsersAsync(output);
                     break;
                 case ("Login"):
-                    Core.User.RunLoginAsync(output, textBox0.Text, textBox1.Text);
+                    await Core.User.RunLoginAsync(output, textBox0.Text, textBox1.Text);
                     break;
                 case ("GetUser"):
-                    Core.User.RunGetUserAsync(output);
+                    await Core.User.RunGetUserAsync(output);
                     break;
                 case ("GetDatabanks"):
-                    Info.RunGetDatabanksAsync(output);
+                    await Info.RunGetDatabanksAsync(output);
                     break;
                 case ("Download"):
-                    Download.RunDownloadAsync(output);
+                    await Download.RunDownloadAsync(output);
                     break;
                 default:
                     label1.Text = "Invalid selection";

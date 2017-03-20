@@ -14,6 +14,13 @@ namespace Client.Repl
     // this implementation of Output directs output to console
     class ConsoleOutput : Output
     {
+
+        // ensure that api operations are performed synchronously
+        public ConsoleOutput()
+        {
+            this.isAsync = false;
+        }
+
         // for updating status text
         private string statusLabelText
         {   
@@ -38,7 +45,8 @@ namespace Client.Repl
             {
                 for(int x = 0; x < table.Columns.Count; x++)
                 {
-                    Console.Write(string.Format("{}\t", row[x].ToString()));
+                    if (x != 0 && row[x].ToString() != "") Console.Write(" - ");
+                    Console.Write("{0}", row[x].ToString());
                 }
                 Console.WriteLine();
             }
@@ -63,6 +71,7 @@ namespace Client.Repl
         // process login output
         public override void PrintData(Mandoline.Api.Client.Models.User u, string token)
         {
+            Core.AppConstants.API_TOKEN = token;
             PrintData(u);
         }
 
@@ -83,7 +92,7 @@ namespace Client.Repl
         // process output for list of databanks
         public override void PrintData(IEnumerable<Databank> ld)
         {
-            foreach (DatabankDto d in ld) Console.WriteLine("{}\t{}\t{}", d.DatabankCode, d.Name);
+            foreach (DatabankDto d in ld) Console.WriteLine("{0}: {1}", d.DatabankCode, d.Name);
         }
 
         // process output for collection of variables
