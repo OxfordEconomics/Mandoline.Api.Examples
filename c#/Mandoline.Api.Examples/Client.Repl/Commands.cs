@@ -65,4 +65,80 @@ namespace Client.Repl
         }
 
     }
+
+    public class SelectionCommand: IReplCommand
+    {
+
+        private Output output;
+
+        public SelectionCommand()
+        {
+            this.output = new ConsoleOutput();
+        }
+
+        public void GetSelection()
+        {
+            SavedSelection.RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID, this.output).RunSync(); 
+        }
+
+        public void CreateSelection()
+        {
+            SavedSelection.RunCreateSavedSelection(this.output).RunSync(); 
+        }
+
+        public void UpdateSelection()
+        {
+            SavedSelection.RunUpdateSavedSelection(this.output).RunSync(); 
+        }
+
+    }
+
+    public class DownloadCommand: IReplCommand
+    {
+
+        private Output output;
+
+        public DownloadCommand()
+        {
+            this.output = new ConsoleOutput();
+        }
+
+        public void DownloadFile()
+        {
+            Download.RunDownloadFileAsync(output).RunSync();
+        }
+
+        public void RequestDownload()
+        {
+            Download.RunRequestDownloadAsync(output).RunSync();
+        }
+
+        public void RunDownload()
+        {
+            Download.RunDownloadAsync(output).RunSync();
+        }
+
+    }
+
+    public class ShapedDownloadCommand: IReplCommand
+    {
+
+        private Output output;
+
+        public ShapedDownloadCommand()
+        {
+            this.output = new ConsoleOutput();
+        }
+
+        public void ShapedDownload()
+        {
+            DownloadShaped.RunDownloadShapedAsync(output).RunSync();
+        }
+
+        public void ShapedDownloadStream()
+        {
+            DownloadShaped.RunDownloadShapedStreamAsync(output).RunSync();
+        }
+
+    }
 }

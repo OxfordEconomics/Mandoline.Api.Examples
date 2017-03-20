@@ -45,7 +45,8 @@ namespace Client.Repl
             {
                 for(int x = 0; x < table.Columns.Count; x++)
                 {
-                    Console.Write(string.Format("{}\t", row[x].ToString()));
+                    if (x != 0 && row[x].ToString() != "") Console.Write(" - ");
+                    Console.Write("{0}", row[x].ToString());
                 }
                 Console.WriteLine();
             }
