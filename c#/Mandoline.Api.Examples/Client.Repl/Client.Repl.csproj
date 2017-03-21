@@ -53,8 +53,9 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Replify">
-      <HintPath>..\..\..\..\..\..\Libraries\Replify-master\Replify\bin\Debug\Replify.dll</HintPath>
+    <Reference Include="Replify, Version=1.0.5547.37183, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Replify.1.0.5547.37183\lib\net45\Replify.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
