@@ -15,6 +15,8 @@ namespace Core
             _API_TOKEN = null;
             _SAVED_SELECTION_ID = Guid.Empty;
             BASE_URL = ConfigurationManager.AppSettings["BASE_URL"];
+            USER_NAME = ConfigurationManager.AppSettings["USER_NAME"];
+            USER_PASS = ConfigurationManager.AppSettings["USER_PASS"];
         }
 
         // user's api token - default must be set before compile
@@ -31,6 +33,9 @@ namespace Core
                 if (value != null && value != "") _API_TOKEN = value;
             }
         }
+
+        public static string USER_NAME { get; set; }
+        public static string USER_PASS { get; set; }
 
         // id that examples will use in pulling sample selections
         private static Guid _SAVED_SELECTION_ID { get; set; }
@@ -124,6 +129,7 @@ namespace Core
             }
 
         }
+
 
 
     }
