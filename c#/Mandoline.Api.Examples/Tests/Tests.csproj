@@ -73,6 +73,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DownloadShapedTest.cs" />
     <Compile Include="DownloadTests.cs" />
     <Compile Include="netfx\System\Guard.cs" />
     <Compile Include="Output.cs" />

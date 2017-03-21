@@ -106,9 +106,7 @@ namespace Tests
         // shaped table output
         public override void PrintData(ShapedStreamResult result)
         {
-            var dt = new Table.ShapeTable(result);
-            printTable(dt);
-
+            this.returnValueInt = result.Rows.Count();
         }
 
         // output for download request
