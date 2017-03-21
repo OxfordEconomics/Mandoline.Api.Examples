@@ -76,6 +76,7 @@
     <Compile Include="netfx\System\Guard.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="InfoTests.cs" />
+    <Compile Include="SelectionTest.cs" />
     <Compile Include="UserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

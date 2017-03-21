@@ -11,7 +11,7 @@ namespace Tests
         // gets current user
         // expected: returned API key should match the one in settings
         [TestMethod]
-        public void TestGetUser()
+        public void UserGetTest()
         {
             var output = new TestOutput();
             User.RunGetUserAsync(output).RunSync();
@@ -19,14 +19,23 @@ namespace Tests
         }
 
         // returns user object corresponding to provided credentials
-        // expected: returned API key should match the one in settings
+        // expected: returned API key should not be blank
         [TestMethod]
-        public void TestLogin()
+        public void UserLoginTest()
         {
-            string expected = AppConstants.API_TOKEN;
             var output = new TestOutput();
             User.RunLoginAsync(output, AppConstants.USER_NAME, AppConstants.USER_PASS).RunSync();
-            Assert.AreEqual(expected, output.returnValueStr);
+            Assert.AreNotEqual(string.Empty, output.returnValueStr);
+        }
+
+        // returns user object corresponding to provided credentials
+        // expected: returned API key should be blank
+        [TestMethod]
+        public void UserLoginFailTest()
+        {
+            var output = new TestOutput();
+            User.RunLoginAsync(output, AppConstants.USER_NAME, string.Empty).RunSync();
+            Assert.AreEqual(string.Empty, output.returnValueStr);
         }
 
 

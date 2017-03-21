@@ -18,6 +18,7 @@ namespace Tests
         // value to check while testing 
         public string returnValueStr;
         public int returnValueInt;
+        public DateTime returnValueDate;
 
         // ensure that api operations are performed synchronously
         public TestOutput()
@@ -25,6 +26,7 @@ namespace Tests
             this.isAsync = false;
             returnValueStr = string.Empty;
             returnValueInt = -1;
+            returnValueDate = DateTime.MinValue;
         }
 
         // for updating status text
@@ -61,17 +63,8 @@ namespace Tests
         // updates gridview with selection object information
         public override void PrintData(SelectionDto s)
         {
-            // create table for displaying selection data
-            var dt = new Table.SelectionTable();
-
-            // process output
-            var output = s;
-            Console.WriteLine("SELECTION ID: {0}...", s.Id);
-
-            // pass databanks list to DataGridView object
-            dt.Rows.Add(output.Id, output.Name, output.DatabankCode, output.MeasureCode, output.DownloadUrl);
-
-            printTable(dt);
+            this.returnValueDate = s.LastUpdate;
+            this.returnValueStr = s.Id.ToString();
         }
 
         // process login output
