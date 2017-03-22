@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Core;
-
-namespace Tests
+﻿namespace Tests
 {
+    using System;
+    using Core;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class SelectionTest
     {
@@ -13,8 +13,8 @@ namespace Tests
         public void SelectionGetTest()
         {
             var output = new TestOutput();
-            SavedSelection.RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID, output).RunSync();
-            Assert.AreEqual(AppConstants.SAVED_SELECTION_ID.ToString(), output.returnValueStr);
+            SavedSelection.RunGetSavedSelection(AppConstants.SavedSelectionId, output).RunSync();
+            Assert.AreEqual(AppConstants.SavedSelectionId.ToString(), output.ReturnValueStr);
         }
 
         // updates a saved selection
@@ -25,7 +25,7 @@ namespace Tests
             var preTestTime = DateTime.Now;
             var output = new TestOutput();
             SavedSelection.RunUpdateSavedSelection(output).RunSync();
-            Assert.IsTrue(output.returnValueDate > preTestTime);
+            Assert.IsTrue(output.ReturnValueDate > preTestTime);
         }
 
         // creates a new non-temp saved selection
@@ -34,8 +34,8 @@ namespace Tests
         public void SelectionCreateTest()
         {
             var output = new TestOutput();
-            SavedSelection.RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID, output).RunSync();
-            Assert.AreNotEqual(string.Empty, output.returnValueStr);
+            SavedSelection.RunGetSavedSelection(AppConstants.SavedSelectionId, output).RunSync();
+            Assert.AreNotEqual(string.Empty, output.ReturnValueStr);
         }
     }
 }

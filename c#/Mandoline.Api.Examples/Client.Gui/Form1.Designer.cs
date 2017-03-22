@@ -50,7 +50,7 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(792, 335);
             this.dataGridView1.TabIndex = 1;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
             // 
             // label1
             // 
@@ -70,7 +70,7 @@
             this.buttonSubmit.TabIndex = 0;
             this.buttonSubmit.Text = "SUBMIT";
             this.buttonSubmit.UseVisualStyleBackColor = true;
-            this.buttonSubmit.Click += new System.EventHandler(this.buttonSubmit_Click);
+            this.buttonSubmit.Click += new System.EventHandler(this.ButtonSubmit_Click);
             // 
             // comboBox1
             // 
@@ -103,7 +103,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(139, 21);
             this.comboBox1.TabIndex = 3;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
             // 
             // textBox1
             // 
@@ -129,7 +129,7 @@
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "User name";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+            this.label2.Click += new System.EventHandler(this.Label2_Click);
             // 
             // label3
             // 
@@ -139,7 +139,7 @@
             this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Password";
-            this.label3.Click += new System.EventHandler(this.label2_Click);
+            this.label3.Click += new System.EventHandler(this.Label2_Click);
             // 
             // Form1
             // 

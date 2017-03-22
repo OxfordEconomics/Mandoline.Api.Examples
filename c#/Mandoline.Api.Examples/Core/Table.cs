@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using Mandoline.Api.Client.Models;
-using Mandoline.Api.Client.ServiceModels;
-
-namespace Core 
+﻿namespace Core
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Mandoline.Api.Client.Models;
+    using Mandoline.Api.Client.ServiceModels;
+
     public class Table
     {
         // DataTable for displaying Selection objects in DataGridView
@@ -21,9 +21,7 @@ namespace Core
                 this.Columns.Add("DatabankCode");
                 this.Columns.Add("MeasureCode");
                 this.Columns.Add("DownloadUrl");
-
-            } 
-
+            }
         }
 
         // DataTable for displaying Download objects in DataGridView
@@ -58,7 +56,6 @@ namespace Core
             {
                 this.Rows.Add(var.DatabankCode, var.ProductTypeCode, var.VariableCode, var.VariableName);
             }
-
         }
 
         // DataTable for displaying Download Request objects in DataGridView
@@ -78,15 +75,16 @@ namespace Core
         {
             public ShapeTable(ShapedStreamResult result)
             {
-
                 // add each row of data
                 foreach (IEnumerable<ShapeCellDto> r in result.Rows)
                 {
                     // make column headers
-                    if(this.Columns.Count == 0)
+                    if (this.Columns.Count == 0)
                     {
                         foreach (ShapeCellDto c in r)
+                        {
                             this.Columns.Add(c.Value);
+                        }
                     }
 
                     // add new data row
@@ -95,15 +93,14 @@ namespace Core
                         var newList = new List<string>();
 
                         foreach (ShapeCellDto c in r)
+                        {
                             newList.Add(c.Value);
+                        }
 
-                        var newRow = this.Rows.Add(newList.ToArray());;
-
+                        var newRow = this.Rows.Add(newList.ToArray());
                     }
                 }
             }
-
         }
-
     }
 }

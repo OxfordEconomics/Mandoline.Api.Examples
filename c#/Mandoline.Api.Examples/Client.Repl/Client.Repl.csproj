@@ -73,11 +73,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands.cs" />
-    <Compile Include="netfx\System\Guard.cs" />
-    <Compile Include="Output.cs" />
+    <Compile Include="ConsoleOutput.cs" />
+    <Compile Include="DownloadCommand.cs" />
+    <Compile Include="InfoCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectionCommand.cs" />
+    <Compile Include="ShapedDownloadCommand.cs" />
+    <Compile Include="UserCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

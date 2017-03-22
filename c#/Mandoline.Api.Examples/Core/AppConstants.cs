@@ -1,66 +1,89 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Mandoline.Api.Client.ServiceModels;
-using System.Configuration;
-
-namespace Core
+﻿namespace Core
 {
-    public static class AppConstants 
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Mandoline.Api.Client.ServiceModels;
+
+    public static class AppConstants
     {
         static AppConstants()
         {
-            _API_TOKEN = null;
-            _SAVED_SELECTION_ID = Guid.Empty;
-            BASE_URL = ConfigurationManager.AppSettings["BASE_URL"];
-            USER_NAME = ConfigurationManager.AppSettings["USER_NAME"];
-            USER_PASS = ConfigurationManager.AppSettings["USER_PASS"];
+            _ApiToken = null;
+            _SavedSelectionId = Guid.Empty;
+            BaseURL = ConfigurationManager.AppSettings["BASE_URL"];
+            UserName = ConfigurationManager.AppSettings["USER_NAME"];
+            UserPassword = ConfigurationManager.AppSettings["USER_PASS"];
         }
 
         // user's api token - default must be set before compile
-        private static string _API_TOKEN { get; set; }
-        public static string API_TOKEN
+        public static string ApiToken
         {
             get
             {
-                if (_API_TOKEN == null) _API_TOKEN = ConfigurationManager.AppSettings["API_TOKEN"] ?? null; // set this in AppSettings.config
-                return _API_TOKEN;
+                if (_ApiToken == null)
+                {
+                    _ApiToken = ConfigurationManager.AppSettings["API_TOKEN"] ?? null; // set this in AppSettings.config
+                }
+
+                return _ApiToken;
             }
+
             set
             {
-                if (value != null && value != "") _API_TOKEN = value;
+                if (value != null && value != string.Empty)
+                {
+                    _ApiToken = value;
+                }
             }
         }
 
-        public static string USER_NAME { get; set; }
-        public static string USER_PASS { get; set; }
+        // only used in testing
+        public static string UserName { get; set; }
+
+        // only used in testing
+        public static string UserPassword { get; set; }
 
         // id that examples will use in pulling sample selections
-        private static Guid _SAVED_SELECTION_ID { get; set; }
-        public static Guid SAVED_SELECTION_ID 
+        public static Guid SavedSelectionId
         {
             get
             {
-                if (_SAVED_SELECTION_ID == Guid.Empty) _SAVED_SELECTION_ID = new Guid(ConfigurationManager.AppSettings["SELECTION_ID"]); // set this in AppSettings.config
-                return _SAVED_SELECTION_ID;
+                if (_SavedSelectionId == Guid.Empty)
+                {
+                    _SavedSelectionId = new Guid(ConfigurationManager.AppSettings["SELECTION_ID"]); // set this in AppSettings.config
+                }
+
+                return _SavedSelectionId;
             }
+
             set
             {
-                if (value != null) _SAVED_SELECTION_ID = value;
+                if (value != null)
+                {
+                    _SavedSelectionId = value;
+                }
             }
         }
 
-        public static string BASE_URL { get; set; }
+        // base url for api calls
+        public static string BaseURL { get; set; }
 
-        // simple example selection: draws GDP and inflation data from the US, the UK, France, and Germany 
-        public class SampleSelect : SelectionDto {
+        // simple example selection: draws GDP and inflation data from the US, the UK, France, and Germany
+        public class SampleSelection : SelectionDto
+        {
             private static SelectionDto instance = null;
-            private SampleSelect() { }
+
+            private SampleSelection()
+            {
+            }
+
             public static SelectionDto GetInstance()
             {
-                if(instance == null)
+                if (instance == null)
                 {
                     instance = new SelectionDto()
                     {
@@ -103,7 +126,6 @@ namespace Core
                                 DatabankCode = "WDMacro",
                                 RegionCode = "DEU",
                             }
-
                         },
                         Variables = new List<SelectionVariableDto>
                         {
@@ -111,26 +133,28 @@ namespace Core
                             {
                                 ProductTypeCode = "WMC",
                                 VariableCode = "GDP$",
-                                MeasureCodes = new string[] { "L" ,"PY","DY" }
+                                MeasureCodes = new string[] { "L", "PY", "DY" }
                             },
                             new SelectionVariableDto
                             {
                                 ProductTypeCode = "WMC",
                                 VariableCode = "CPI",
-                                MeasureCodes = new string[] {"L"}
+                                MeasureCodes = new string[]
+                                {
+                                    "L"
+                                }
                             }
                         }
-
                     };
-
                 }
 
                 return instance;
             }
-
         }
 
+        // private members corresponding to public variables
+        private static string _ApiToken { get; set; }
 
-
+        private static Guid _SavedSelectionId { get; set; }
     }
 }

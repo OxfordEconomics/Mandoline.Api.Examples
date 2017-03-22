@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Replify;
-using Core;
-
-namespace Client.Repl
+﻿namespace Client.Repl
 {
-    class Program
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Core;
+    using Replify;
+
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            //Entry point fo REPL command line interface
+            // Entry point fo REPL command line interface
             var repl = new ClearScriptRepl();
             repl.AddHostType("Console", typeof(Console));
             repl.StartReplLoop();
