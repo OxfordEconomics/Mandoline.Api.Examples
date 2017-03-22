@@ -12,26 +12,25 @@ namespace Tests
 {
 
     // this implementation of Output directs output to console
-    class TestOutput : Output
+    internal class TestOutput : Output
     {
-
-        // value to check while testing 
-        public string returnValueStr;
-        public int returnValueInt;
-        public DateTime returnValueDate;
+        // value to check while testing
+        public string ReturnValueStr;
+        public int ReturnValueInt;
+        public DateTime ReturnValueDate;
 
         // ensure that api operations are performed synchronously
         public TestOutput()
         {
-            this.isAsync = false;
-            returnValueStr = string.Empty;
-            returnValueInt = -1;
-            returnValueDate = DateTime.MinValue;
+            this.IsAsync = false;
+            this.ReturnValueStr = string.Empty;
+            this.ReturnValueInt = -1;
+            this.ReturnValueDate = DateTime.MinValue;
         }
 
         // for updating status text
-        private string statusLabelText
-        {   
+        private string StatusLabelText
+        {
             set
             {
                 Console.WriteLine(value);
@@ -40,22 +39,27 @@ namespace Tests
 
         public override void UpdateStatus(string v)
         {
-            this.statusLabelText = v;
+            this.StatusLabelText = v;
         }
 
         public override void UpdateStatus(bool v)
         {
         }
 
-        public void printTable(DataTable table)
+        public void PrintTable(DataTable table)
         {
-            foreach(DataRow row in table.Rows)
+            foreach (DataRow row in table.Rows)
             {
-                for(int x = 0; x < table.Columns.Count; x++)
+                for (int x = 0; x < table.Columns.Count; x++)
                 {
-                    if (x != 0 && row[x].ToString() != "") Console.Write(" - ");
+                    if (x != 0 && row[x].ToString() != string.Empty)
+                    {
+                        Console.Write(" - ");
+                    }
+
                     Console.Write("{0}", row[x].ToString());
                 }
+
                 Console.WriteLine();
             }
         }
@@ -63,63 +67,65 @@ namespace Tests
         // updates gridview with selection object information
         public override void PrintData(SelectionDto s)
         {
-            this.returnValueDate = s.LastUpdate;
-            this.returnValueStr = s.Id.ToString();
+            this.ReturnValueDate = s.LastUpdate;
+            this.ReturnValueStr = s.Id.ToString();
         }
 
         // process login output
         public override void PrintData(Mandoline.Api.Client.Models.User u, string token)
         {
-            this.returnValueStr = token;
+            this.ReturnValueStr = token;
         }
 
         // process output for multi user response
         public override void PrintData(IEnumerable<Mandoline.Api.Client.Models.User> ul)
         {
-            foreach (Mandoline.Api.Client.Models.User u in ul) Console.WriteLine("\t{0} {1} - Selections: {2}", u.FirstName, u.LastName, u.SavedSelections.Count());
+            foreach (Mandoline.Api.Client.Models.User u in ul)
+            {
+                Console.WriteLine("\t{0} {1} - Selections: {2}", u.FirstName, u.LastName, u.SavedSelections.Count());
+            }
         }
-                
+
         // process output for single user
         public override void PrintData(Mandoline.Api.Client.Models.User u)
         {
-            this.returnValueStr = u.ApiKey;
+            this.ReturnValueStr = u.ApiKey;
         }
 
         // process output for list of databanks
         public override void PrintData(IEnumerable<Databank> ld)
         {
-            this.returnValueInt = ld.Count();
+            this.ReturnValueInt = ld.Count();
         }
 
         // process output for collection of variables
         public override void PrintData(VariableCollectionDto vc)
         {
-            returnValueInt = vc.Variables.Count();
+            this.ReturnValueInt = vc.Variables.Count();
         }
 
         // output for single string data output (catch-all option for anything that returns single point of data)
         public override void PrintData(string s)
         {
-            this.returnValueStr = s;
+            this.ReturnValueStr = s;
         }
 
         // shaped table output
         public override void PrintData(ShapedStreamResult result)
         {
-            this.returnValueInt = result.Rows.Count();
+            this.ReturnValueInt = result.Rows.Count();
         }
 
         // output for download request
         public override void PrintData(ControllerDownloadResponseDto response, string filename, string ready)
         {
-            this.returnValueStr = response.ReadyUrl;
+            this.ReturnValueStr = response.ReadyUrl;
         }
 
         // output for downloads
         public override void PrintData(List<DataseriesDto> ld)
         {
-            this.returnValueInt = ld.Count();
+            this.ReturnValueInt = ld.Count();
         }
-
     }
 }

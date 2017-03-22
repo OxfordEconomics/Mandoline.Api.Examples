@@ -1,29 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Mandoline.Api.Client.ServiceModels;
-using Mandoline.Api.Client.Models;
-using System.Data;
-using Core;
-
-namespace Client.Repl
+﻿namespace Client.Repl
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Core;
+    using Mandoline.Api.Client.Models;
+    using Mandoline.Api.Client.ServiceModels;
 
     // this implementation of Output directs output to console
-    class ConsoleOutput : Output
+    internal class ConsoleOutput : Output
     {
-
         // ensure that api operations are performed synchronously
         public ConsoleOutput()
         {
-            this.isAsync = false;
+            this.IsAsync = false;
         }
 
         // for updating status text
-        private string statusLabelText
-        {   
+        private string StatusLabelText
+        {
             set
             {
                 Console.WriteLine(value);
@@ -32,22 +30,27 @@ namespace Client.Repl
 
         public override void UpdateStatus(string v)
         {
-            this.statusLabelText = v;
+            this.StatusLabelText = v;
         }
 
         public override void UpdateStatus(bool v)
         {
         }
 
-        public void printTable(DataTable table)
+        public void PrintTable(DataTable table)
         {
-            foreach(DataRow row in table.Rows)
+            foreach (DataRow row in table.Rows)
             {
-                for(int x = 0; x < table.Columns.Count; x++)
+                for (int x = 0; x < table.Columns.Count; x++)
                 {
-                    if (x != 0 && row[x].ToString() != "") Console.Write(" - ");
+                    if (x != 0 && row[x].ToString() != string.Empty)
+                    {
+                        Console.Write(" - ");
+                    }
+
                     Console.Write("{0}", row[x].ToString());
                 }
+
                 Console.WriteLine();
             }
         }
@@ -65,34 +68,42 @@ namespace Client.Repl
             // pass databanks list to DataGridView object
             dt.Rows.Add(output.Id, output.Name, output.DatabankCode, output.MeasureCode, output.DownloadUrl);
 
-            printTable(dt);
+            this.PrintTable(dt);
         }
 
         // process login output
         public override void PrintData(Mandoline.Api.Client.Models.User u, string token)
         {
-            Core.AppConstants.API_TOKEN = token;
-            PrintData(u);
+            Core.AppConstants.ApiToken = token;
+            this.PrintData(u);
         }
 
         // process output for multi user response
         public override void PrintData(IEnumerable<Mandoline.Api.Client.Models.User> ul)
         {
-            foreach (Mandoline.Api.Client.Models.User u in ul) Console.WriteLine("\t{0} {1} - Selections: {2}", u.FirstName, u.LastName, u.SavedSelections.Count());
+            foreach (Mandoline.Api.Client.Models.User u in ul)
+            {
+                Console.WriteLine("\t{0} {1} - Selections: {2}", u.FirstName, u.LastName, u.SavedSelections.Count());
+            }
         }
-                
+
         // process output for login response
         public override void PrintData(Mandoline.Api.Client.Models.User u)
         {
             Console.WriteLine("{0} {1} - Saved selections:", u.FirstName, u.LastName);
-            foreach (ResourceLink<Selection> s in u.SavedSelections) Console.WriteLine("\t{0}: {1}", s.Name, s.Id);
-
+            foreach (ResourceLink<Selection> s in u.SavedSelections)
+            {
+                Console.WriteLine("\t{0}: {1}", s.Name, s.Id);
+            }
         }
 
         // process output for list of databanks
         public override void PrintData(IEnumerable<Databank> ld)
         {
-            foreach (DatabankDto d in ld) Console.WriteLine("{0}: {1}", d.DatabankCode, d.Name);
+            foreach (DatabankDto d in ld)
+            {
+                Console.WriteLine("{0}: {1}", d.DatabankCode, d.Name);
+            }
         }
 
         // process output for collection of variables
@@ -101,10 +112,12 @@ namespace Client.Repl
             var dt = new Table.VariableTable();
 
             // pass list to DataGridView object
-            foreach(VariableDto v in vc.Variables) dt.AddRow(v);
+            foreach (VariableDto v in vc.Variables)
+            {
+                dt.AddRow(v);
+            }
 
-            printTable(dt);
-
+            this.PrintTable(dt);
         }
 
         // output for single string data output (catch-all option for anything that returns single point of data)
@@ -113,16 +126,14 @@ namespace Client.Repl
             var dt = new DataTable();
             dt.Columns.Add("Data");
             dt.Rows.Add(s);
-            printTable(dt);
-
+            this.PrintTable(dt);
         }
 
         // shaped table output
         public override void PrintData(ShapedStreamResult result)
         {
             var dt = new Table.ShapeTable(result);
-            printTable(dt);
-
+            this.PrintTable(dt);
         }
 
         // output for download request
@@ -133,8 +144,7 @@ namespace Client.Repl
 
             // check to see whether download is ready and process output
             dt.Rows.Add(filename, "CSV", response.ReadyUrl, ready);
-            printTable(dt);
-
+            this.PrintTable(dt);
         }
 
         // output for downloads
@@ -155,13 +165,14 @@ namespace Client.Repl
                         {
                             // note the cells representing quarterly data are left blank
                             dt.Rows.Add(d.DatabankCode, d.VariableCode, d.LocationCode, entry.Key, entry.Value);
-
-                        }catch(Exception e)
+                        }
+                        catch (Exception e)
                         {
                             Console.WriteLine("Error: {0}", e.ToString());
                         }
                     }
                 }
+
                 if (d.QuarterlyData != null)
                 {
                     // make a new row for each quarterly data point
@@ -174,9 +185,7 @@ namespace Client.Repl
             }
 
             // update the DataGridView with the data table
-            printTable(dt);
-
+            this.PrintTable(dt);
         }
-
     }
 }

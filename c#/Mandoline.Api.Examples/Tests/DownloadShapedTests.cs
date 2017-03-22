@@ -14,7 +14,7 @@ namespace Tests
         {
             var output = new TestOutput();
             DownloadShaped.RunDownloadShapedAsync(output).RunSync();
-            Assert.IsTrue(output.returnValueInt > 0);
+            Assert.IsTrue(output.ReturnValueInt > 0);
         }
 
         // gets a sample data download from the macro databank
@@ -24,7 +24,7 @@ namespace Tests
         {
             var output = new TestOutput();
             DownloadShaped.RunDownloadShapedStreamAsync(output).RunSync();
-            Assert.IsTrue(output.returnValueInt > 0);
+            Assert.IsTrue(output.ReturnValueInt > 0);
         }
 
     }

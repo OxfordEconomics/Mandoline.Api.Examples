@@ -1,113 +1,111 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Mandoline.Api.Client;
-using Mandoline.Api.Client.Models;
-using Mandoline.Api.Client.ServiceModels;
-using Core;
-
-namespace Client.Gui 
+﻿namespace Client.Gui
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Drawing;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using Core;
+    using Mandoline.Api.Client;
+    using Mandoline.Api.Client.Models;
+    using Mandoline.Api.Client.ServiceModels;
+
     public partial class Form1 : Form
     {
-        Output output;
+        private Output output;
+
         public Form1()
         {
-            InitializeComponent();
-            output = new GridOutput(this);
+            this.InitializeComponent();
+            this.output = new GridOutput(this);
         }
 
-        public void setLabelVisible(bool v)
+        public void SetLabelVisible(bool v)
         {
-            label1.Visible = v;
+            this.label1.Visible = v;
         }
 
-        public void setDGV(object o)
+        public void SetDGV(object o)
         {
-            dataGridView1.DataSource = o;
+            this.dataGridView1.DataSource = o;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
         private async void buttonSubmit_Click(object sender, EventArgs e)
         {
-            label1.Text = "Running " + comboBox1.Text + "...";
-            label1.Visible = true;
+            this.label1.Text = "Running " + this.comboBox1.Text + "...";
+            this.label1.Visible = true;
 
-            switch (comboBox1.Text)
+            switch (this.comboBox1.Text)
             {
-                case ("DownloadShaped"):
-                    await DownloadShaped.RunDownloadShapedAsync(output);
+                case "DownloadShaped":
+                    await DownloadShaped.RunDownloadShapedAsync(this.output);
                     break;
-                case ("DownloadShapedStream"):
-                    await DownloadShaped.RunDownloadShapedStreamAsync(output);
+                case "DownloadShapedStream":
+                    await DownloadShaped.RunDownloadShapedStreamAsync(this.output);
                     break;
-                case ("DownloadFile"):
-                    await Download.RunDownloadFileAsync(output);
+                case "DownloadFile":
+                    await Download.RunDownloadFileAsync(this.output);
                     break;
-                case ("GetVariables"):
-                    await Info.RunGetVariablesAsync(output);
+                case "GetVariables":
+                    await Info.RunGetVariablesAsync(this.output);
                     break;
-                case ("RequestDownload"):
-                    await Download.RunRequestDownloadAsync(output);
+                case "RequestDownload":
+                    await Download.RunRequestDownloadAsync(this.output);
                     break;
-                case ("GetSavedSelection"):
-                    await SavedSelection.RunGetSavedSelection(AppConstants.SAVED_SELECTION_ID,output);
+                case "GetSavedSelection":
+                    await SavedSelection.RunGetSavedSelection(AppConstants.SavedSelectionId, this.output);
                     break;
-                case ("UpdateSavedSelection"):
-                    await SavedSelection.RunUpdateSavedSelection(output);
+                case "UpdateSavedSelection":
+                    await SavedSelection.RunUpdateSavedSelection(this.output);
                     break;
-                case ("CreateSavedSelection"):
-                    await SavedSelection.RunCreateSavedSelection(output);
+                case "CreateSavedSelection":
+                    await SavedSelection.RunCreateSavedSelection(this.output);
                     break;
-                case ("GetAllUsers"):
-                    await Core.User.RunGetAllUsersAsync(output);
+                case "GetAllUsers":
+                    await Core.User.RunGetAllUsersAsync(this.output);
                     break;
-                case ("Login"):
-                    await Core.User.RunLoginAsync(output, textBox0.Text, textBox1.Text);
+                case "Login":
+                    await Core.User.RunLoginAsync(this.output, this.textBox0.Text, this.textBox1.Text);
                     break;
-                case ("GetUser"):
-                    await Core.User.RunGetUserAsync(output);
+                case "GetUser":
+                    await Core.User.RunGetUserAsync(this.output);
                     break;
-                case ("GetDatabanks"):
-                    await Info.RunGetDatabanksAsync(output);
+                case "GetDatabanks":
+                    await Info.RunGetDatabanksAsync(this.output);
                     break;
-                case ("Download"):
-                    await Download.RunDownloadAsync(output);
+                case "Download":
+                    await Download.RunDownloadAsync(this.output);
                     break;
                 default:
-                    label1.Text = "Invalid selection";
+                    this.label1.Text = "Invalid selection";
                     break;
             }
-
         }
 
         private void label2_Click(object sender, EventArgs e)
         {
-
         }
 
         private void PasswordKeyUp(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter) 
-                label1.Text = "Running login...";
-                label1.Visible = true;
-                Core.User.RunLoginAsync(output, textBox0.Text, textBox1.Text);
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.label1.Text = "Running login...";
+                this.label1.Visible = true;
+                Core.User.RunLoginAsync(this.output, this.textBox0.Text, this.textBox1.Text);
+            }
         }
     }
-
 }

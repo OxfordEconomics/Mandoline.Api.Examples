@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Core;
-
-namespace Tests
+﻿namespace Tests
 {
+    using System;
+    using Core;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class UserTests
     {
-
         // gets current user
         // expected: returned API key should match the one in settings
         [TestMethod]
@@ -15,7 +14,7 @@ namespace Tests
         {
             var output = new TestOutput();
             User.RunGetUserAsync(output).RunSync();
-            Assert.AreEqual(AppConstants.API_TOKEN, output.returnValueStr);
+            Assert.AreEqual(AppConstants.ApiToken, output.ReturnValueStr);
         }
 
         // returns user object corresponding to provided credentials
@@ -24,8 +23,8 @@ namespace Tests
         public void UserLoginTest()
         {
             var output = new TestOutput();
-            User.RunLoginAsync(output, AppConstants.USER_NAME, AppConstants.USER_PASS).RunSync();
-            Assert.AreNotEqual(string.Empty, output.returnValueStr);
+            User.RunLoginAsync(output, AppConstants.UserName, AppConstants.UserPassword).RunSync();
+            Assert.AreNotEqual(string.Empty, output.ReturnValueStr);
         }
 
         // returns user object corresponding to provided credentials
@@ -34,10 +33,8 @@ namespace Tests
         public void UserLoginFailTest()
         {
             var output = new TestOutput();
-            User.RunLoginAsync(output, AppConstants.USER_NAME, string.Empty).RunSync();
-            Assert.AreEqual(string.Empty, output.returnValueStr);
+            User.RunLoginAsync(output, AppConstants.UserName, string.Empty).RunSync();
+            Assert.AreEqual(string.Empty, output.ReturnValueStr);
         }
-
-
     }
 }
