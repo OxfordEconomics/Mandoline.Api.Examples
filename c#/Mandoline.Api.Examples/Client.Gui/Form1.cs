@@ -34,15 +34,15 @@
             this.dataGridView1.DataSource = o;
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
         }
 
-        private async void buttonSubmit_Click(object sender, EventArgs e)
+        private async void ButtonSubmit_Click(object sender, EventArgs e)
         {
             this.label1.Text = "Running " + this.comboBox1.Text + "...";
             this.label1.Visible = true;
@@ -94,7 +94,7 @@
             }
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void Label2_Click(object sender, EventArgs e)
         {
         }
 
