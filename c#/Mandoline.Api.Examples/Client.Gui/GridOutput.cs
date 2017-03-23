@@ -201,6 +201,53 @@
             this.StatusLabelVisible = false;
         }
 
+        public override void PrintData(List<List<DataseriesDto>> ld)
+        {
+            // set up download table
+            var dt = new Table.PagedDownloadTable();
+
+            // pull annual, quarterly data point into a new row for each
+            for (int x = 0; x < ld.Count; x++)
+            {
+                foreach (DataseriesDto d in ld[x])
+                {
+                    if (d.AnnualData != null)
+                    {
+                        // make a new row for each annual data point
+                        foreach (var entry in d.AnnualData)
+                        {
+                            try
+                            {
+                                // note the cells representing quarterly data are left blank
+                                dt.Rows.Add(x + 1, d.DatabankCode, d.VariableCode, d.LocationCode, entry.Key, entry.Value);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("Error: {0}", e.ToString());
+                            }
+                        }
+                    }
+
+                    if (d.QuarterlyData != null)
+                    {
+                        // make a new row for each quarterly data point
+                        foreach (var entry in d.QuarterlyData)
+                        {
+                            // note the cells representing annual data are left blank
+                            dt.Rows.Add(x + 1, d.DatabankCode, d.VariableCode, d.LocationCode, null, null, entry.Key, entry.Value);
+                        }
+                    }
+
+                }
+            }
+
+            // update the DataGridView with the data table
+            this.DataGridInstance = dt;
+
+            // hide loading indicator
+            this.StatusLabelVisible = false;
+        }
+
         // output for downloads
         public override void PrintData(List<DataseriesDto> ld)
         {

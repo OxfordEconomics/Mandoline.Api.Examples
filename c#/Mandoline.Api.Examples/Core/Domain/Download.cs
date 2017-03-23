@@ -71,7 +71,9 @@
             output.PrintData(downloadResult);
         }
 
-        private static async Task<List<DataseriesDto>> DownloadPages()
+        // runs a download and returns a list of dataseries lists, effectively preserving
+        // the pages as they arrived
+        private static async Task<List<List<DataseriesDto>>> DownloadPages()
         {
             // get our sample selection
             SelectionDto sampleSelect = AppConstants.SampleSelection.GetInstance();
@@ -84,8 +86,8 @@
 
             // this will track which page of data is currently being requested from the api
             int page = 0;
-            var newPage = new List<DataseriesDto>();
-            var allPages = new List<DataseriesDto>();
+            List<DataseriesDto> newPage;
+            var pageList = new List<List<DataseriesDto>>();
 
             // loop till the number of elements in the new page of data doesn't equal the page size we expect
             do
@@ -96,19 +98,16 @@
                     new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token,
                     page,
                     PAGE_SIZE).ConfigureAwait(true);
+
                 newPage = downloadResult.Result;
 
-                // iterate through each element in the new page of data, adding each data series to the allPages collection
-                foreach (DataseriesDto d in newPage)
-                {
-                    allPages.Add(d);
-                }
+                pageList.Add(newPage);
 
                 Console.WriteLine("Downloaded page {0}...", ++page);
             }
             while (newPage.Count == PAGE_SIZE);
 
-            return allPages;
+            return pageList;
         }
     }
 }

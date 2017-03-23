@@ -18,6 +18,8 @@
         // handles updating datagridview source
         public abstract void PrintData(List<DataseriesDto> ld);
 
+        public abstract void PrintData(List<List<DataseriesDto>> ld);
+
         public abstract void PrintData(string s);
 
         public abstract void PrintData(ControllerDownloadResponseDto response, string filename, string s);
