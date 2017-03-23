@@ -132,5 +132,11 @@
         {
             this.ReturnValueInt = ld.Count();
         }
+
+        // output for downloads
+        public override void PrintData(List<List<DataseriesDto>> ld)
+        {
+            this.ReturnValueInt = ld.Count();
+        }
     }
 }

@@ -39,6 +39,23 @@
             }
         }
 
+        // DataTable for displaying Download objects in DataGridView
+        // adds column for page number
+        public class PagedDownloadTable : DataTable
+        {
+            public PagedDownloadTable()
+            {
+                this.Columns.Add("Page");
+                this.Columns.Add("DatabankCode");
+                this.Columns.Add("MeasureCode");
+                this.Columns.Add("Region");
+                this.Columns.Add("Year");
+                this.Columns.Add("YearValue");
+                this.Columns.Add("Quarter");
+                this.Columns.Add("QuarterValue");
+            }
+        }
+
         // DataTable for displaying Variable objects in DataGridView
         public class VariableTable : DataTable
         {
