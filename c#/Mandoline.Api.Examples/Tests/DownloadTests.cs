@@ -1,6 +1,7 @@
 ﻿namespace Tests
 {
     using System;
+    using System.Threading.Tasks;
     using Core;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,30 +11,30 @@
         // gets a sample data download from the macro databank
         // expected: count of dataseries > 0
         [TestMethod]
-        public void DownloadTest()
+        public async Task DownloadTest()
         {
             var output = new TestOutput();
-            Download.RunDownloadAsync(output).RunSync();
+            await Download.RunDownloadAsync(output);
             Assert.IsTrue(output.ReturnValueInt > 0);
         }
 
         // gets a sample data download from the macro databank
         // expected: count of variables > 0
         [TestMethod]
-        public void DownloadRequestTest()
+        public async Task DownloadRequestTest()
         {
             var output = new TestOutput();
-            Download.RunRequestDownloadAsync(output).RunSync();
+            await Download.RunRequestDownloadAsync(output);
             Assert.AreNotEqual(output.ReturnValueStr, string.Empty);
         }
 
         // gets the full list of variables for the macro databank
         // expected: count of variables > 0
         [TestMethod]
-        public void DownloadFileTest()
+        public async Task DownloadFileTest()
         {
             var output = new TestOutput();
-            Download.RunDownloadFileAsync(output).RunSync();
+            await Download.RunDownloadFileAsync(output);
             Assert.AreNotEqual(output.ReturnValueStr, string.Empty);
         }
     }

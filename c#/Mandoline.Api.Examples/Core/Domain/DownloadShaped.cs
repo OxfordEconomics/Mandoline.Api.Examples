@@ -30,19 +30,14 @@
                 Format = Mandoline.Api.Client.ServiceModels.FormatEnum.Default,
             };
 
-            // queue asynchronous api call
-            if (output.IsAsync)
-            {
-                await api.DownloadShapedStreamAsync(sampleSelect, config, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t =>
+            // run download
+            var shapedResult = await api.DownloadShapedStreamAsync(
+                sampleSelect,
+                config,
+                new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ConfigureAwait(true);
 
-                    // process output
-                    output.PrintData(t.Result.Result));
-            }
-            else
-            {
-                var result = api.DownloadShapedStreamAsync(sampleSelect, config, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).GetAwaiter().GetResult();
-                output.PrintData(result.Result);
-            }
+            // process data
+            output.PrintData(shapedResult.Result);
         }
 
         // runs simple shaped download
@@ -63,19 +58,14 @@
                 Format = Mandoline.Api.Client.ServiceModels.FormatEnum.Default,
             };
 
-            // queue asynchronous api call
-            if (output.IsAsync)
-            {
-                await api.DownloadShapedAsync(sampleSelect, config, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t =>
+            // run download
+            var shapedResult = await api.DownloadShapedAsync(
+                sampleSelect,
+                config,
+                new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ConfigureAwait(true);
 
-                    // process output
-                    output.PrintData(t.Result.Result));
-            }
-            else
-            {
-                var result = api.DownloadShapedAsync(sampleSelect, config, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).GetAwaiter().GetResult();
-                output.PrintData(result.Result);
-            }
+            // process output data
+            output.PrintData(shapedResult.Result);
         }
     }
 }

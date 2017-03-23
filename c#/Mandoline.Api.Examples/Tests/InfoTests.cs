@@ -1,6 +1,7 @@
 ﻿namespace Tests
 {
     using System;
+    using System.Threading.Tasks;
     using Core;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,20 +11,20 @@
         // gets the full list of available databanks
         // expected: count of databanks > 0
         [TestMethod]
-        public void InfoDatabanksTest()
+        public async Task InfoDatabanksTest()
         {
             var output = new TestOutput();
-            Info.RunGetDatabanksAsync(output).RunSync();
+            await Info.RunGetDatabanksAsync(output);
             Assert.IsTrue(output.ReturnValueInt > 0);
         }
 
         // gets the full list of variables for the macro databank
         // expected: count of variables > 0
         [TestMethod]
-        public void InfoVariablesTest()
+        public async Task InfoVariablesTest()
         {
             var output = new TestOutput();
-            Info.RunGetVariablesAsync(output).RunSync();
+            await Info.RunGetVariablesAsync(output);
             Assert.IsTrue(output.ReturnValueInt > 0);
         }
     }

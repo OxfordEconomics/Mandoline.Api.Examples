@@ -16,16 +16,11 @@ namespace Core
             // set up api object for making call
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
-            // queue asynchronous api call
-            if (output.IsAsync)
-            {
-                await api.GetUserAsync().ContinueWith(t => output.PrintData(t.Result.Result));
-            }
-            else
-            {
-                var result = api.GetUserAsync().GetAwaiter().GetResult();
-                output.PrintData(result.Result);
-            }
+            // run user get
+            var userResult = await api.GetUserAsync().ConfigureAwait(true);
+
+            // process output
+            output.PrintData(userResult.Result);
         }
 
         // passes login credentials to the api, which returns a user object
@@ -34,16 +29,20 @@ namespace Core
             // set up api object for making call
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
-            // queue asynchronous api call
-            if (output.IsAsync)
+            // run login
+            var loginResult = await api.LoginAsync(
+                user,
+                pass,
+                new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ConfigureAwait(true);
+
+            // process output data
+            try
             {
-                await api.LoginAsync(user, pass, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t =>
-                    output.PrintData(t.Result.Result, t.Result.Result.ApiKey));
+                output.PrintData(loginResult.Result, loginResult.Result.ApiKey);
             }
-            else
+            catch (NullReferenceException)
             {
-                var result = api.LoginAsync(user, pass, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).GetAwaiter().GetResult();
-                output.PrintData(result.Result, result.Result.ApiKey);
+                output.PrintData(loginResult.Result, string.Empty);
             }
         }
 
@@ -54,27 +53,8 @@ namespace Core
             // set up api object for making call
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
-            // queue asynchronous api call
-            if (output.IsAsync)
-            {
-                await api.GetAllUsersAsync().ContinueWith(t =>
-                {
-                    Console.WriteLine("STATUS: {0}...", t.Result.Reason);
-                    if (t.Result.Failed == false)
-                    {
-                        output.PrintData(t.Result.Result);
-                    }
-                    else
-                    {
-                        output.UpdateStatus("Operation failed. Check input.");
-                    }
-                });
-            }
-            else
-            {
-                var result = api.GetAllUsersAsync().GetAwaiter().GetResult();
-                output.PrintData(result.Result);
-            }
+            var usersResult = await api.GetAllUsersAsync().ConfigureAwait(true);
+            output.PrintData(usersResult.Result);
         }
     }
 }

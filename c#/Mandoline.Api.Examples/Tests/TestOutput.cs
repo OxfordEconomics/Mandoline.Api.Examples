@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Mandoline.Api.Client.ServiceModels;
-using Mandoline.Api.Client.Models;
-using System.Data;
-using Core;
-
-namespace Tests
+﻿namespace Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Core;
+    using Mandoline.Api.Client.Models;
+    using Mandoline.Api.Client.ServiceModels;
 
     // this implementation of Output directs output to console
     internal class TestOutput : Output
@@ -22,7 +21,6 @@ namespace Tests
         // ensure that api operations are performed synchronously
         public TestOutput()
         {
-            this.IsAsync = false;
             this.ReturnValueStr = string.Empty;
             this.ReturnValueInt = -1;
             this.ReturnValueDate = DateTime.MinValue;
@@ -74,7 +72,14 @@ namespace Tests
         // process login output
         public override void PrintData(Mandoline.Api.Client.Models.User u, string token)
         {
-            this.ReturnValueStr = token;
+            try
+            {
+                this.ReturnValueStr = token;
+            }
+            catch (NullReferenceException)
+            {
+                this.ReturnValueStr = string.Empty;
+            }
         }
 
         // process output for multi user response

@@ -13,30 +13,24 @@
     // this implementation of Output directs output to console
     internal class ConsoleOutput : Output
     {
-        // ensure that api operations are performed synchronously
         public ConsoleOutput()
         {
-            this.IsAsync = false;
         }
 
-        // for updating status text
-        private string StatusLabelText
-        {
-            set
-            {
-                Console.WriteLine(value);
-            }
-        }
+        // status isn't indicated in this client
+        private string StatusLabelText { get; set; }
 
+        // status isn't indicated in this client
         public override void UpdateStatus(string v)
         {
-            this.StatusLabelText = v;
         }
 
+        // status isn't indicated in this client
         public override void UpdateStatus(bool v)
         {
         }
 
+        // prints cells of generic DataTable
         public void PrintTable(DataTable table)
         {
             foreach (DataRow row in table.Rows)

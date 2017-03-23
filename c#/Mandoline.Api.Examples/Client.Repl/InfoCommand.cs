@@ -18,14 +18,14 @@
             this.output = new ConsoleOutput();
         }
 
-        public void GetDatabanks()
+        public async Task GetDatabanks()
         {
-            Info.RunGetDatabanksAsync(this.output).RunSync();
+            await Info.RunGetDatabanksAsync(this.output);
         }
 
-        public void GetVariables()
+        public async Task GetVariables()
         {
-            Info.RunGetVariablesAsync(this.output).RunSync();
+            await Info.RunGetVariablesAsync(this.output);
         }
     }
 }
