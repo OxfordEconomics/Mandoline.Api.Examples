@@ -13,33 +13,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 2. Projects and files
 
 ### 1. Dependencies:
-#### Core: implementation of Mandoline API examples
-- **Mandoline.Api.Client**: the .Net SDK for making calls to the Oxford Economics API, includes...
+Core: implementation of Mandoline API examples
+- *Mandoline.Api.Client*: the .Net SDK for making calls to the Oxford Economics API, includes...
   - *ApiClient.cs*: the main interface for making API calls
   - *ServiceModels*: contains domain object definitions e.g. DatabankDto, DataseriesDto
-- **Newton.Json**, **System.Xml**: for easy de-/serializing Json, XML objects
-- **System.Data**: for setting up DataTables corresponding to response data
-#### Client.Gui: windows form demonstration of Mandoline API calls
-- **System.Windows.Forms**, **System.Drawing**, **etc.**: packages necessary to setting up Windows Forms client
-#### Client.Repl: command line demonstration of Mandoline API calls
-- **Replify**: the command-line interfaced used by the client
-- **ClearScript** used by Replify to run user-created scripts
+- *Newton.Json*, *System.Xml*: for easy de-/serializing Json, XML objects
+- *System.Data*: for setting up DataTables corresponding to response data
+Client.Gui: windows form demonstration of Mandoline API calls
+- *System.Windows.Forms*, *System.Drawing*, *etc.*: packages necessary to setting up Windows Forms client
+Client.Repl: command line demonstration of Mandoline API calls
+- *Replify*: the command-line interfaced used by the client
+- *ClearScript* used by Replify to run user-created scripts
 
 ### 2. Projects and files:
-#### Core: implementation of Mandoline API examples
-- **Domain/**: 
+Core: implementation of Mandoline API examples
+- *Domain/*: 
   - *Download.cs*: functions for paged download, download request, and queue check
   - *DownloadShaped.cs*: functions for dataseries downloads shaped into tables
   - *Info.cs*: functions for listing databanks available and their respective variables and regions
   - *SavedSelection.cs*: functions for getting, creating, and updating saved selections
   - *User.cs*: functions for getting user information and logging in
-- **AppConstants.cs**: draws constants from AppSettings.config, namely the user API token and the example Selection Id
-- **Output.cs**: describes the interface which must be implemented by client programs
-- **Table.cs**: provides several generic DataTables for the various types of data
-#### Client.Gui: windows form demonstration of Mandoline API calls
-- **GridOutput**: implementation of the output interface for displaying example data in a Windows Form grid view
-- **Program.cs, Form1.cs**: the mechanisms for loading the Windows Form and handling events
-- **AppSettings.config**: necessary file, which contains user values for api token and sample selection id
-#### Client.Repl: command line demonstration of Mandoline API calls
-- **\*Command.cs**: the various commands for running corresponding examples in the Repl command line
-- **AppSettings.config**: necessary file, which contains user values for api token and sample selection id
+- *AppConstants.cs*: draws constants from AppSettings.config, namely the user API token and the example Selection Id
+- *Output.cs*: describes the interface which must be implemented by client programs
+- *Table.cs*: provides several generic DataTables for the various types of data
+Client.Gui: windows form demonstration of Mandoline API calls
+- *GridOutput*: implementation of the output interface for displaying example data in a Windows Form grid view
+- *Program.cs, Form1.cs*: the mechanisms for loading the Windows Form and handling events
+- *AppSettings.config*: necessary file, which contains user values for api token and sample selection id
+Client.Repl: command line demonstration of Mandoline API calls
+- *\*Command.cs*: the various commands for running corresponding examples in the Repl command line
+- *AppSettings.config*: necessary file, which contains user values for api token and sample selection id
