@@ -109,6 +109,12 @@
             this.ReturnValueInt = vc.Variables.Count();
         }
 
+        // process output for collection of regions 
+        public override void PrintData(RegionCollectionDto regions)
+        {
+            this.ReturnValueInt = regions.Regions.Count();
+        }
+
         // output for single string data output (catch-all option for anything that returns single point of data)
         public override void PrintData(string s)
         {

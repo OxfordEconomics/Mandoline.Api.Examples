@@ -28,6 +28,8 @@
 
         public abstract void PrintData(VariableCollectionDto vc);
 
+        public abstract void PrintData(RegionCollectionDto vc);
+
         public abstract void PrintData(IEnumerable<Databank> ld);
 
         public abstract void PrintData(Mandoline.Api.Client.Models.User u);

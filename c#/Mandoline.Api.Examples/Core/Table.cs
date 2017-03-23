@@ -75,6 +75,22 @@
             }
         }
 
+        // DataTable for displaying Variable objects in DataGridView
+        public class RegionTable : DataTable
+        {
+            public RegionTable()
+            {
+                this.Columns.Add("DatabankCode");
+                this.Columns.Add("RegionCode");
+                this.Columns.Add("RegionName");
+            }
+
+            public void AddRow(RegionDto region)
+            {
+                this.Rows.Add(region.DatabankCode, region.RegionCode, region.Name);
+            }
+        }
+
         // DataTable for displaying Download Request objects in DataGridView
         public class DownloadRequestTable : DataTable
         {

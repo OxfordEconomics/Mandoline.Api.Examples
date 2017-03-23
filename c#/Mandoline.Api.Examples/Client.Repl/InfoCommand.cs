@@ -27,5 +27,10 @@
         {
             await Info.RunGetVariablesAsync(this.output);
         }
+
+        public async Task GetRegions()
+        {
+            await Info.RunGetRegionsAsync(this.output);
+        }
     }
 }
