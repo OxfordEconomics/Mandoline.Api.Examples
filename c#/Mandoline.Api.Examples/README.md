@@ -44,13 +44,13 @@ Core: implementation of Mandoline API examples
 - *Output.cs*: describes the interface which must be implemented by client programs
 - *Table.cs*: provides several generic DataTables for the various types of data
 
-Client.Gui: windows form demonstration of Mandoline API calls
+Client.Gui: Windows Form demonstration of Mandoline API calls
 
 - *GridOutput*: implementation of the output interface for displaying example data in a Windows Form grid view
 - *Program.cs, Form1.cs*: the mechanisms for loading the Windows Form and handling events
-- *AppSettings.config*: necessary file, which contains user values for api token and sample selection id
+- *AppSettings.config*: user-supplied file based on AppSettings.config.example, which contains user values for api token and sample selection id
 
 Client.Repl: command line demonstration of Mandoline API calls
 
 - *\*Command.cs*: the various commands for running corresponding examples in the Repl command line
-- *AppSettings.config*: necessary file, which contains user values for api token and sample selection id
+- *AppSettings.config*: user-supplied file based on AppSettings.config.example, which contains user values for api token and sample selection id
