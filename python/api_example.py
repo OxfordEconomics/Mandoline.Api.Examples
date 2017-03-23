@@ -303,13 +303,7 @@ if __name__ == '__main__':
     # get_variables_test(client)
     # get_regions_test(client)
     # queue_download_test(client, sampleSelect)
-    file_download_test(client, sampleSelect)
+    # file_download_test(client, sampleSelect)
     # shaped_download_test(client, SELECTION_ID)
     # indicator_tree_test(client)
     # location_tree_test(client)
-    
-
-
-    # error handling demo
-    #client = Client(API_KEY, BAD_URL_BASE)
-    #databank_test(client)
