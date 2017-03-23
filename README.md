@@ -9,15 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 # README.md
 
 ### C#:
-  README.txt: more detailed information about this solution and its requirements
-  ../Client.Gui: Windows form application, displaying example API calls in grid form
-  ../Client.Repl: Command line application, displaying calls in console
-  ../Core: the api call implementation
-  ../Tests: unit tests
+  - README.txt: more detailed information about this solution and its requirements
+  - ../Client.Gui: Windows form application, displaying example API calls in grid form
+  - ../Client.Repl: Command line application, displaying calls in console
+  - ../Core: the api call implementation
+  - ../Tests: unit tests
 
 ### Python:
-  README.txt: more detailed information about these scripts and their requirements
-  ../api_client.py: sdk for making api calls
-  ../api_example.py: example implementations
+  - README.txt: more detailed information about these scripts and their requirements
+  - ../api_client.py: sdk for making api calls
+  - ../api_example.py: example implementations
   
 ### JS:
