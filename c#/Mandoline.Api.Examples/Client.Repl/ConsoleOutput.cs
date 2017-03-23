@@ -114,6 +114,20 @@
             this.PrintTable(dt);
         }
 
+        // process output for collection of variables
+        public override void PrintData(RegionCollectionDto regions)
+        {
+            var dt = new Table.RegionTable();
+
+            // pass list to DataGridView object
+            foreach (RegionDto region in regions.Regions)
+            {
+                dt.AddRow(region);
+            }
+
+            this.PrintTable(dt);
+        }
+
         // output for single string data output (catch-all option for anything that returns single point of data)
         public override void PrintData(string s)
         {

@@ -85,6 +85,7 @@
             "--Info--",
             "GetDatabanks",
             "GetVariables",
+            "GetRegions",
             "",
             "--Selections--",
             "CreateSavedSelection",

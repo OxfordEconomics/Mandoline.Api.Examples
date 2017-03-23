@@ -33,5 +33,16 @@
             var variablesTask = await api.GetVariablesAsync("WDMacro").ConfigureAwait(true);
             output.PrintData(variablesTask.Result);
         }
+
+        // get regions for a given databank code
+        public static async Task RunGetRegionsAsync(Output output)
+        {
+            // set up api object for making call
+            var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+
+            // queue asynchronous api call
+            var regionsTask = await api.GetRegionsAsync("WDMacro").ConfigureAwait(true);
+            output.PrintData(regionsTask.Result);
+        }
     }
 }

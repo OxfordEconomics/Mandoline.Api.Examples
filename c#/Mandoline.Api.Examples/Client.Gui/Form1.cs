@@ -61,6 +61,9 @@
                 case "GetVariables":
                     await Info.RunGetVariablesAsync(this.output);
                     break;
+                case "GetRegions":
+                    await Info.RunGetRegionsAsync(this.output);
+                    break;
                 case "RequestDownload":
                     await Download.RunRequestDownloadAsync(this.output);
                     break;

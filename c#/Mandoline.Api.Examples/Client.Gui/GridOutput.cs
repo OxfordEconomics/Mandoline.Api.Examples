@@ -13,7 +13,7 @@
     using Mandoline.Api.Client.ServiceModels;
 
     // this implementation of Output directs output to a DataGridView
-    // for a Windows Form application
+    // for a Windows Form applicationv
     internal class GridOutput : Core.Output
     {
         // constructor, must take windows form object to update load status and gridview
@@ -157,6 +157,23 @@
             foreach (VariableDto v in vc.Variables)
             {
                 dt.AddRow(v);
+            }
+
+            this.DataGridInstance = dt;
+
+            // hide loading indicator
+            this.StatusLabelVisible = false;
+        }
+
+        // process output for collection of regions 
+        public override void PrintData(RegionCollectionDto regions)
+        {
+            var dt = new Table.RegionTable();
+
+            // pass list to DataGridView object
+            foreach (RegionDto region in regions.Regions)
+            {
+                dt.AddRow(region);
             }
 
             this.DataGridInstance = dt;
