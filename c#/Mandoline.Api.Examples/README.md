@@ -9,9 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 # Mandoline.Api.Examples/C#
 
 ### Dependencies:
-##### Client.Gui:
-- **Mandoline.Api.Client**: the .Net SDK for making calls to the Oxford Economics API, includes:
+#### Client.Gui:
+- **Mandoline.Api.Client**: the .Net SDK for making calls to the Oxford Economics API, includes...
   - *ApiClient.cs*: the main interface for making API calls
   - *ServiceModels*: contains domain object definitions e.g. DatabankDto, DataseriesDto
-  
-- 
+- **Newton.Json, System.Xml **: for easy de-/serializing Json, XML objects
+- **System.Windows.Forms, System.Drawing, etc.**: packages necessary to setting up Windows Forms client
+- **System.Data**: for setting up DataTables corresponding to response data
