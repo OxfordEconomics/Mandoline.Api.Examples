@@ -20,17 +20,11 @@
             // set up api object for making call
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
-            // queue asynchronous api call
-            if (output.IsAsync)
-            {
-                await api.CreateSavedSelectionAsync(sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t =>
-                    RunGetSavedSelection(t.Result.Result.Id, output));
-            }
-            else
-            {
-                var result = api.CreateSavedSelectionAsync(sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).GetAwaiter().GetResult();
-                RunGetSavedSelection(result.Result.Id, output).RunSync();
-            }
+            var selectionResult = await api.CreateSavedSelectionAsync(
+                sampleSelect,
+                new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ConfigureAwait(true);
+
+            await RunGetSavedSelection(selectionResult.Result.Id, output);
         }
 
         // updates saved selection based on id and SelectionDto sampleSelect
@@ -51,18 +45,14 @@
             // set up api object for making call
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
-            // queue asynchronous api call
-            if (output.IsAsync)
-            {
-                await api.UpdateSavedSelectionAsync(sampleSelect.Id, sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ContinueWith(t =>
-                    RunGetSavedSelection(AppConstants.SavedSelectionId, output));
-            }
-            else
-            {
-                var result = api.UpdateSavedSelectionAsync(sampleSelect.Id, sampleSelect, new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token)
-                    .GetAwaiter().GetResult();
-                RunGetSavedSelection(AppConstants.SavedSelectionId, output).RunSync();
-            }
+            // run update
+            var getResult = await api.UpdateSavedSelectionAsync(
+                sampleSelect.Id,
+                sampleSelect,
+                new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ConfigureAwait(true);
+
+            // check for changed selection
+            await RunGetSavedSelection(AppConstants.SavedSelectionId, output);
         }
 
         // creates a new saved selection based on SelectionDto sampleSelect
@@ -80,16 +70,11 @@
             // set up api object for making call
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
-            // queue asynchronous api call
-            if (output.IsAsync)
-            {
-                await api.GetSavedSelection(s_id).ContinueWith(t => output.PrintData(t.Result.Result));
-            }
-            else
-            {
-                var result = api.GetSavedSelection(s_id).GetAwaiter().GetResult();
-                output.PrintData(result.Result);
-            }
+            // run get
+            var getResult = await api.GetSavedSelection(s_id).ConfigureAwait(true);
+
+            // process output data
+            output.PrintData(getResult.Result);
         }
     }
 }

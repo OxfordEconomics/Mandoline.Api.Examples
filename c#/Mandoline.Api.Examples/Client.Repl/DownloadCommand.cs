@@ -18,19 +18,19 @@
             this.output = new ConsoleOutput();
         }
 
-        public void DownloadFile()
+        public async Task DownloadFile()
         {
-            Download.RunDownloadFileAsync(this.output).RunSync();
+            await Download.RunDownloadFileAsync(this.output);
         }
 
-        public void RequestDownload()
+        public async Task RequestDownload()
         {
-            Download.RunRequestDownloadAsync(this.output).RunSync();
+            await Download.RunRequestDownloadAsync(this.output);
         }
 
-        public void RunDownload()
+        public async Task RunDownload()
         {
-            Download.RunDownloadAsync(this.output).RunSync();
+            await Download.RunDownloadAsync(this.output);
         }
     }
 }

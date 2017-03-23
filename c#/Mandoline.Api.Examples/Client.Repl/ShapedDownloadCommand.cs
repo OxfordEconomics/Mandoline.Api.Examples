@@ -18,14 +18,14 @@
             this.output = new ConsoleOutput();
         }
 
-        public void ShapedDownload()
+        public async Task ShapedDownload()
         {
-            DownloadShaped.RunDownloadShapedAsync(this.output).RunSync();
+            await DownloadShaped.RunDownloadShapedAsync(this.output);
         }
 
-        public void ShapedDownloadStream()
+        public async Task ShapedDownloadStream()
         {
-            DownloadShaped.RunDownloadShapedStreamAsync(this.output).RunSync();
+            await DownloadShaped.RunDownloadShapedStreamAsync(this.output);
         }
     }
 }

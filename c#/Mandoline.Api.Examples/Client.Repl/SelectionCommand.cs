@@ -18,19 +18,19 @@
             this.output = new ConsoleOutput();
         }
 
-        public void GetSelection()
+        public async Task GetSelection()
         {
-            SavedSelection.RunGetSavedSelection(AppConstants.SavedSelectionId, this.output).RunSync();
+            await SavedSelection.RunGetSavedSelection(AppConstants.SavedSelectionId, this.output);
         }
 
-        public void CreateSelection()
+        public async Task CreateSelection()
         {
-            SavedSelection.RunCreateSavedSelection(this.output).RunSync();
+            await SavedSelection.RunCreateSavedSelection(this.output);
         }
 
-        public void UpdateSelection()
+        public async Task UpdateSelection()
         {
-            SavedSelection.RunUpdateSavedSelection(this.output).RunSync();
+            await SavedSelection.RunUpdateSavedSelection(this.output);
         }
     }
 }

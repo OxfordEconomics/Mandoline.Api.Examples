@@ -1,6 +1,7 @@
 ﻿namespace Tests
 {
     using System;
+    using System.Threading.Tasks;
     using Core;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,30 +11,30 @@
         // gets current user
         // expected: returned API key should match the one in settings
         [TestMethod]
-        public void UserGetTest()
+        public async Task UserGetTest()
         {
             var output = new TestOutput();
-            User.RunGetUserAsync(output).RunSync();
+            await User.RunGetUserAsync(output);
             Assert.AreEqual(AppConstants.ApiToken, output.ReturnValueStr);
         }
 
         // returns user object corresponding to provided credentials
         // expected: returned API key should not be blank
         [TestMethod]
-        public void UserLoginTest()
+        public async Task UserLoginTest()
         {
             var output = new TestOutput();
-            User.RunLoginAsync(output, AppConstants.UserName, AppConstants.UserPassword).RunSync();
+            await User.RunLoginAsync(output, AppConstants.UserName, AppConstants.UserPassword);
             Assert.AreNotEqual(string.Empty, output.ReturnValueStr);
         }
 
         // returns user object corresponding to provided credentials
         // expected: returned API key should be blank
         [TestMethod]
-        public void UserLoginFailTest()
+        public async Task UserLoginFailTest()
         {
             var output = new TestOutput();
-            User.RunLoginAsync(output, AppConstants.UserName, string.Empty).RunSync();
+            await User.RunLoginAsync(output, AppConstants.UserName, string.Empty);
             Assert.AreEqual(string.Empty, output.ReturnValueStr);
         }
     }

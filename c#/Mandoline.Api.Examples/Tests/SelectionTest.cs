@@ -1,6 +1,7 @@
 ﻿namespace Tests
 {
     using System;
+    using System.Threading.Tasks;
     using Core;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,31 +11,31 @@
         // retrieves saved selection object based on selection id in settings
         // expected: selection object id matches provided selection id
         [TestMethod]
-        public void SelectionGetTest()
+        public async Task SelectionGetTest()
         {
             var output = new TestOutput();
-            SavedSelection.RunGetSavedSelection(AppConstants.SavedSelectionId, output).RunSync();
+            await SavedSelection.RunGetSavedSelection(AppConstants.SavedSelectionId, output);
             Assert.AreEqual(AppConstants.SavedSelectionId.ToString(), output.ReturnValueStr);
         }
 
         // updates a saved selection
         // expected: selection's last update is > before test run
         [TestMethod]
-        public void SelectionUpdateTest()
+        public async Task SelectionUpdateTest()
         {
             var preTestTime = DateTime.Now;
             var output = new TestOutput();
-            SavedSelection.RunUpdateSavedSelection(output).RunSync();
+            await SavedSelection.RunUpdateSavedSelection(output);
             Assert.IsTrue(output.ReturnValueDate > preTestTime);
         }
 
         // creates a new non-temp saved selection
         // expected: id of newly created selection exists
         [TestMethod]
-        public void SelectionCreateTest()
+        public async Task SelectionCreateTest()
         {
             var output = new TestOutput();
-            SavedSelection.RunGetSavedSelection(AppConstants.SavedSelectionId, output).RunSync();
+            await SavedSelection.RunGetSavedSelection(AppConstants.SavedSelectionId, output);
             Assert.AreNotEqual(string.Empty, output.ReturnValueStr);
         }
     }

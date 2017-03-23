@@ -19,16 +19,8 @@
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
             // queue asynchronous api call
-            if (output.IsAsync)
-            {
-                // queue asynchronous api call
-                await api.GetDatabanksAsync().ContinueWith(t => output.PrintData(t.Result.Result));
-            }
-            else
-            {
-                var result = api.GetDatabanksAsync().GetAwaiter().GetResult();
-                output.PrintData(result.Result);
-            }
+            var databanksTask = await api.GetDatabanksAsync().ConfigureAwait(true);
+            output.PrintData(databanksTask.Result);
         }
 
         // get variables for a given databank code
@@ -38,16 +30,8 @@
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
             // queue asynchronous api call
-            if (output.IsAsync)
-            {
-                // queue asynchronous api call
-                await api.GetVariablesAsync("WDMacro").ContinueWith(t => output.PrintData(t.Result.Result));
-            }
-            else
-            {
-                var result = api.GetVariablesAsync("WDMacro").GetAwaiter().GetResult();
-                output.PrintData(result.Result);
-            }
+            var variablesTask = await api.GetVariablesAsync("WDMacro").ConfigureAwait(true);
+            output.PrintData(variablesTask.Result);
         }
     }
 }

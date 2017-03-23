@@ -1,0 +1,11 @@
+# default behavior
+* text=auto
+
+# filetypes to be normalized
+*.cs text
+*.csproj text
+*.sln text
+*.config text
+*.txt text
+*.py text
+*.html text

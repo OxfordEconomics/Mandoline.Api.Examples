@@ -20,7 +20,6 @@
         public GridOutput(Form1 f)
         {
             this.FormInstance = f;
-            this.IsAsync = true;
         }
 
         // delegate for passing data source in thread-safe way
@@ -53,16 +52,7 @@
         {
             set
             {
-                Console.WriteLine("Updating data grid...");
-                if (this.FormInstance.dataGridView1.InvokeRequired)
-                {
-                    ObjectDelegate d = new ObjectDelegate(t => { this.FormInstance.dataGridView1.DataSource = t; });
-                    this.FormInstance.Invoke(d, value);
-                }
-                else
-                {
-                    this.FormInstance.dataGridView1.DataSource = value;
-                }
+                this.FormInstance.dataGridView1.DataSource = value;
             }
         }
 

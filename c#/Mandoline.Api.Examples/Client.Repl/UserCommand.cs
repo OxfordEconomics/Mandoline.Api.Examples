@@ -18,27 +18,37 @@
             this.output = new ConsoleOutput();
         }
 
-        public void GetUser()
+        public async Task GetUser()
         {
-            User.RunGetUserAsync(this.output).RunSync();
+            await User.RunGetUserAsync(this.output);
         }
 
-        public void GetUsers()
+        public async Task GetUsers()
         {
-            User.RunGetAllUsersAsync(this.output).RunSync();
+            await User.RunGetAllUsersAsync(this.output);
         }
 
-        public void LogIn()
+        public async Task LogIn()
         {
+            bool success = false;
             do
             {
                 Console.Write("Username: ");
                 string user = Console.ReadLine();
                 Console.Write("Password: ");
                 string pass = Console.ReadLine();
-                Core.User.RunLoginAsync(this.output, user, pass).RunSync();
+
+                try
+                {
+                    await Core.User.RunLoginAsync(this.output, user, pass).ConfigureAwait(true);
+                    success = true;
+                }
+                catch (NullReferenceException)
+                {
+                    Console.WriteLine("Login failed. Please try again.");
+                }
             }
-            while (Core.AppConstants.ApiToken == null);
+            while (!success);
         }
     }
 }

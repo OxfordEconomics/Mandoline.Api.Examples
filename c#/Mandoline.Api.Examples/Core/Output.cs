@@ -10,10 +10,6 @@
 
     public abstract class Output
     {
-        // used to determine whether running function should wait for
-        // this AND api call
-        public bool IsAsync;
-
         // handles load status indicator, text and visibility
         public abstract void UpdateStatus(bool v);
 
