@@ -25,4 +25,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - **Replify**: the command-line interfaced used by the client
 - **ClearScript** used by Replify to run user-created scripts
 
-### 2. Dependencies:
+### 2. Projects and files:
+#### Core: implementation of Mandoline API examples
+- **Domain/**: 
+  - *Download.cs*: functions for paged download, download request, and queue check
+  - *DownloadShaped.cs*: functions for dataseries downloads shaped into tables
+  - *Info.cs*: functions for listing databanks available and their respective variables and regions
+  - *SavedSelection.cs*: functions for getting, creating, and updating saved selections
+  - *User.cs*: functions for getting user information and logging in
+- **AppConstants.cs**: draws constants from AppSettings.config, namely the user API token and the example Selection Id
+- **Output.cs**: describes the interface which must be implemented by client programs
+- **Table.cs**: provides several generic DataTables for the various types of data
+#### Client.Gui: windows form demonstration of Mandoline API calls
+- **GridOutput**: implementation of the output interface for displaying example data in a Windows Form grid view
+- **Program.cs, Form1.cs**: the mechanisms for loading the Windows Form and handling events
+- **AppSettings.config**: necessary file, which contains user values for api token and sample selection id
+#### Client.Repl: command line demonstration of Mandoline API calls
+- **\*Command.cs**: the various commands for running corresponding examples in the Repl command line
+- **AppSettings.config**: necessary file, which contains user values for api token and sample selection id
