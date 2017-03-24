@@ -10,27 +10,32 @@
 	<script src="js/api_examples.js"></script>
 
 	<link href="css/styles.css" type="text/css" rel="stylesheet" />
-	<style>
-		button { width: 500px; height: 40px; padding: 5px;}
-		body { background-color: lightgrey; font-family: Arial;}
-		#copyright {font-size: 12px;}
-	</style>
+
+	<link href="http://www.oxfordeconomics.com/Modules/OxfordEconomics.Common/Styles/font-awesome.css" rel="stylesheet" type="text/css">
 
 </head>
 
 <body>
 
+	<div class="main">
+
+	<div class="header">
+
+	<img id="logo" src="img/oelogo1.jpg" />
 	<h2>Global Data Workstation API Example</h2>
 
-	<div class="main">
+	</div>
 
 	<div class="left-div">
 
 		<h3>Log in</h3>
 		User: <input id = "user_name" value = "" style="width:197px;"/> 
 		Password: <input type="password" id = "user_pass" value = ""/><br/>
-
+		
+		<p/>
 		<button id = "btnLogin">Log in</button>
+		<p/>
+
 		<h3>Server &amp; API Authentication Key</h3>
 		Hostname: <input id = "Hostname" 
 			value = "https://services.oxfordeconomics.com"/> 
@@ -68,7 +73,9 @@
 
 	</div> 
 
-	<hr/>
+	<div style="clear:both"></div>
+
+	<h3>Results:</h3>
 
 	<div id = "log"></div>
 

@@ -22,11 +22,11 @@ function postHttpResource(path, resource) {
 			$("#log").append(
 					"<pre> Request count: " 
 					+ ++requestCount 
-					+ "<br/><hr/>" 
+					+ "<br/>" 
 					+ JSON.stringify(data, null, 4) 
 					+ "<br/>Status: " 
 					+ status 
-					+ "<hr/></pre>"
+					+ "</pre>"
 					);
 		},
 		error: function(data,status){
@@ -102,7 +102,7 @@ function postLogin(path, resource) {
 		dataType: 'json',
 		success: function(data,status){
 			$("#log").empty();
-			$("#log").append("<pre> Request count: " + ++requestCount + "<br/><hr/>" + JSON.stringify(data, null, 4) + "<br/>Status: " + status + "<hr/></pre>");
+			$("#log").append("<pre> Request count: " + ++requestCount + "<br/>" + JSON.stringify(data, null, 4) + "<br/>Status: " + status + "</pre>");
 			$("#ApiKey").val(data["ApiKey"]);
 		},
 		error: function(data,status){
@@ -128,7 +128,7 @@ function getHttpResource(path) {
 		dataType: 'json',
 		success: function(data,status){
 			$("#log").empty();
-			$("#log").append("<pre> Request count: " + ++requestCount + "<br/><hr/>" + JSON.stringify(data, null, 4) + "<br/>Status: " + status + "<hr/></pre>");
+			$("#log").append("<pre> Request count: " + ++requestCount + "<br/>" + JSON.stringify(data, null, 4) + "<br/>Status: " + status + "</pre>");
 		},
 		error: function(data,status){
 		    alert(" Error Status: " + status);
