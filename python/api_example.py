@@ -1,8 +1,8 @@
-# filename: api_example.py
-# date: mar 13, 2017
-# author: james mills
-# description: simple examples for use with the
-#              mandonline/databank API
+# <copyright file="api_example.py" company="Oxford Economics">
+# Copyright (c) 2017 Oxford Economics Ltd. All rights reserved.
+# Licensed under the MIT License. See LICENSE file in the
+# project root for full license information.
+# </copyright>
 
 import sys
 import os
