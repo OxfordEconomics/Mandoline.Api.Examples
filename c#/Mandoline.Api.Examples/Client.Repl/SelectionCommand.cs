@@ -1,4 +1,10 @@
-﻿namespace Client.Repl
+﻿// <copyright file="SelectionCommand.cs" company="Oxford Economics">
+// Copyright (c) 2017 Oxford Economics Ltd. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project 
+// root for full license information.
+// </copyright>
+
+namespace Client.Repl
 {
     using System;
     using System.Collections.Generic;
