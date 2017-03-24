@@ -1,0 +1,30 @@
+button { 
+	width: 500px; 
+	height: 40px; 
+	padding: 5px;
+	}
+
+body { 
+	background-color: lightgrey; 
+	font-family: Arial;
+	}
+
+.main { 
+	width: 1200px;
+	overflow: hidden;
+	}
+
+.right-div {
+	width: 550px;
+	margin-left: 15px;
+	float: left;
+	}
+
+.left-div {
+	width: 550px;
+	float: left;
+}
+
+#copyright {
+	font-size: 12px;
+	}

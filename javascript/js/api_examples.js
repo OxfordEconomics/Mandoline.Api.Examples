@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>
-
 var requestCount = 0;
 
 function postHttpResource(path, resource) {
@@ -25,7 +19,63 @@ function postHttpResource(path, resource) {
 		dataType: 'json',
 		success: function(data,status){
 			$("#log").empty();
-			$("#log").append("<pre> Request count: " + ++requestCount + "<br/><hr/>" + JSON.stringify(data, null, 4) + "<br/>Status: " + status + "<hr/></pre>");
+			$("#log").append(
+					"<pre> Request count: " 
+					+ ++requestCount 
+					+ "<br/><hr/>" 
+					+ JSON.stringify(data, null, 4) 
+					+ "<br/>Status: " 
+					+ status 
+					+ "<hr/></pre>"
+					);
+		},
+		error: function(data,status){
+		    alert(" Error Status: " + status);
+		}
+	});
+};
+
+function getPagedData(resource, page) {
+	var hostname = $("#Hostname").val();
+	var api_url = hostname + "/api";
+	var api_key = $("#ApiKey").val();
+
+	var jsonResource = JSON.stringify(resource);
+	var apiHeader = { "Api-Key": api_key };
+	
+	$.support.cors = true;
+	
+	$.ajax({
+		url: encodeURI(
+			api_url 
+			+ '/download?includeMetadata=true&page='
+			+ page
+			+ '+&pagesize=5'),
+		type: 'POST',
+		headers: apiHeader,
+		data: jsonResource,
+		contentType: 'application/json; charset=utf-8',
+		dataType: 'json',
+		success: function(data,status){
+			if (page == 0){
+				$("#log").empty();
+			}
+
+			$("#log").append(
+					"<pre><b>Page: " 
+					+ (page + 1)
+					+ ", size: "
+					+ data.length
+					+ "</b><br/>" 
+					+ JSON.stringify(data, null, 4) 
+					+ "<br/>Status: " 
+					+ status 
+					+ "</pre>"
+					);
+
+			if (data.length == 5){
+				getPagedData(resource, page+1)
+			}
 		},
 		error: function(data,status){
 		    alert(" Error Status: " + status);
@@ -164,6 +214,9 @@ $(document).ready(function(){
     $("#btnGetRegions").click(function() {
     	getRegions()
     });
+    $("#btnGetPaged").click(function() {
+        getPagedData(selectionA, 0)
+    });
     $("#btnPostA").click(function() {
         getData(selectionA)
     });
@@ -182,73 +235,3 @@ $(document).ready(function(){
         getData(selectionCustom)
     });
 });
-</script>
-
-<style>
-button { width: 500px; height: 40px; padding: 5px;}
-body { background-color: lightgrey; font-family: Arial;}
-#copyright {font-size: 12px;}
-</style>
-
-</head>
-
-<body>
-
-<h2>Global Data Workstation API Example</h2>
-
-<h3>Log in</h3>
-User: <input id = "user_name" value = "" style="width:197px;"/> 
-Password: <input type="password" id = "user_pass" value = ""/><br/>
-
-<button id = "btnLogin">Log in</button>
-<h3>Server &amp; API Authentication Key</h3>
-Hostname: <input id = "Hostname" value = "https://services.oxfordeconomics.com"/> API Key: <input id = "ApiKey" value = "ADD API KEY HERE"/>
-
-<h3>Example Info Requests</h3>
-<button id = "btnGetDatabanks">Get databanks</button><br/>
-<button id = "btnGetRegions">Get regions (Macro databank)</button><br/>
-<button id = "btnGetVariables">Get variables (Macro databank)</button><br/>
-
-<h3>Example User Requests</h3>
-<button id = "btnGetUser">Get user</button><br/>
-
-<h3>Example Download Requests</h3>
-<button id = "btnPostA">Annual | All Measures | GBR, USA | GDP$, CPI | 2015-2021</button><br/>
-<button id = "btnPostQ">Quarterly | All Measures | GBR | GDP$ | 2015-2021</button><br/>
-<button id = "btnPostBoth">Both | All Measures | GBR | GDP$ | 2015-2021</button>
-
-<h3>Simple Custom Request</h3>
-Location: <input id = "Location" value = "DEU"/> Indicator: <input id = "Indicator" value = "RCB"/>
-<p/>
-<button id = "btnPostCustom">Annual | Level Values | CUSTOM Variable | 2015-2021</button>
-<p/>
-<hr/>
-
-<div id = "log"></div>
-
-<!-- Copyright Notice -- Not to be removed from this sample application -->
-<div id="copyright">
-&copy; 2016 – OXFORD ECONOMICS LTD – ALL RIGHTS RESERVED
-<p>
-To use the Global Data Workstation API you must first obtain an API Key.<br/>
-</p>
-<p>
-The API Key is authenticated by your organisation's subscription credentials and<br/>
-provides access only to databanks and variables authorised in the subscription.<br/>
-</p>
-<p>
-Any attempt to circumvent this authorisation and/or use another organistion's API Key will<br/>
-be in breach of the terms and conditions of your subscription contract.<br/>
-</p>
-<p>
-Note, the API does not return any data for unauthorised variable requests, and<br/>
-the API is throttled to prevent abuse and protect the main service.
-</p>
-<p>
-Please <a href="https://www.oxfordeconomics.com/about-us/sales-and-service/inquiries" target="_blank">contact Oxford Economics</a> if you require an API Key or have any technical enquiries.
-</p>
-</div>
-<!-- Copyright Notice -- Not to be removed from this sample application -->
-
-</body>
-</html>
