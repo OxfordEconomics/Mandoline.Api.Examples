@@ -33,33 +33,81 @@ function postHttpResource(path, resource) {
 	});
 };
 
-function login() {
+function postLogin(path, resource) {
 	var hostname = $("#Hostname").val();
-	var api_url = hostname + "/api" + "/user";
-	var user_data = {
-		UserName: $("#UserName").val(),
-		Password: $("#Password").val()
-	}
+	var api_url = hostname + "/api";
 	var api_key = $("#ApiKey").val();
+
+	var jsonResource = JSON.stringify(resource);
 	var apiHeader = { "Api-Key": api_key };
-	var jsonResource = JSON.stringify(user_data);
+	
 	$.support.cors = true;
+	
 	$.ajax({
-		url: encodeURI(api_url),
+		url: encodeURI(api_url + path),
 		type: 'POST',
 		headers: apiHeader,
 		data: jsonResource,
-		contentType: "application/json; charset=utf-8",
-		dataType: "json",
+		contentType: 'application/json; charset=utf-8',
+		dataType: 'json',
 		success: function(data,status){
 			$("#log").empty();
-			$("#ApiKey").val(data.ApiKey);
+			$("#log").append("<pre> Request count: " + ++requestCount + "<br/><hr/>" + JSON.stringify(data, null, 4) + "<br/>Status: " + status + "<hr/></pre>");
+			$("#ApiKey").val(data["ApiKey"]);
 		},
 		error: function(data,status){
-			alert(" Error Status: " + status);
+		    alert(" Error Status: " + status);
 		}
 	});
+};
+
+function getHttpResource(path) {
+	var hostname = $("#Hostname").val();
+	var api_url = hostname + "/api";
+	var api_key = $("#ApiKey").val();
+
+	var apiHeader = { "Api-Key": api_key };
 	
+	$.support.cors = true;
+	
+	$.ajax({
+		url: encodeURI(api_url + path),
+		type: 'GET',
+		headers: apiHeader,
+		contentType: 'application/json; charset=utf-8',
+		dataType: 'json',
+		success: function(data,status){
+			$("#log").empty();
+			$("#log").append("<pre> Request count: " + ++requestCount + "<br/><hr/>" + JSON.stringify(data, null, 4) + "<br/>Status: " + status + "<hr/></pre>");
+		},
+		error: function(data,status){
+		    alert(" Error Status: " + status);
+		}
+	});
+};
+
+function login() {
+    var user_data = {
+    	UserName: $("#user_name").val(),
+    	Password: $("#user_pass").val()
+    }
+    postLogin('/users', user_data);
+};
+
+function getUser() {
+    getHttpResource('/users/me');
+};
+
+function getDatabanks() {
+    getHttpResource('/databank');
+};
+
+function getVariables() {
+    getHttpResource('/variable/WDMacro');
+};
+
+function getRegions() {
+    getHttpResource('/region/WDMacro');
 };
 
 function getData(selection) {
@@ -102,7 +150,19 @@ var selectionQ =
 
 $(document).ready(function(){
     $("#btnLogin").click(function() {
-        login()
+    	login()
+    });
+    $("#btnGetUser").click(function() {
+    	getUser()
+    });
+    $("#btnGetDatabanks").click(function() {
+    	getDatabanks()
+    });
+    $("#btnGetVariables").click(function() {
+    	getVariables()
+    });
+    $("#btnGetRegions").click(function() {
+    	getRegions()
     });
     $("#btnPostA").click(function() {
         getData(selectionA)
@@ -136,15 +196,23 @@ body { background-color: lightgrey; font-family: Arial;}
 
 <h2>Global Data Workstation API Example</h2>
 
-<h3>User login</h3>
-User name: <input id = "UserName" style="width:150px;"/> Password: <input id = "Password" type="password" />
-<button id = "btnLogin">Log in</button><br/>
+<h3>Log in</h3>
+User: <input id = "user_name" value = "" style="width:197px;"/> 
+Password: <input type="password" id = "user_pass" value = ""/><br/>
 
-
+<button id = "btnLogin">Log in</button>
 <h3>Server &amp; API Authentication Key</h3>
 Hostname: <input id = "Hostname" value = "https://services.oxfordeconomics.com"/> API Key: <input id = "ApiKey" value = "ADD API KEY HERE"/>
 
-<h3>Example Requests</h3>
+<h3>Example Info Requests</h3>
+<button id = "btnGetDatabanks">Get databanks</button><br/>
+<button id = "btnGetRegions">Get regions (Macro databank)</button><br/>
+<button id = "btnGetVariables">Get variables (Macro databank)</button><br/>
+
+<h3>Example User Requests</h3>
+<button id = "btnGetUser">Get user</button><br/>
+
+<h3>Example Download Requests</h3>
 <button id = "btnPostA">Annual | All Measures | GBR, USA | GDP$, CPI | 2015-2021</button><br/>
 <button id = "btnPostQ">Quarterly | All Measures | GBR | GDP$ | 2015-2021</button><br/>
 <button id = "btnPostBoth">Both | All Measures | GBR | GDP$ | 2015-2021</button>
