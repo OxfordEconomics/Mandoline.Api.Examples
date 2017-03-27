@@ -42,10 +42,14 @@ var selectionQ =
 };
 
 // make post request to Mandoline API
-function postHttpResource(path, resource) {
+function postHttpResource(path, resource, resource_id="") {
 	var hostname = $("#Hostname").val();
 	var api_url = hostname + "/api";
 	var api_key = $("#ApiKey").val();
+	if (resource_id)
+	{
+		path = path + "/" + resource_id;
+	}
 
 	var jsonResource = JSON.stringify(resource);
 	var apiHeader = { "Api-Key": api_key };
@@ -321,54 +325,158 @@ function getData(selection) {
     postHttpResource('/download?includeMetadata=true', selection);
 };
 
+function downloadShaped() {
+    $("#log").empty();
+    var selection_id = $("#selection_id").val();
+    $("#log").append("Running shaped download for selection id " + selection_id + "...");
+    var shapeFormat = {
+	    Pivot: "false",
+	    StackedQuarters: "false"
+    }
+    postHttpResource('/shapeddownload', shapeFormat, selection_id);
+};
+
+function checkQueue(check_url, ready_url) {
+    var api_key = $("#ApiKey").val();
+    var apiHeader = { "Api-Key": api_key };
+    $.support.cors = true;
+    
+    $.ajax({
+    	url: encodeURI(check_url),
+    	type: 'GET',
+    	headers: apiHeader,
+    	contentType: 'application/json; charset=utf-8',
+    	dataType: 'json',
+    	success: function(data, status){
+		$("#log").empty();
+		if (data == true)
+		{
+			$("#log").append(
+				"<pre><br/>" 
+				+ "Download ready at: <a href=\"" 
+				+ ready_url
+				+ "\">Click here to download</a>"
+				+ "</pre>");
+		}
+		else
+		{
+			$("#log").append(
+				"<pre><br/>" 
+				+ "Download not yet ready."
+				+ "</pre>");
+		}
+	},
+    	error: function(data,status){
+    	    alert(" Error Status: " + status);
+    	    $("#log").empty();
+    	    $("#log").append("Error running request");
+	}
+    });
+
+}
+
+function queueDownload() {
+    $("#log").empty();
+    $("#log").append("Loading...");
+    var resource_id = $("#selection_id").val();
+    if (resource_id)
+    {
+    	selection_id = "/" + resource_id;
+    }
+    
+    var hostname = $("#Hostname").val();
+    var api_url = hostname + "/api";
+    var api_key = $("#ApiKey").val();
+    var apiHeader = { "Api-Key": api_key };
+    $.support.cors = true;
+    
+    $.ajax({
+    	url: encodeURI(api_url + '/queuedownload' + selection_id),
+    	type: 'GET',
+    	headers: apiHeader,
+    	contentType: 'application/json; charset=utf-8',
+    	dataType: 'json',
+    	success: function(data, status){
+    		$("#log").empty();
+    		$("#log").append("Success");
+
+		$("#btnCheckQueue").remove();
+
+		var newButton = $('<button />',
+		{
+			text: 'Check queue',
+			id: 'btnCheckQueue',
+			click: function()
+			{ 
+				checkQueue(data['ReadyUrl'], data['Url']); 
+			}
+		});	
+
+		$("#btnQueueDownload").after(newButton);
+
+    	},
+    	error: function(data,status){
+    	    alert(" Error Status: " + status);
+    	    $("#log").empty();
+    	    $("#log").append("Error running request");
+    	}
+    });
+};
+
 
 // add event handlers to the various buttons on our page
 $(document).ready(function(){
     $("#selection_id").val(SELECTION_ID);
+    $("#btnQueueDownload").click(function() {
+	    queueDownload();
+    });
+    $("#btnDownloadShaped").click(function() {
+	    downloadShaped();
+    });
     $("#btnCreateSelection").click(function() {
-	    createSelection()
+	    createSelection();
     });
     $("#btnUpdateSelection").click(function() {
-	    updateSelection()
+	    updateSelection();
     });
     $("#btnGetSelection").click(function() {
-	    getSelection()
+	    getSelection();
     });
     $("#btnLogin").click(function() {
-    	login()
+    	login();
     });
     $("#btnGetUser").click(function() {
-    	getUser()
+    	getUser();
     });
     $("#btnGetDatabanks").click(function() {
-    	getDatabanks()
+    	getDatabanks();
     });
     $("#btnGetVariables").click(function() {
-    	getVariables()
+    	getVariables();
     });
     $("#btnGetRegions").click(function() {
-    	getRegions()
+    	getRegions();
     });
     $("#btnGetPaged").click(function() {
-        getPagedData(selectionA, 0)
+        getPagedData(selectionA, 0);
     });
     $("#btnPostA").click(function() {
-        getData(selectionA)
+        getData(selectionA);
     });
-    $("#btnPostQ").click(function() {
-        getData(selectionQ)
-    });
-    $("#btnPostBoth").click(function() {
-		var selectionBoth = $.extend({}, selectionQ);
-		selectionBoth.Frequency = 'Both';
-        getData(selectionBoth)
-    });
+    // $("#btnPostQ").click(function() {
+    //     getData(selectionQ);
+    // });
+    // $("#btnPostBoth").click(function() {
+    //     var selectionBoth = $.extend({}, selectionQ);
+    //     selectionBoth.Frequency = 'Both';
+    //     getData(selectionBoth);
+    // });
     $("#btnPostCustom").click(function() {
 		var selectionCustom = $.extend({}, selectionA);
 		selectionCustom.Regions = [{ DatabankCode: 'WDMacro', 
 			RegionCode: $("#Location").val()}];
 		selectionCustom.Variables = [{ ProductTypeCode: 'WMC', 
 			VariableCode: $("#Indicator").val(), MeasureCodes: ['L'] }];
-        getData(selectionCustom)
+        getData(selectionCustom);
     });
 });
