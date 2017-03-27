@@ -30,29 +30,39 @@ root for full license information.
 	<div class="header">
 
 	<img id="logo" src="img/oelogo1.jpg" />
-	<h2>Global Data Workstation API Example</h2>
+	<h2>Global Data Workstation API Examples</h2>
 
 	</div>
 
 	<div class="left-div">
 
 		<h3>Log in</h3>
-		User: <input id = "user_name" value = "" style="width:197px;"/> 
-		Password: <input type="password" id = "user_pass" value = ""/><br/>
+		User: <input id = "user_name" value = "" style="width:175px;
+			margin-right: 15px;"/> 
+		Password: <input type="password" id = "user_pass" value = ""
+			style="width:175px;"/><br/>
 		
-		<p/>
 		<button id = "btnLogin">Log in</button>
-		<p/>
 
 		<h3>Server &amp; API Authentication Key</h3>
-		Hostname: <input id = "Hostname" 
+		Hostname: <input id = "Hostname" style="width: 175px;
+			margin-right: 15px;"
 			value = "https://services.oxfordeconomics.com"/> 
-		API Key: <input id = "ApiKey" value = "ADD API KEY HERE"/>
+		API Key: <input id = "ApiKey" placeholder = "ADD API KEY HERE"
+			style="width: 148px;"/>
 
 		<h3>Example Info Requests</h3>
 		<button id = "btnGetDatabanks">Get databanks</button><br/>
 		<button id = "btnGetRegions">Get regions (Macro databank)</button><br/>
 		<button id = "btnGetVariables">Get variables (Macro databank)</button><br/>
+	
+
+		<h3>Example Selection Requests</h3>
+		<button id = "btnCreateSelection">Create selection</button><br/><br/>
+		Selection Id: <input id = "selection_id" value = "" style="width:403px;"/> 
+		<button id = "btnGetSelection" title="Gets selection with id given above">Get selection</button><br/>
+		<button id = "btnUpdateSelection" title="Changes name of selection with id given above">
+			Update selection</button><br/>
 	
 
 	</div>
