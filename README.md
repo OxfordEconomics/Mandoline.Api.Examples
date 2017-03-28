@@ -9,15 +9,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 # Mandoline.Api.Examples
 
 ### C#:
-  - **README.md**: more detailed information about this solution and its requirements
-  - **../Client.Gui**: Windows form application, displaying example API calls in grid form
-  - **../Client.Repl**: Command line application, displaying calls in console
-  - **../Core**: the api call implementation
-  - **../Tests**: unit tests
+  - *README.md*: more detailed information about this solution and its requirements
+  - *../Client.Gui*: Windows form application, displaying example API calls in grid form
+  - *../Client.Repl*: Command line application, displaying calls in console
+  - *../Core*: the api call implementation
+  - *../Tests*: unit tests
 
 ### Python:
-  - **README.md**: more detailed information about these scripts and their requirements
-  - **../api_client.py**: sdk for making api calls
-  - **../api_example.py**: example implementations
+  - *README.md*: more detailed information about these scripts and their requirements
+  - *../api_client.py*: sdk for making api calls
+  - *../api_example.py*: example implementations
   
 ### JS:
+  - *index.html*: run the examples
+  - *js/api_examples.js*: example script code
