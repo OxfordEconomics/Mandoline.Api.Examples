@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!--
-<copyright file="AppConstants.cs" company="Oxford Economics">
+<copyright file="index.html" company="Oxford Economics">
 Copyright (c) 2017 Oxford Economics Ltd. All rights reserved.
 Licensed under the MIT License. See LICENSE file in the project
 root for full license information.
@@ -30,24 +30,26 @@ root for full license information.
 	<div class="header">
 
 	<img id="logo" src="img/oelogo1.jpg" />
-	<h2>Global Data Workstation API Example</h2>
+	<h2>Global Data Workstation API Examples</h2>
 
 	</div>
 
 	<div class="left-div">
 
 		<h3>Log in</h3>
-		User: <input id = "user_name" value = "" style="width:197px;"/> 
-		Password: <input type="password" id = "user_pass" value = ""/><br/>
+		User: <input id = "user_name" value = "" style="width:175px;
+			margin-right: 15px;"/> 
+		Password: <input type="password" id = "user_pass" value = ""
+			style="width:175px;"/><br/>
 		
-		<p/>
 		<button id = "btnLogin">Log in</button>
-		<p/>
 
 		<h3>Server &amp; API Authentication Key</h3>
-		Hostname: <input id = "Hostname" 
+		Hostname: <input id = "Hostname" style="width: 175px;
+			margin-right: 15px;"
 			value = "https://services.oxfordeconomics.com"/> 
-		API Key: <input id = "ApiKey" value = "ADD API KEY HERE"/>
+		API Key: <input id = "ApiKey" placeholder = "ADD API KEY HERE"
+			style="width: 148px;"/>
 
 		<h3>Example Info Requests</h3>
 		<button id = "btnGetDatabanks">Get databanks</button><br/>
@@ -55,6 +57,13 @@ root for full license information.
 		<button id = "btnGetVariables">Get variables (Macro databank)</button><br/>
 	
 
+		<h3>Example Selection Requests</h3>
+		<button id = "btnCreateSelection">Create selection</button><br/><br/>
+		Selection Id: <input id = "selection_id" value = "" style="width:403px;"/> 
+		<button id = "btnGetSelection" title="Gets selection with id given above">Get selection</button><br/>
+		<button id = "btnUpdateSelection" title="Changes name of selection with id given above">
+			Update selection</button><br/>
+	
 	</div>
 
 	<div class="right-div">
@@ -66,10 +75,7 @@ root for full license information.
 		<button id = "btnPostA">Annual | All Measures | GBR, USA 
 			| GDP$, CPI | 2015-2021</button><br/>
 		<button id = "btnGetPaged">Same as above (Paged response)</button><br/>
-		<button id = "btnPostQ">Quarterly | All Measures 
-			| GBR | GDP$ | 2015-2021</button><br/>
-		<button id = "btnPostBoth">Both | All Measures 
-			| GBR | GDP$ | 2015-2021</button>
+		<button id = "btnDownloadShaped">Shaped download (uses selection id)</button><br/>
 
 		<h3>Simple Custom Request</h3>
 		Location: <input id = "Location" value = "DEU"/> 
@@ -78,7 +84,6 @@ root for full license information.
 		<button id = "btnPostCustom">Annual | Level Values 
 			| CUSTOM Variable | 2015-2021</button>
 		<p/>
-
 	</div> 
 
 	<div style="clear:both"></div>
