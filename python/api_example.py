@@ -298,7 +298,7 @@ if __name__ == '__main__':
     # update_selection_test(client, SELECTION_ID)
     # databank_test(client, sampleSelect['DatabankCode'])
     # get_selection_test(client, SELECTION_ID)
-    # get_user_test(client)
+    get_user_test(client)
     # delete_selection_test(client)
     # get_variables_test(client)
     # get_regions_test(client)
