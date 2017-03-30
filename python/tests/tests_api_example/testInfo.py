@@ -46,6 +46,16 @@ class UserGetValid(TestCase):
         test_result = api_example.get_user_test(self.client)
         self.assertNotEqual(test_result, None)
 
+class LocationTreeGetValid(TestCase):
+    def runTest(self):
+        test_result = api_example.location_tree_test(self.client)
+        self.assertNotEqual(test_result, None)
+
+class IndicatorTreeGetValid(TestCase):
+    def runTest(self):
+        test_result = api_example.indicator_tree_test(self.client)
+        self.assertNotEqual(test_result, None)
+
 
 if __name__ == '__main__':
     unittest.main()
