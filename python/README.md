@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
   - copy AppSettings.config.example -> AppSettings.config
   - insert corresponding values for API_TOKEN
-  - if using a base url other than the default, inser this as well for BASE_URL
+  - if using a base url other than the default, insert this as well for BASE_URL
 
 ### 1. Dependencies:
 api_client.py: SDK for making Mandoline API calls
