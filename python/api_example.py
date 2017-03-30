@@ -7,7 +7,7 @@
 import sys
 import os
 sys.path.append(os.getcwd())
-from api_client import Client
+from api_client import Client, StagingClient
 import getpass
 import datetime
 from requests import exceptions
@@ -15,8 +15,6 @@ import time
 import json
 
 SELECTION_ID = '2c140fbb-4624-4004-927e-621734f3cb93'
-API_KEY = '566dbac8-d0c2-4248-a0ed-ca3a8ce4df5c'
-BAD_URL_BASE = 'https://services.oxfordeconomics.com/api-error'
 
 # deprecated sample selection
 # sampleSelect = {
@@ -248,18 +246,23 @@ def delete_selection_test(client):
 
 
 # demos the queue download endpoint
-def queue_download_test(client, selection):
+def queue_download_test(client, selection, timeout=sys.maxsize):
     print('\n\n--Demo: queue download--')
     q_download = client.queue_download([selection])
     print(json.dumps(q_download, indent=3, sort_keys=True))
 
-    while client.check_queue(q_download['ReadyUrl']) == False:
+    time_elapsed = 0
+    success = client.check_queue(q_download['ReadyUrl'])
+    while success == False and time_elapsed < timeout:
         time.sleep(5)
         print('Checking to see whether download is ready...')
+        success = client.check_queue(q_download['ReadyUrl'])
+        time_elapsed += 1
 
-    print('Download ready at: {}'.format(q_download['Url']))
+    if time_elapsed < timeout:
+        print('Download ready at: {}'.format(q_download['Url']))
 
-    return q_download
+    return time_elapsed
 
 
 
@@ -317,13 +320,13 @@ def indicator_tree_test(client):
 
 if __name__ == '__main__':
     # baseline functinoality demo
-    client = StagingClient(API_KEY)
+    client = Client()
 
     # login_test(client)
     # create_selection_test(client)
     # download_test(client, SELECTION_ID)
     # update_selection_test(client, SELECTION_ID)
-    # databank_test(client, sampleSelect['DatabankCode'])
+    databank_test(client, sampleSelect['DatabankCode'])
     # get_selection_test(client, SELECTION_ID)
     # get_user_test(client)
     # delete_selection_test(client)

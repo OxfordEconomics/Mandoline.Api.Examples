@@ -8,16 +8,30 @@
 import requests
 import json
 import datetime
+import xml.etree.ElementTree
 
 
 STAGING_BASE = 'http://oeweu3w-pwb-001.cloudapp.net/api'
 DEFAULT_BASE = 'https://services.oxfordeconomics.com/api'
+CONFIG_FILENAME = 'AppSettings.config'
 
 class Client(object):
 
     def __init__(self, api_key = "", base_url = DEFAULT_BASE):
         self.api_key = api_key
         self._base_url = base_url
+        if api_key == '':
+            self.import_constants()
+
+
+    # imports app constants using local configuration file at CONFIG_FILENAME
+    def import_constants(self):
+       root_element = xml.etree.ElementTree.parse(CONFIG_FILENAME).getroot() 
+       for element in root_element.findall('add'):
+            if (element.get('key') == 'API_TOKEN'):
+                self.api_key = element.get('value')
+            elif (element.get('key') == 'BASE_URL'):
+                self._base_url = element.get('value') + '/api'
 
 
     # returns: dictionary of headers for use with http requests
@@ -254,5 +268,3 @@ class StagingClient(Client):
     def __init__(self, api_key = "", base_url = STAGING_BASE):
         self.api_key = api_key
         self._base_url = base_url
-
-

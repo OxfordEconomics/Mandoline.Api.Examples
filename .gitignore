@@ -9,6 +9,7 @@
 AppSettings.config
 *.swp
 *~
+!AppSettings.config.example
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
