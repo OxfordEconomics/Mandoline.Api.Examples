@@ -42,7 +42,8 @@ var selectionQ =
 };
 
 // make post request to Mandoline API
-function postHttpResource(path, resource, resource_id="") {
+function postHttpResource(path, resource, resource_id) {
+	resource_id = resource_id || '';
 	var hostname = $("#Hostname").val();
 	var api_url = hostname + "/api";
 	var api_key = $("#ApiKey").val();
@@ -80,7 +81,9 @@ function postHttpResource(path, resource, resource_id="") {
 };
 
 // make post request to Mandoline API
-function putHttpResource(path, resource, resource_id="") {
+function putHttpResource(path, resource, resource_id) {
+	resource_id = resource_id || '';
+
 	if (resource_id)
 	{
 		resource_id = "/" + resource_id;
@@ -199,7 +202,9 @@ function postLogin(path, resource) {
 };
 
 // make get request to Mandoline API
-function getHttpResource(path, resource_id="") {
+function getHttpResource(path, resource_id) {
+	resource_id = resource_id || "";
+
 	if (resource_id)
 	{
 		resource_id = "/" + resource_id;
@@ -213,7 +218,7 @@ function getHttpResource(path, resource_id="") {
 	
 	$.support.cors = true;
 	
-	$.ajax({
+	var request = $.ajax({
 		url: encodeURI(api_url + path + resource_id),
 		type: 'GET',
 		headers: apiHeader,
@@ -223,10 +228,11 @@ function getHttpResource(path, resource_id="") {
 			$("#log").empty();
 			$("#log").append("<pre><br/>" + JSON.stringify(data, null, 4) + "</pre>");
 		},
-		error: function(data,status){
-		    alert(" Error Status: " + status);
+		error: function(data, textStatus, errorThrown){
 		    $("#log").empty();
 		    $("#log").append("Error running request");
+		    $("#log").append("<br />Resource id: " + resource_id);
+		    $("#log").append("<br />Response headers: " + request.getAllResponseHeaders());
 		}
 	});
 };
@@ -293,6 +299,12 @@ function updateSelection() {
 		    $("#log").append("Error running request");
 		}
 	});
+};
+
+function fileDownload() {
+    $("#log").empty();
+    $("#log").append("Loading...");
+    getHttpResource('/filedownload', $("#selection_id").val());
 };
 
 function getUser() {
@@ -427,6 +439,9 @@ function queueDownload() {
 // add event handlers to the various buttons on our page
 $(document).ready(function(){
     $("#selection_id").val(SELECTION_ID);
+    $("#btnDownloadFile").click(function() {
+	    fileDownload();
+    });
     $("#btnQueueDownload").click(function() {
 	    queueDownload();
     });
