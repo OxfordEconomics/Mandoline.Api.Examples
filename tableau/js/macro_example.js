@@ -1,31 +1,50 @@
 var API_URL = "https://services.oxfordeconomics.com";
-// var API_KEY; = "566dbac8-d0c2-4248-a0ed-ca3a8ce4df5c";
+var DEFAULT_SELECTION = "2c140fbb-4624-4004-927e-621734f3cb93";
 
-var simple_macro_selection = 
+function postLogin(username, password)
 {
-    Name: 'Simple macro selection',
-    DatabankCode: 'WDMacro',
-    MeasureCode: 'L',
-    StartYear: 2016,
-    EndYear: 2026,
-    StackedQuarters: 'false',
-    Frequency: 'Annual',
-    Sequence: 'EarliestToLatest',
-    Precision: 1,
-    Order: 'LocationIndicator',
-    GroupingMode: 'false',
-    Regions: [ ],
-    Variables: [{ ProductTypeCode: 'WMC', VariableCode: 'GDP$', MeasureCodes: ['PY'] }, 
-	        { ProductTypeCode: 'WMC', VariableCode: 'CPI', MeasureCodes: ['PY'] } ] 
-};
+        var hostname = API_URL;
+        var api_url = hostname + "/api";
+	var user_data = {
+	    UserName: username,
+	    Password: password
+	};
 
-function runQuery(table, doneCallback, api_key) 
+        var jsonResource = JSON.stringify(user_data);
+        $.support.cors = true;
+
+
+        $.ajax({
+                url: encodeURI(hostname + '/api/users'),
+                type: 'POST',
+                data: jsonResource,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function(data, status){
+			$("#ApiKey").val(data["ApiKey"]);
+			$("#log").empty();
+                },
+                error: function(data,status){
+			$("#log").empty();
+			$("#log").append("Error: couldn't validate credentials");
+                }
+        });
+}
+
+
+function runQuery(table, doneCallback, api_key, selection_id) 
 {
+	if (!selection_id || !api_key)
+	{
+		$("#log").empty();
+		$("#log").append("Error: missing api_key or selection_id");
+	}
+
 	var api_url = API_URL;
 	var jsonResource = JSON.stringify(simple_macro_selection);
 	var apiHeader = { "Api-Key": api_key };
 	$.support.cors = true;
-	var resource_address = encodeURI( api_url + '/api/download?includeMetadata=true');
+	var resource_address = encodeURI( api_url + '/api/download/' + selection_id + '?includeMetadata=true');
 	$.ajax({
 		url: resource_address,
 		type: 'POST',
@@ -114,39 +133,31 @@ connector.getSchema = function(schemaCallback)
 	schemaCallback([tableSchema]);
 }
 
-connector.getData = function(table, doneCallback) {
-        var hostname = API_URL;
-        var api_url = hostname + "/api";
-	var user_data = {
-	    UserName: tableau.username,
-	    Password: tableau.password
-	};
-        var jsonResource = JSON.stringify(user_data);
-        $.support.cors = true;
 
-
-        $.ajax({
-                url: encodeURI(hostname + '/api/users'),
-                type: 'POST',
-                data: jsonResource,
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                success: function(data, status){
-			runQuery(table, doneCallback, data["ApiKey"]);
-                },
-                error: function(data,status){
-                    alert("Error logging in. Please check your credentials and try again.");
-                }
-        });
+connector.getData = function(table, doneCallback) 
+{
+	runQuery(table, doneCallback, tableau.password, tableau.connectionData);
 }
+
+
 
 tableau.registerConnector(connector);
 
-$(document).ready(function(){
+$(document).ready(function()
+{
+	$("#Selection").val(DEFAULT_SELECTION);
+	$("#loginButton").click(function()
+	{
+		$("#log").empty();
+		$("#log").append("Validating credentials...");
+		tableau.username = $("#Username").val();
+		tableau.connectionData = $("#Selection").val();
+		postLogin(tableau.username, $("#Password").val());
+	});
+
 	$("#submitButton").click(function()
 	{
-		tableau.username = $("#Username").val();
-		tableau.password = $("#Password").val();
+		tableau.password = $("#ApiKey").val();
 		tableau.connectionName = "Global data workstation";
 		tableau.submit();
 	});
