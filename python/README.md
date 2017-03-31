@@ -9,14 +9,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 # Mandoline.Api.Examples/Python
 
 ### Contents:
+0. Configuration
 1. Dependencies
 2. Scripts and files
+
+### 0. Configuration:
+
+  - copy AppSettings.config.example -> AppSettings.config
+  - insert corresponding values for API_TOKEN
+  - if using a base url other than the default, insert this as well for BASE_URL
 
 ### 1. Dependencies:
 api_client.py: SDK for making Mandoline API calls
 
-- *Requests*: the Python HTTP request library
-- *Json*, for de-/serializing Json objects
+  - *Requests*: the Python HTTP request library
+  - *Json*, for de-/serializing Json objects
 
 ### 2. Scripts and files:
 

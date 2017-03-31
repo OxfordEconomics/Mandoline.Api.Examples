@@ -15,8 +15,6 @@ import time
 import json
 
 SELECTION_ID = '2c140fbb-4624-4004-927e-621734f3cb93'
-API_KEY = '566dbac8-d0c2-4248-a0ed-ca3a8ce4df5c'
-BAD_URL_BASE = 'https://services.oxfordeconomics.com/api-error'
 
 # deprecated sample selection
 # sampleSelect = {
@@ -48,6 +46,7 @@ BAD_URL_BASE = 'https://services.oxfordeconomics.com/api-error'
 sampleSelect = {
     "ContactId": "jamesmills@oxfordeconomics.com",
     "DatabankCode": "WDMacro",
+    "StartYear": 2015,
     "EndYear": 2021,
     "Format": 0,
     "Frequency": "Annual",
@@ -88,18 +87,12 @@ sampleSelect = {
     "StartYear": 2015,
     "Variables": [
         {
-            "MeasureCodes": [
-                "L"
-            ],
+            "MeasureCodes": ["L"],
             "ProductTypeCode": "WMC",
             "VariableCode": "CPI"
         },
         {
-            "MeasureCodes": [
-                "L",
-                "PY",
-                "DY"
-            ],
+            "MeasureCodes": ["L","PY","DY"],
             "ProductTypeCode": "WMC",
             "VariableCode": "GDP$"
         }
@@ -125,6 +118,8 @@ def databank_test(client, db_id=''):
             regions = client.get_databank_regions(databank_list['DatabankCode'])
             print(len(regions['Regions']))
 
+    return databank_list
+
 
 
 # demos the GET functionality of the Selection endpoint 
@@ -133,6 +128,8 @@ def get_selection_test(client, s_id):
 
     selection = client.get_selection(s_id)
     print(json.dumps(selection, indent=3, sort_keys=True))
+
+    return selection
 
 
 # demos the POST functionality of the User endpoint 
@@ -159,6 +156,8 @@ def get_user_test(client):
     for selection in user['SavedSelections']:
         print('\t{0} - Id:{1}'.format(selection['Name'], selection['Id']))
 
+    return user
+
 
 # demos the PUT functionality of the Selection endpoint 
 def update_selection_test(client, s_id):
@@ -173,19 +172,20 @@ def update_selection_test(client, s_id):
     selection = client.get_selection(s_id)
     print('\tUpdated selection: {0}'.format(selection['Name']))
 
+    return selection
+
 
 
 # demos the POST functionality of the Download endpoint 
 def download_test(client, s_id):
     print('\n\n--Demo: download Selection--')
 
-    # download by id
-    #r = client.get_download(s_id)
-
     # download by selection
-    r = client.get_download(client.get_selection(s_id))
+    download_data = client.get_download(client.get_selection(s_id))
     print('\nFirst entry in response:')
-    print(json.dumps(r[0], indent=3, sort_keys=True))
+    print(json.dumps(download_data[0], indent=3, sort_keys=True))
+
+    return download_data
 
 
 # demos the POST functionality of the Selection endpoint, creating a new selection
@@ -193,8 +193,10 @@ def create_selection_test(client):
     print('\n\n--Demo: create selection--')
     sampleSelect['Name'] = ('SampleSelection - (Created: ' + 
             '{:%Y/%m/%d %H:%M}'.format(datetime.datetime.now()) + ')')
-    r = client.create_selection(sampleSelect)
-    print(json.dumps(r, indent=3, sort_keys=True))
+    new_selection = client.create_selection(sampleSelect)
+    print(json.dumps(new_selection, indent=3, sort_keys=True))
+
+    return new_selection
 
 
 # demos the GET functionality of the Variable endpoint
@@ -204,6 +206,8 @@ def get_variables_test(client):
     for var in var_list['Variables']:
         print('\t{}'.format(var['VariableName']))
 
+    return var_list
+
 
 # demos the GET functionality of the Region endpoint
 def get_regions_test(client):
@@ -212,6 +216,8 @@ def get_regions_test(client):
     for reg in reg_list['Regions']:
         print('\t{}'.format(reg['Name']))
 
+    return reg_list
+
 
 # demos the DELETE functionality of the Selection endpoint, creating a new selection
 # and then deleting it
@@ -219,40 +225,56 @@ def delete_selection_test(client):
     print('\n\n--Demo: delete selection--')
     sampleSelect['Name'] = ('SampleSelection - (Created: ' + 
             '{:%Y/%m/%d %H:%M}'.format(datetime.datetime.now()) + ')')
-    r = client.create_selection(sampleSelect)
-    s_id = r['Id']
+    new_selection = client.create_selection(sampleSelect)
+    s_id = new_selection['Id']
     print('\tSelection created with id: {}'.format(s_id))
 
     print('\tDeleting selection with id: {}...'.format(s_id))
-    r = client.delete_selection(s_id)
+    delete_response = client.delete_selection(s_id)
 
     print('\tAttempting to get selection with id: {}...'.format(s_id))
     try:
-        r = client.get_selection(s_id)
-        print('\tSelection still exists with id:{}'.format(r['Id']))
+        initial_selection = client.get_selection(s_id)
+        print('\tSelection still exists with id:{}'.format(initial_selection['Id']))
+        return False
+
     except exceptions.HTTPError: 
         print('\tSelection deleted successfully')
+        return True
+
+    
 
 
 # demos the queue download endpoint
-def queue_download_test(client, selection):
+def queue_download_test(client, selection, timeout=sys.maxsize):
     print('\n\n--Demo: queue download--')
     q_download = client.queue_download([selection])
     print(json.dumps(q_download, indent=3, sort_keys=True))
 
-    while client.check_queue(q_download['ReadyUrl']) == False:
+    time_elapsed = 0
+    success = client.check_queue(q_download['ReadyUrl'])
+    while success == False and time_elapsed < timeout:
         time.sleep(5)
         print('Checking to see whether download is ready...')
+        success = client.check_queue(q_download['ReadyUrl'])
+        time_elapsed += 1
 
-    print('Download ready at: {}'.format(q_download['Url']))
+    if time_elapsed < timeout:
+        print('Download ready at: {}'.format(q_download['Url']))
+
+    return time_elapsed
 
 
 
 # demos the file download endpoint
 def file_download_test(client, selection):
     print('\n\n--Demo: file download--')
-    f_download = client.download_file([selection])
-    print(f_download['data'])
+    file_download = client.download_file([selection])
+    print(file_download['data'])
+
+    return file_download
+
+
 
 
 
@@ -264,41 +286,49 @@ def shaped_download_test(client, s_id):
             'StackedQuarters': 'true',
             'ShowAnnual': 'true' 
             }
-    s_download = client.get_shaped_download(s_id, config)
+    shaped_download = client.get_shaped_download(s_id, config)
     print('Results, first three rows')
-    print(json.dumps(s_download[:3], indent=3, sort_keys=True))
+    print(json.dumps(shaped_download[:3], indent=3, sort_keys=True))
+
+    return shaped_download
 
 
 # demos the tree endpoint for locations
 def location_tree_test(client):
     print('\n\n--Demo: location tree--')
-    l_tree = client.get_location_tree('WDMacro')
-    for q in l_tree:
-        for c in q['Children']:
-            print('\t{0} - direct nodes: {1}'.format(c['Name'], len(c['Children']) if 'Children' in c else 'NA'))
+    location_tree = client.get_location_tree('WDMacro')
+    for node in location_tree:
+        for child_node in node['Children']:
+            print('\t{0} - direct nodes: {1}'.format(child_node['Name'], 
+                len(child_node['Children']) if 'Children' in child_node else 'NA'))
+
+    return location_tree
 
 
 # demos the tree endpoint for indicators
 def indicator_tree_test(client):
     print('\n\n--Demo: indicator tree--')
-    i_tree = client.get_indicators_tree('WDMacro')
-    for q in i_tree:
-        print('  {}'.format(q['Name']))
-        for child in q['Children']:
-            print('\t{0} - direct nodes: {1}'.format(child['Name'], len(child['Children']) if 'Children' in child else 'NA'))
+    indicator_tree = client.get_indicators_tree('WDMacro')
+    for node in indicator_tree:
+        print('  {}'.format(node['Name']))
+        for child_node in node['Children']:
+            print('\t{0} - direct nodes: {1}'.format(child_node['Name'], 
+                len(child_node['Children']) if 'Children' in child_node else 'NA'))
+
+    return indicator_tree
 
 
 if __name__ == '__main__':
     # baseline functinoality demo
-    client = StagingClient(API_KEY)
+    client = Client()
 
     # login_test(client)
     # create_selection_test(client)
     # download_test(client, SELECTION_ID)
     # update_selection_test(client, SELECTION_ID)
-    # databank_test(client, sampleSelect['DatabankCode'])
+    databank_test(client, sampleSelect['DatabankCode'])
     # get_selection_test(client, SELECTION_ID)
-    get_user_test(client)
+    # get_user_test(client)
     # delete_selection_test(client)
     # get_variables_test(client)
     # get_regions_test(client)

@@ -9,8 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 # Mandoline.Api.Examples/C#
 
 ### Contents:
+0. Configuration
 1. Dependencies
 2. Projects and files
+
+### 0. Configuration:
+
+  - copy AppSettings.config.example -> AppSettings.config
+  - insert corresponding values for API_TOKEN
+  - if using a base url other than the default, insert this as well for BASE_URL
 
 ### 1. Dependencies:
 Core: implementation of Mandoline API examples
