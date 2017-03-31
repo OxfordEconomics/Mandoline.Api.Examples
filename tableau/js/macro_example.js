@@ -48,9 +48,9 @@ connector.getSchema = function(schemaCallback)
 
 connector.getData = function(table, doneCallback) {
 	var jsonResource = JSON.stringify(simple_macro_selection);
-	var apiHeader = { "Api-Key": API_KEY };
+	var apiHeader = { "Api-Key": $("#ApiKey").val() };
 	$.support.cors = true;
-	var resource_address = encodeURI(API_URL + '/download?includeMetadata=true');
+	var resource_address = encodeURI($("#Hostname").val() + '/download?includeMetadata=true');
 
 	$.ajax({
 		url: resource_address,
@@ -84,6 +84,13 @@ tableau.registerConnector(connector);
 $(document).ready(function(){
 	$("#submitButton").click(function()
 	{
+		// var xmlData = $.ajax({
+		// 	url: "AppSettings.config",
+		// 	async: false
+		// }).responseText;
+		// $("#log").val(xmlData);
+		
+
 		tableau.connectionName = "Global data workstation";
 		tableau.submit();
 	});

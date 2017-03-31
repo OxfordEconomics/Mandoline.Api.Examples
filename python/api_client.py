@@ -31,7 +31,9 @@ class Client(object):
             if (element.get('key') == 'API_TOKEN'):
                 self.api_key = element.get('value')
             elif (element.get('key') == 'BASE_URL'):
-                self._base_url = element.get('value') + '/api'
+                xml_base_url = element.get('value')
+                if xml_base_url != '':
+                    self._base_url = element.get('value') + '/api'
 
 
     # returns: dictionary of headers for use with http requests
