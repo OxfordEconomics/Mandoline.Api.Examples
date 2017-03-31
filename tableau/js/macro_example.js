@@ -15,7 +15,7 @@ var simple_macro_selection =
     Order: 'IndicatorLocation',
     GroupingMode: 'false',
     Regions: [],
-    Variables: [{ ProductTypeCode: 'WMC', VariableCode: 'GDP$', MeasureCodes: ['PY'] }] 
+    Variables: [{ ProductTypeCode: 'WMC', VariableCode: 'GDP$', MeasureCodes: ['PY'] }, { ProductTypeCode: 'WMC', VariableCode: 'CPI', MeasureCodes: ['PY'] }] 
 };
 
 var connector = tableau.makeConnector();
@@ -34,12 +34,16 @@ connector.getSchema = function(schemaCallback)
 		{ 
 			id: "GDP",
 			dataType: tableau.dataTypeEnum.float
+		},
+		{ 
+			id: "CPI",
+			dataType: tableau.dataTypeEnum.float
 		}
 	];
 
 	var tableSchema = {
 		id: "simplemacropull",
-		alias: "2016 GDP by country",
+		alias: "2016 GDP & CPI by country",
 		columns: cols
 	};
 
@@ -66,7 +70,8 @@ connector.getData = function(table, doneCallback) {
 				tableData.push({
 					"LocationCode": data[i]['LocationCode'],
 					"CountryName": data[i]['Metadata']['Location'],
-					"GDP": data[i]['AnnualData']['2016']
+					"GDP": data[i]['AnnualData']['2016'],
+					"CPI": data[i]['AnnualData']['2016']
 				});
 			}
 
