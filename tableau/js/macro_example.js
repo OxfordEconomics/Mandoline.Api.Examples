@@ -1,5 +1,10 @@
 var API_URL = "https://services.oxfordeconomics.com";
 var DEFAULT_SELECTION = "2c140fbb-4624-4004-927e-621734f3cb93";
+var MEASURE_CODES = {
+	"L": "Level values",
+	"PY": "% change y/y",
+	"DY": "Difference y/y"
+};
 
 function postLogin(username, password)
 {
@@ -41,15 +46,13 @@ function runQuery(table, doneCallback, api_key, selection_id)
 	}
 
 	var api_url = API_URL;
-	var jsonResource = JSON.stringify(simple_macro_selection);
 	var apiHeader = { "Api-Key": api_key };
 	$.support.cors = true;
 	var resource_address = encodeURI( api_url + '/api/download/' + selection_id + '?includeMetadata=true');
 	$.ajax({
 		url: resource_address,
-		type: 'POST',
+		type: 'GET',
 		headers: apiHeader,
-		data: jsonResource,
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'json',
 		success: function(data, status){
@@ -60,30 +63,34 @@ function runQuery(table, doneCallback, api_key, selection_id)
 				var variable_code = data[i]['VariableCode'];
 
 				var keys = Object.keys(data[i]['AnnualData']);
-
 				for(x = 0; x < keys.length; x++)
 				{
 					console.log("adding " + keys[x] + " " + variable_code + " data row");
-
-					if (variable_code == 'GDP$'){
-						gdp_value = data[i]['AnnualData'][keys[x]];
-						cpi_value = null;
-					}
-					else if (variable_code == 'CPI'){
-						cpi_value = data[i]['AnnualData'][keys[x]];
-						gdp_value = null;
-					}
-					else
-					{
-						gdp_value = null;
-						cpi_value = null;
-					}
 					tableData.push({
 						"LocationCode": data[i]['LocationCode'],
-						"CountryName": data[i]['Metadata']['Location'],
+						"Location": data[i]['Metadata']['Location'],
+						"VariableCode": data[i]['VariableCode'],
+						"MeasureCode": MEASURE_CODES[data[i]['MeasureCode']],
 						"Year": keys[x],
-						"GDP": gdp_value,
-						"CPI": cpi_value
+						"YearValue": data[i]['AnnualData'][keys[x]],
+						"Quarter": null,
+						"QuarterValue": null
+					});
+				}
+
+				keys = Object.keys(data[i]['QuarterlyData']);
+				for(x = 0; x < keys.length; x++)
+				{
+					console.log("adding " + keys[x] + " " + variable_code + " data row");
+					tableData.push({
+						"LocationCode": data[i]['LocationCode'],
+						"Location": data[i]['Metadata']['Location'],
+						"VariableCode": data[i]['VariableCode'],
+						"MeasureCode": MEASURE_CODES[data[i]['MeasureCode']],
+						"Quarter": keys[x],
+						"QuarterValue": data[i]['QuarterlyData'][keys[x]],
+						"Year": null,
+						"YearValue": null
 					});
 				}
 			}
@@ -92,7 +99,7 @@ function runQuery(table, doneCallback, api_key, selection_id)
 			doneCallback();
 		},
 		error: function(data, status){
-		    console.log("Error using host=" + api_url + " with key=" + api_key);
+		    console.log("Error with host " + api_url + "...");
 		}
 	});
 };
@@ -101,32 +108,22 @@ var connector = tableau.makeConnector();
 
 connector.getSchema = function(schemaCallback)
 {
-	var cols = [
-		{ 
-			id: "LocationCode",
-			dataType: tableau.dataTypeEnum.string 
-		},
-		{ 
-			id: "CountryName",
-			dataType: tableau.dataTypeEnum.string
-		},
-		{ 
-			id: "Year",
-			dataType: tableau.dataTypeEnum.int
-		},
-		{ 
-			id: "GDP",
-			dataType: tableau.dataTypeEnum.float
-		},
-		{ 
-			id: "CPI",
-			dataType: tableau.dataTypeEnum.float
-		}
-	];
+	var cols = [];
 
+	// add default columns
+	cols.push({ id: "LocationCode", dataType: tableau.dataTypeEnum.string });
+	cols.push({ id: "Location", dataType: tableau.dataTypeEnum.string });
+	cols.push({ id: "VariableCode", dataType: tableau.dataTypeEnum.string });
+	cols.push({ id: "MeasureCode", dataType: tableau.dataTypeEnum.string });
+	cols.push({ id: "Quarter", dataType: tableau.dataTypeEnum.int });
+	cols.push({ id: "QuarterValue", dataType: tableau.dataTypeEnum.float });
+	cols.push({ id: "Year", dataType: tableau.dataTypeEnum.int });
+	cols.push({ id: "YearValue", dataType: tableau.dataTypeEnum.float });
+
+	// set up table meta data based on selection object
 	var tableSchema = {
-		id: "simplemacropull",
-		alias: "2016 GDP & CPI by country",
+		id: "selection_data",
+		alias: "Selection data from the Oxford Economics Global Data Workstation",
 		columns: cols
 	};
 
