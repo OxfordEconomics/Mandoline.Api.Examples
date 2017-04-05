@@ -15,6 +15,7 @@ import time
 import json
 
 SELECTION_ID = '2c140fbb-4624-4004-927e-621734f3cb93'
+API_KEY = ''
 
 # deprecated sample selection
 # sampleSelect = {
@@ -181,7 +182,7 @@ def download_test(client, s_id):
     print('\n\n--Demo: download Selection--')
 
     # download by selection
-    download_data = client.get_download(client.get_selection(s_id))
+    download_data = client.get_download(s_id)
     print('\nFirst entry in response:')
     print(json.dumps(download_data[0], indent=3, sort_keys=True))
 
@@ -248,7 +249,7 @@ def delete_selection_test(client):
 # demos the queue download endpoint
 def queue_download_test(client, selection, timeout=sys.maxsize):
     print('\n\n--Demo: queue download--')
-    q_download = client.queue_download([selection])
+    q_download = client.queue_download(selection)
     print(json.dumps(q_download, indent=3, sort_keys=True))
 
     time_elapsed = 0
@@ -269,7 +270,7 @@ def queue_download_test(client, selection, timeout=sys.maxsize):
 # demos the file download endpoint
 def file_download_test(client, selection):
     print('\n\n--Demo: file download--')
-    file_download = client.download_file([selection])
+    file_download = client.download_file(selection, "csv")
     print(file_download['data'])
 
     return file_download
@@ -278,13 +279,13 @@ def file_download_test(client, selection):
 
 
 
-# demos the queue download endpoint
+# demos the shaped download endpoint
 def shaped_download_test(client, s_id):
     print('\n\n--Demo: shaped download--')
     config = {
             'pivot': 'true',
             'StackedQuarters': 'true',
-            'ShowAnnual': 'true' 
+            'ShowAnnual': 'true'
             }
     shaped_download = client.get_shaped_download(s_id, config)
     print('Results, first three rows')
@@ -321,12 +322,13 @@ def indicator_tree_test(client):
 if __name__ == '__main__':
     # baseline functinoality demo
     client = Client()
+    API_KEY = client.api_key
 
     # login_test(client)
     # create_selection_test(client)
     # download_test(client, SELECTION_ID)
     # update_selection_test(client, SELECTION_ID)
-    databank_test(client, sampleSelect['DatabankCode'])
+    # databank_test(client, sampleSelect['DatabankCode'])
     # get_selection_test(client, SELECTION_ID)
     # get_user_test(client)
     # delete_selection_test(client)

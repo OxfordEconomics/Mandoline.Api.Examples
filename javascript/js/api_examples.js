@@ -343,7 +343,8 @@ function downloadShaped() {
     $("#log").append("Running shaped download for selection id " + selection_id + "...");
     var shapeFormat = {
 	    Pivot: "false",
-	    StackedQuarters: "false"
+	    StackedQuarters: "false",
+	    Frequency: "Annual"
     }
     postHttpResource('/shapeddownload', shapeFormat, selection_id);
 };
@@ -438,7 +439,10 @@ function queueDownload() {
 
 // add event handlers to the various buttons on our page
 $(document).ready(function(){
+    $.support.cors = true;
+
     $("#selection_id").val(SELECTION_ID);
+
     $("#btnDownloadFile").click(function() {
 	    fileDownload();
     });
