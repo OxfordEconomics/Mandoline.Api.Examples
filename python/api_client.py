@@ -199,6 +199,8 @@ class Client(object):
         if isinstance(selection, str):
             r = requests.get(self._url('queuedownload', selection), headers=self._header() )
         else:
+            if not isinstance(selection, list):
+                selection = [selection]
             payload = {
                     "format": file_format,
                     "name": name, 
@@ -220,6 +222,8 @@ class Client(object):
         if isinstance(selection, str):
             r = requests.get(self._url('filedownload', selection), headers=self._header() )
         else:
+            if not isinstance(selection, list):
+                selection = [selection]
             payload = {
                     "format": file_format,
                     "name": name, 
