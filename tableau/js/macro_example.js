@@ -1,3 +1,11 @@
+
+// <copyright file="index.html" company="Oxford Economics">
+// Copyright (c) 2017 Oxford Economics Ltd. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project
+// root for full license information.
+// </copyright>
+
+
 var API_URL = "https://services.oxfordeconomics.com";
 var DEFAULT_SELECTION = "2c140fbb-4624-4004-927e-621734f3cb93";
 var MEASURE_CODES = {
@@ -6,6 +14,10 @@ var MEASURE_CODES = {
 	"DY": "Difference y/y"
 };
 
+
+// takes the user credentials provided by the user and attempts to 
+// log in. success changes the api key input field to the one returned
+// in the user object
 function postLogin(username, password)
 {
         var hostname = API_URL;
@@ -37,6 +49,13 @@ function postLogin(username, password)
 }
 
 
+// populates the tableau table with data based on an http request
+// to the download endpoint. takes the table and doneCallback from
+// the getData method and the api_key and selection_id, which are
+// hopefully present when the submit button is pressed.
+//
+// this function is responsible for generating each row entry
+// in the data table and then running the callback
 function runQuery(table, doneCallback, api_key, selection_id) 
 {
 	if (!selection_id || !api_key)
@@ -106,6 +125,8 @@ function runQuery(table, doneCallback, api_key, selection_id)
 
 var connector = tableau.makeConnector();
 
+// called by tableau to set up the data table, which it will later 
+// populate using the getData method of the user's connection object
 connector.getSchema = function(schemaCallback)
 {
 	var cols = [];
@@ -131,11 +152,13 @@ connector.getSchema = function(schemaCallback)
 }
 
 
+// called by tableau to populate the data table.
+// this one simply takes the tableau.password and tableau.connectionData
+// fields and passes them to the run query function
 connector.getData = function(table, doneCallback) 
 {
 	runQuery(table, doneCallback, tableau.password, tableau.connectionData);
 }
-
 
 
 tableau.registerConnector(connector);
@@ -147,11 +170,18 @@ $(document).ready(function()
 	{
 		$("#log").empty();
 		$("#log").append("Validating credentials...");
+
+		// in order to save authentication information between steps
+		// they must be set in the tableau object's values. typically,
+		// the authetnication token or api key is kept in the 
+		// tableau.password variable
 		tableau.username = $("#Username").val();
 		tableau.connectionData = $("#Selection").val();
 		postLogin(tableau.username, $("#Password").val());
 	});
 
+	// assumes the user has authenticated and then runs the query based
+	// on the selection id provided
 	$("#submitButton").click(function()
 	{
 		tableau.password = $("#ApiKey").val();
