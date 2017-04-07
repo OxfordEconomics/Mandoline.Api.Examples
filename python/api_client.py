@@ -155,7 +155,7 @@ class Client(object):
             return r.json()
         else:
             r = requests.post(self._download_url(page, pagesize), 
-                    headers=self._header(), json=selection)
+                    headers=self._header(), data=json.dumps(selection))
             r.raise_for_status() # in case of bad request: pass http exceptions up to calling func
             return r.json()
 

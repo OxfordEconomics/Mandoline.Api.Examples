@@ -176,9 +176,7 @@ def get_user_test(client):
     print('\n\n--Demo: get user--')
 
     user = client.get_user()
-    print('  {0} {1} - Saved selections:'.format(user['FirstName'], user['LastName']))
-    for selection in user['SavedSelections']:
-        print('\t{0} - Id:{1}'.format(selection['Name'], selection['Id']))
+    print(json.dumps(user, indent=3, sort_keys=True))
 
     return user
 
