@@ -326,10 +326,38 @@ function updateSelection() {
 	});
 };
 
+
+function getFromWebTasks(path, resource_id) {
+	var payload = {
+		"api_resource_id": resource_id,
+		"api_key": $("#ApiKey").val()
+	}
+
+	$.support.cors = true;
+	
+	var request = $.ajax({
+		url: 'https://wt-ec7f34285e98bfc354c433be6ef8e7c3-0.run.webtask.io/file-download',
+		type: 'POST',
+		data: JSON.stringify(payload),
+		contentType: 'application/json; charset=utf-8',
+		dataType: 'json',
+		success: function(data, status){
+			$("#log").empty();
+			$("#log").append("<pre><br/><a href=" + JSON.stringify(data, null, 4) + 
+				">Click here to download your file.</a></pre>");
+		},
+		error: function(data, textStatus, errorThrown){
+		    $("#log").empty();
+		    $("#log").append("Error: " + errorThrown);
+		}
+	});
+};
+
+
 function fileDownload() {
     $("#log").empty();
     $("#log").append("Loading...");
-    getHttpResource('/filedownload', $("#selection_id").val());
+    getFromWebTasks('/filedownload', $("#selection_id").val());
 };
 
 function getUser() {
