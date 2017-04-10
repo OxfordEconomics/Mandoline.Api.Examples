@@ -4,44 +4,42 @@
 // root for full license information.
 // </copyright>
 
+
+// used as the default selection id
 const SELECTION_ID = '2c140fbb-4624-4004-927e-621734f3cb93'
 
-// sample selections
-var selectionA =
+// sample selection: when run, this will download GDP and inflation
+// data for the UK and United States from the year 2015 to 2021 from
+// the global macro databank
+var sample_selection =
 {
-    Name: 'API - test',
-    DatabankCode: 'WDMacro',
-    MeasureCode: 'L',
-    StartYear: 2015,
-    EndYear: 2021,
-    StackedQuarters: 'false',
-    Frequency: 'Annual',
-    Sequence: 'EarliestToLatest',
-    Precision: 1,
-    Order: 'IndicatorLocation',
-    GroupingMode: 'false',
-    Regions: [{ DatabankCode: 'WDMacro', RegionCode: 'GBR' }, { DatabankCode: 'WDMacro', RegionCode: 'USA' }],
-    Variables: [{ ProductTypeCode: 'WMC', VariableCode: 'GDP$', MeasureCodes: ['L', 'PY', 'DY'] }, { ProductTypeCode: 'WMC', VariableCode: 'CPI', MeasureCodes: ['L'] }]
+	Name: 'Sample selection template',
+	DatabankCode: 'WDMacro',
+	MeasureCode: 'L',
+	StartYear: 2015,
+	EndYear: 2021,
+	StackedQuarters: 'false',
+	Frequency: 'Annual',
+	Sequence: 'EarliestToLatest',
+	Precision: 1,
+	Order: 'IndicatorLocation',
+	GroupingMode: 'false',
+	Regions: [{ DatabankCode: 'WDMacro', RegionCode: 'GBR' }, 
+		{ DatabankCode: 'WDMacro', RegionCode: 'USA' }],
+	
+	// note: the measure code field in each variable object
+	// L - Flat annual value
+	// PY - Percentage year/year
+	// DY - Difference year to year
+	Variables: [{ ProductTypeCode: 'WMC', VariableCode: 'GDP$', MeasureCodes: ['L', 'PY', 'DY'] }, 
+		{ ProductTypeCode: 'WMC', VariableCode: 'CPI', MeasureCodes: ['L'] }]
 };
 
-var selectionQ =
-{
-    Name: 'API - test',
-    DatabankCode: 'WDMacro',
-    MeasureCode: 'L',
-    StartYear: 2015,
-    EndYear: 2021,
-    StackedQuarters: 'false',
-    Frequency: 'Quarterly',
-    Sequence: 'EarliestToLatest',
-    Precision: 1,
-    Order: 'IndicatorLocation',
-    GroupingMode: 'false',
-    Regions: [{ DatabankCode: 'WDMacro', RegionCode: 'GBR' }],
-    Variables: [{ ProductTypeCode: 'WMC', VariableCode: 'GDP$', MeasureCodes: ['L', 'D', 'DY', 'P', 'PY'] }]
-};
 
-// make post request to Mandoline API
+// makes a POST request to any endpoint in the API. taks as its
+// arguments the path of the endpoint, a resource to be sent in
+// the post body, and an optional resource id, which, when set, 
+// is passed along in the url of the request
 function postHttpResource(path, resource, resource_id) {
 	resource_id = resource_id || '';
 	var hostname = $("#Hostname").val();
@@ -80,7 +78,10 @@ function postHttpResource(path, resource, resource_id) {
 	});
 };
 
-// make post request to Mandoline API
+// makes a PUT request to any endpoint in the API. taks as its
+// arguments the path of the endpoint, a resource to be sent in
+// the post body, and an optional resource id, which, when set, 
+// is passed along in the url of the request
 function putHttpResource(path, resource, resource_id) {
 	resource_id = resource_id || '';
 
@@ -116,7 +117,11 @@ function putHttpResource(path, resource, resource_id) {
 	});
 };
 
-// get download broken up into pages
+// this function downloads a single page of data from the download
+// endpoint and then calls itself recursively. it takes as its argument 
+// a selection object and a page index. it continues, incrementing the 
+// requested page number, till the POST request returns a set of data 
+// with less than five entries
 function getPagedData(resource, page) {
 	var hostname = $("#Hostname").val();
 	var api_url = hostname + "/api";
@@ -184,6 +189,10 @@ function postLogin(path, resource) {
 		data: jsonResource,
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'json',
+
+		// on success, post data to the log and update
+		// the api key input field as well for future
+		// API requests
 		success: function(data,status){
 			$("#log").empty();
 			$("#log").append(
@@ -201,7 +210,9 @@ function postLogin(path, resource) {
 	});
 };
 
-// make get request to Mandoline API
+// makes a simple get request to any of our API endpoints
+// takes an optional id as input, which is appended to the end
+// of the request url appropriately
 function getHttpResource(path, resource_id) {
 	resource_id = resource_id || "";
 
@@ -237,6 +248,9 @@ function getHttpResource(path, resource_id) {
 	});
 };
 
+// takes the username and password provided by the user and attempts
+// to log in using the users endpoint, setting the current api key
+// and returning the user object information
 function login() {
     $("#log").empty();
     $("#log").append("Loading...");
@@ -248,6 +262,7 @@ function login() {
     $("#user_pass").val("")
 };
 
+// gets a selection based on the selection id provided by the user
 function getSelection() {
     select_id = $("#selection_id").val();
     $("#log").empty();
@@ -255,8 +270,10 @@ function getSelection() {
     getHttpResource('/savedselections', select_id);
 };
 
+// creates a selection based on the sample_selection object near the
+// beginning of this document
 function createSelection() {
-    var selection_object = selectionA;
+    var selection_object = sample_selection;
     var dt = new Date();
     selection_object.Name ="Selection - (Updated: " + dt.getFullYear() + '/'
 	+ (dt.getMonth() + 1) + "/"
@@ -267,6 +284,8 @@ function createSelection() {
     postHttpResource('/savedselections', selection_object);
 };
 
+// takes the selection based on the id provided by the user and updates
+// its name to reflect the time it was changed
 function updateSelection() {
 	$("#log").empty();
 	$("#log").append("Loading...");
@@ -278,13 +297,19 @@ function updateSelection() {
 	var apiHeader = { "Api-Key": api_key };
 	
 	$.support.cors = true;
-	
+
+	// first, we get the original selection, so that all other values
+	// remain unchanged	
 	$.ajax({
 		url: encodeURI(url),
 		type: 'GET',
 		headers: apiHeader,
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'json',
+
+		// now that we have a full selection object, we update the name
+		// value according to current time and make the PUT request
+		// to the savedselections endpoint
 		success: function(data, status){
 		    var dt = new Date();
 		    data.Name ="Selection - (Updated: " + dt.getFullYear() + '/'
@@ -301,10 +326,40 @@ function updateSelection() {
 	});
 };
 
+
+// the server side of this method is a Webtask application, source code available
+// at ../webtask/file-download.js
+function getFromWebTasks(path, resource_id) {
+	var payload = {
+		"api_resource_id": resource_id,
+		"api_key": $("#ApiKey").val()
+	}
+
+	$.support.cors = true;
+	
+	var request = $.ajax({
+		url: 'https://wt-ec7f34285e98bfc354c433be6ef8e7c3-0.run.webtask.io/file-download',
+		type: 'POST',
+		data: JSON.stringify(payload),
+		contentType: 'application/json; charset=utf-8',
+		dataType: 'json',
+		success: function(data, status){
+			$("#log").empty();
+			$("#log").append("<pre><br/><a href=" + JSON.stringify(data, null, 4) + 
+				">Click here to download your file.</a></pre>");
+		},
+		error: function(data, textStatus, errorThrown){
+		    $("#log").empty();
+		    $("#log").append("Error: " + errorThrown);
+		}
+	});
+};
+
+
 function fileDownload() {
     $("#log").empty();
     $("#log").append("Loading...");
-    getHttpResource('/filedownload', $("#selection_id").val());
+    getFromWebTasks('/filedownload', $("#selection_id").val());
 };
 
 function getUser() {
@@ -349,6 +404,10 @@ function downloadShaped() {
     postHttpResource('/shapeddownload', shapeFormat, selection_id);
 };
 
+// this function takes the ReadyUrl from the queuedownload endpoint
+// and uses it as a target URL for a GET request, which in turn 
+// returns either a true or false value indicating whether the 
+// download is ready
 function checkQueue(check_url, ready_url) {
     var api_key = $("#ApiKey").val();
     var apiHeader = { "Api-Key": api_key };
@@ -388,9 +447,13 @@ function checkQueue(check_url, ready_url) {
 
 }
 
+// queues a download using the selction with the id provided by the user
+// and generates a button, which allows for polling to see whether the
+// download is ready
 function queueDownload() {
     $("#log").empty();
     $("#log").append("Loading...");
+
     var resource_id = $("#selection_id").val();
     if (resource_id)
     {
@@ -409,12 +472,15 @@ function queueDownload() {
     	headers: apiHeader,
     	contentType: 'application/json; charset=utf-8',
     	dataType: 'json',
+
+	// the data returned from this request includes a ReadyUrl for
+	// checking to see whether or not the download is ready
     	success: function(data, status){
     		$("#log").empty();
     		$("#log").append("Success");
-
 		$("#btnCheckQueue").remove();
 
+		// set up a button for checking the new queued download
 		var newButton = $('<button />',
 		{
 			text: 'Check queue',
@@ -477,25 +543,17 @@ $(document).ready(function(){
     	getRegions();
     });
     $("#btnGetPaged").click(function() {
-        getPagedData(selectionA, 0);
+        getPagedData(sample_selection, 0);
     });
     $("#btnPostA").click(function() {
-        getData(selectionA);
+        getData(sample_selection);
     });
-    // $("#btnPostQ").click(function() {
-    //     getData(selectionQ);
-    // });
-    // $("#btnPostBoth").click(function() {
-    //     var selectionBoth = $.extend({}, selectionQ);
-    //     selectionBoth.Frequency = 'Both';
-    //     getData(selectionBoth);
-    // });
     $("#btnPostCustom").click(function() {
-		var selectionCustom = $.extend({}, selectionA);
-		selectionCustom.Regions = [{ DatabankCode: 'WDMacro', 
-			RegionCode: $("#Location").val()}];
-		selectionCustom.Variables = [{ ProductTypeCode: 'WMC', 
-			VariableCode: $("#Indicator").val(), MeasureCodes: ['L'] }];
+	var selectionCustom = $.extend({}, sample_selection);
+	selectionCustom.Regions = [{ DatabankCode: 'WDMacro', 
+		RegionCode: $("#Location").val()}];
+	selectionCustom.Variables = [{ ProductTypeCode: 'WMC', 
+		VariableCode: $("#Indicator").val(), MeasureCodes: ['L'] }];
         getData(selectionCustom);
     });
 });
