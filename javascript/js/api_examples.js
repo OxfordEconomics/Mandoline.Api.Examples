@@ -327,6 +327,8 @@ function updateSelection() {
 };
 
 
+// the server side of this method is a Webtask application, source code available
+// at ../webtask/file-download.js
 function getFromWebTasks(path, resource_id) {
 	var payload = {
 		"api_resource_id": resource_id,
