@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<!--
+<copyright file="index.html" company="Oxford Economics">
+Copyright (c) 2017 Oxford Economics Ltd. All rights reserved.
+Licensed under the MIT License. See LICENSE file in the project
+root for full license information.
+</copyright> 
+-->
+
+<html>
+
+<head>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+	</script>
+
+	<script src="js/manage_selections.js"></script>
+
+	<link href="css/styles.css" type="text/css" rel="stylesheet" />
+
+	<link href="http://www.oxfordeconomics.com/Modules/OxfordEconomics.Common/Styles/font-awesome.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+	<div class="main">
+
+	<div class="header">
+
+	<img id="logo" src="img/oelogo1.jpg" />
+	<h2>Manage saved selections</h2>
+
+	</div>
+
+	<div class="left-div">
+
+		<h3>Log in</h3>
+		User: <input id = "user_name" value = "" style="width:175px;
+			margin-right: 15px;"/> 
+		Password: <input type="password" id = "user_pass" value = ""
+			style="width:175px;"/><br/>
+		
+		<button id = "btnLogin" style="margin-top:15px;">Log in</button>
+	</div>
+
+	<div class="right-div">
+
+		<h3>Server &amp; API Authentication Key</h3>
+		Hostname: <input id = "Hostname" style="width: 175px;
+			margin-right: 15px;"
+			value = "https://services.oxfordeconomics.com"/>
+		API Key: <input id = "ApiKey" placeholder = "ADD API KEY HERE"
+			style="width: 148px;"/>
+			
+	</div> 
+
+	<div style="clear:both"></div>
+
+	<div id = "selections_div" style="display:none;"></div>
+
+	<div id = "log" style="margin-top:15px;"></div>
+
+	</div>
+
+	</div>
+
+</body>
+
+</html>
