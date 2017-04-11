@@ -5,9 +5,6 @@
 // </copyright>
 
 
-// used as the default selection id
-const SELECTION_ID = '2c140fbb-4624-4004-927e-621734f3cb93'
-
 // sample selection: when run, this will download GDP and inflation
 // data for the UK and United States from the year 2015 to 2021 from
 // the global macro databank
@@ -506,8 +503,6 @@ function queueDownload() {
 // add event handlers to the various buttons on our page
 $(document).ready(function(){
     $.support.cors = true;
-
-    $("#selection_id").val(SELECTION_ID);
 
     $("#btnDownloadFile").click(function() {
 	    fileDownload();

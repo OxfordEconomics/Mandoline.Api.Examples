@@ -16,7 +16,7 @@ import json
 
 # a sample selection id for running downloads and
 # get, delete, and update example functions
-SELECTION_ID = '2c140fbb-4624-4004-927e-621734f3cb93'
+SELECTION_ID = 'abe27d8e-209a-4a18-a545-df0e81427fe5'
 API_KEY = ''
 
 # a sample selection dictionary for running downloads 
