@@ -15,37 +15,156 @@ var MEASURE_CODES = {
 };
 
 
+// takes a list of selections and populates an interface with the
+// options the user can run in this query
+function setupSelections(selections_list)
+{
+	if (!selections_list)
+	{
+		return;
+	}
+
+	for (i = 0; i < selections_list.length; i++)
+	{
+		var new_selection = $('<input />',
+		{
+			id: 'radio_' + i,
+			type: 'radio',
+			name: 'selection_choice',
+			value: selections_list[i]['Id']
+		});
+
+		$("#selections_div").append(new_selection);
+
+		var new_label = $('<label />', 
+		{
+			id: 'label_' + i
+		});
+
+		$("#radio_"+i).after(new_label);
+		$("#label_"+i).append(" " + selections_list[i]['Name'] + "<br />");
+	}
+
+	var new_selection = $('<input />',
+	{
+		id: 'radio_other',
+		type: 'radio',
+		name: 'selection_choice',
+		value: 'other' 
+	});
+	$("#selections_div").append(new_selection);
+
+	var new_label = $('<label />', 
+	{
+		id: 'label_other'
+	});
+	$("#radio_other").after(new_label);
+	$("#label_other").append(" Other: ");
+
+	var new_input = $('<input />',
+	{
+		id: "input_other",
+		placeholder: "enter selection id"
+	});	
+	$("#label_other").append(new_input);
+
+
+	$('#submitButton').css('display','block');
+	$('#query_label').css('display','block');
+}
+
+
+// checks for user's selection choice and returns its Id
+function getSelectionId()
+{
+	var checked_radio = $("input[name=selection_choice]:checked").val();
+
+	if (checked_radio != 'other')
+	{
+		return checked_radio;
+	}
+
+	return $("#input_other").val();
+}
+
+
+
 // takes the user credentials provided by the user and attempts to 
 // log in. success changes the api key input field to the one returned
-// in the user object
-function postLogin(username, password)
+// in the user object and populates the list of available selections
+function postLogin(username, password, input_key)
 {
+	$("#selections_div").empty();
+	$("#selections_div").css("display", "none");
+	$("#query_label").css("display", "none");
+	$("#submitButton").css("display", "none");
+
         var hostname = API_URL;
         var api_url = hostname + "/api";
-	var user_data = {
-	    UserName: username,
-	    Password: password
-	};
 
-        var jsonResource = JSON.stringify(user_data);
+	if (input_key)
+	{
+		$("#log").append("Validating by key...");
+
+		var headers = 
+		{
+			"Api-Key": input_key
+		};
+
+		$.ajax({
+			url: encodeURI(hostname + '/api/users/me'),
+			type: 'GET',
+			headers: headers,
+			contentType: 'application/json; charset=utf-8',
+			dataType: 'json',
+			success: function(data, status){
+				$("#ApiKey").val(data["ApiKey"]);
+				$("#log").empty();
+				setupSelections(data['SavedSelections']);
+				$("#selections_div").css("display", "block");
+				$("#query_label").css("display", "block");
+				$("#submitButton").css("display", "block");
+			},
+			error: function(data,status){
+				$("#log").empty();
+				$("#log").append("Error: couldn't validate credentials");
+			}
+		});
+	}
+	else
+	{
+		$("#log").append("Validating by credentials...");
+
+		var user_data = {
+		    UserName: username,
+		    Password: password
+		};
+
+		var jsonResource = JSON.stringify(user_data);
+
+		$.ajax({
+			url: encodeURI(hostname + '/api/users'),
+			type: 'POST',
+			data: jsonResource,
+			contentType: 'application/json; charset=utf-8',
+			dataType: 'json',
+			success: function(data, status){
+				$("#ApiKey").val(data["ApiKey"]);
+				$("#log").empty();
+				setupSelections(data['SavedSelections']);
+				$("#selections_div").css("display", "block");
+				$("#query_label").css("display", "block");
+				$("#submitButton").css("display", "block");
+			},
+			error: function(data,status){
+				$("#log").empty();
+				$("#log").append("Error: couldn't validate credentials");
+			}
+		});
+	}
+
         $.support.cors = true;
 
-
-        $.ajax({
-                url: encodeURI(hostname + '/api/users'),
-                type: 'POST',
-                data: jsonResource,
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                success: function(data, status){
-			$("#ApiKey").val(data["ApiKey"]);
-			$("#log").empty();
-                },
-                error: function(data,status){
-			$("#log").empty();
-			$("#log").append("Error: couldn't validate credentials");
-                }
-        });
 }
 
 
@@ -169,21 +288,20 @@ $(document).ready(function()
 	$("#loginButton").click(function()
 	{
 		$("#log").empty();
-		$("#log").append("Validating credentials...");
 
 		// in order to save authentication information between steps
 		// they must be set in the tableau object's values. typically,
 		// the authetnication token or api key is kept in the 
 		// tableau.password variable
 		tableau.username = $("#Username").val();
-		tableau.connectionData = $("#Selection").val();
-		postLogin(tableau.username, $("#Password").val());
+		postLogin(tableau.username, $("#Password").val(), $("#ApiKey").val());
 	});
 
 	// assumes the user has authenticated and then runs the query based
 	// on the selection id provided
 	$("#submitButton").click(function()
 	{
+		tableau.connectionData = getSelectionId();
 		tableau.password = $("#ApiKey").val();
 		tableau.connectionName = "Global data workstation";
 		tableau.submit();
