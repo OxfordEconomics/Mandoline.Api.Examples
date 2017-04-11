@@ -7,7 +7,7 @@
 
 
 var API_URL = "https://services.oxfordeconomics.com";
-var DEFAULT_SELECTION = "2c140fbb-4624-4004-927e-621734f3cb93";
+var DEFAULT_SELECTION = "847ef5ee-5b83-458d-b9e8-292ff7e93db0";
 var MEASURE_CODES = {
 	"L": "Level values",
 	"PY": "% change y/y",
