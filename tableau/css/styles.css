@@ -1,3 +1,61 @@
 h2 {
    margin-bottom: 7px;
 }
+
+
+body { 
+	background-color: lightgrey; 
+	font-family: Arial;
+	}
+
+.main { 
+	background-color: #FEFEFE;
+	margin-top: -15px;
+	padding: 50px;
+	padding-top: 15px;
+	padding-right:15px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 1125px;
+	overflow: hidden;
+	}
+
+.middle-div {
+	width: 285px;
+	margin-left: 15px;
+	float: left;
+	}
+	
+.right-div {
+	width: 285px;
+	padding-right: 15px;
+	margin-left: 15px;
+	float: left;
+	}
+
+.left-div {
+	width: 300px;
+	float: left;
+}
+
+.header {
+	width: 1065px;
+	overflow: hidden;
+	margin-bottom: 25px;
+}
+
+.header h2 {
+	font-size:35px;
+	margin-top: 60px;
+	float: right;
+}
+
+#copyright {
+	font-size: 12px;
+	}
+
+#logo {
+	float: left;
+	margin-left: -28px;
+}
+
