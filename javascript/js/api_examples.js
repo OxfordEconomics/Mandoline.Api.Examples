@@ -37,7 +37,7 @@ var sample_selection =
 // arguments the path of the endpoint, a resource to be sent in
 // the post body, and an optional resource id, which, when set, 
 // is passed along in the url of the request
-function postHttpResource(path, resource, resource_id) {
+function postHttpResource(path, resource, resource_id, callback) {
 	resource_id = resource_id || '';
 	var hostname = $("#Hostname").val();
 	var api_url = hostname + "/api";
@@ -66,6 +66,10 @@ function postHttpResource(path, resource, resource_id) {
 					+ JSON.stringify(data, null, 4) 
 					+ "</pre>"
 					);
+			if (callback)
+			{
+				callback(data);
+			}
 		},
 		error: function(data,status){
 		    alert(" Error Status: " + status);
@@ -278,7 +282,10 @@ function createSelection() {
 	+ dt.getHours() + ":" + dt.getMinutes() + ")";
     $("#log").empty();
     $("#log").append("Creating selection...");
-    postHttpResource('/savedselections', selection_object);
+    postHttpResource('/savedselections', selection_object, null, function(data)
+    {
+	    $("#selection_id").val(data['Id']);
+    });
 };
 
 // takes the selection based on the id provided by the user and updates
@@ -500,55 +507,129 @@ function queueDownload() {
 };
 
 
+
+// checks to makes sure api key isn't blank. creates
+// alert to notify the user if it is. returns true/false
+// based on presence/absence
+function checkKey()
+{
+	var return_status = true;
+	if (!$("#ApiKey").val())
+	{
+		return_status = false;
+		alert("Error: please enter an API key");
+	}
+	return return_status;
+}
+
+
+// checks to makes sure selection id isn't blank. creates
+// alert to notify the user if it is. returns true/false
+// based on presence/absence
+function checkSelection()
+{
+	return_status = true;
+	if (!$("#selection_id").val())
+	{
+		return_status = false;
+		alert("Error: please enter a selection id");
+	}
+	if (!checkKey())
+	{
+		return_status = false;
+	}
+	return return_status;
+}
+
+
 // add event handlers to the various buttons on our page
 $(document).ready(function(){
     $.support.cors = true;
 
     $("#btnDownloadFile").click(function() {
-	    fileDownload();
+	    if (checkSelection())
+	    {
+		    fileDownload();
+	    }
     });
     $("#btnQueueDownload").click(function() {
-	    queueDownload();
+	    if (checkSelection())
+	    {
+		    queueDownload();
+	    }
     });
     $("#btnDownloadShaped").click(function() {
-	    downloadShaped();
+	    if (checkSelection())
+	    {
+		    downloadShaped();
+	    }
     });
     $("#btnCreateSelection").click(function() {
-	    createSelection();
+	    if (checkKey())
+	    {
+		    createSelection();
+	    }
     });
     $("#btnUpdateSelection").click(function() {
-	    updateSelection();
+	    if (checkSelection())
+	    {
+		    updateSelection();
+	    }
     });
     $("#btnGetSelection").click(function() {
-	    getSelection();
+	    if (checkSelection())
+	    {
+		    getSelection();
+	    }
     });
     $("#btnLogin").click(function() {
     	login();
     });
     $("#btnGetUser").click(function() {
-    	getUser();
+	    if (checkKey())
+	    {
+		getUser();
+	    }
     });
     $("#btnGetDatabanks").click(function() {
-    	getDatabanks();
+	    if (checkKey())
+	    {
+		getDatabanks();
+	    }
     });
     $("#btnGetVariables").click(function() {
-    	getVariables();
+	    if (checkKey())
+	    {
+		getVariables();
+	    }
     });
     $("#btnGetRegions").click(function() {
-    	getRegions();
+	    if (checkKey())
+	    {
+		getRegions();
+	    }
     });
     $("#btnGetPaged").click(function() {
-        getPagedData(sample_selection, 0);
+	    if (checkKey())
+	    {
+		getPagedData(sample_selection, 0);
+	    }
     });
     $("#btnPostA").click(function() {
-        getData(sample_selection);
+	    if (checkKey())
+	    {
+		getData(sample_selection);
+	    }
     });
     $("#btnPostCustom").click(function() {
-	var selectionCustom = $.extend({}, sample_selection);
-	selectionCustom.Regions = [{ DatabankCode: 'WDMacro', 
-		RegionCode: $("#Location").val()}];
-	selectionCustom.Variables = [{ ProductTypeCode: 'WMC', 
-		VariableCode: $("#Indicator").val(), MeasureCodes: ['L'] }];
-        getData(selectionCustom);
+	    if (checkKey())
+	    {
+		var selectionCustom = $.extend({}, sample_selection);
+		selectionCustom.Regions = [{ DatabankCode: 'WDMacro', 
+			RegionCode: $("#Location").val()}];
+		selectionCustom.Variables = [{ ProductTypeCode: 'WMC', 
+			VariableCode: $("#Indicator").val(), MeasureCodes: ['L'] }];
+		getData(selectionCustom);
+	    }
     });
 });
