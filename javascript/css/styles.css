@@ -3,12 +3,17 @@ button {
 	width: 500px; 
 	height: 40px; 
 	padding: 5px;
+	margin-bottom:7px;
 	}
 
 body { 
 	background-color: lightgrey; 
 	font-family: Arial;
 	}
+
+input {
+	margin-bottom: 7px;
+}
 
 .main { 
 	margin-top: -15px;
