@@ -15,6 +15,61 @@ var MEASURE_CODES = {
 };
 
 
+
+// makes a simple get request to any of our API endpoints
+// takes an optional id as input, which is appended to the end
+// of the request url appropriately
+function getHttpResource(path, resource_id, callback) {
+        resource_id = resource_id || "";
+
+        if (resource_id)
+        {
+                resource_id = "/" + resource_id;
+        }
+
+        var hostname = $("#Hostname").val();
+        var api_url = hostname + "/api";
+        var api_key = $("#ApiKey").val();
+
+        var apiHeader = { "Api-Key": api_key };
+
+        $.support.cors = true;
+
+        var request = $.ajax({
+                url: encodeURI(api_url + path + resource_id),
+                type: 'GET',
+                headers: apiHeader,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function(data, status){
+			callback(data);
+                },
+                error: function(data, textStatus, errorThrown){
+			callback(data);
+                }
+        });
+};
+
+
+// gets the selection information from the savedselections endpoint using
+// the given selection id
+function fillQueryInfo(id)
+{
+	return function()
+	{
+		$("#log").empty();
+		$("#log").append("Fetching selection information for s_id=" + id);
+		$("#query_info").empty();
+		getHttpResource('/savedselections', id, function(data)
+		{
+                	$("#log").empty();
+			$("#query_info").append('<pre>' + JSON.stringify(data, null, 3)
+		       		+ '</pre>');	
+		});
+	}	
+}
+
+
 // takes a list of selections and populates an interface with the
 // options the user can run in this query
 function setupSelections(selections_list)
@@ -31,7 +86,7 @@ function setupSelections(selections_list)
 			id: 'radio_' + i,
 			type: 'radio',
 			name: 'selection_choice',
-			value: selections_list[i]['Id']
+			value: selections_list[i]['Id'],
 		});
 
 		$("#selections_div").append(new_selection);
@@ -43,6 +98,8 @@ function setupSelections(selections_list)
 
 		$("#radio_"+i).after(new_label);
 		$("#label_"+i).append(" " + selections_list[i]['Name'] + "<br />");
+
+		$("#radio_"+i).click(fillQueryInfo(selections_list[i]['Id']));
 	}
 
 	var new_selection = $('<input />',
@@ -50,13 +107,13 @@ function setupSelections(selections_list)
 		id: 'radio_other',
 		type: 'radio',
 		name: 'selection_choice',
-		value: 'other' 
+		value: 'other'
 	});
 	$("#selections_div").append(new_selection);
 
 	var new_label = $('<label />', 
 	{
-		id: 'label_other'
+		id: 'label_other',
 	});
 	$("#radio_other").after(new_label);
 	$("#label_other").append(" Other: ");
@@ -70,7 +127,6 @@ function setupSelections(selections_list)
 
 
 	$('#submitButton').css('display','block');
-	$('#query_label').css('display','block');
 }
 
 
@@ -96,7 +152,6 @@ function postLogin(username, password, input_key)
 {
 	$("#selections_div").empty();
 	$("#selections_div").css("display", "none");
-	$("#query_label").css("display", "none");
 	$("#submitButton").css("display", "none");
 
         var hostname = API_URL;
@@ -122,7 +177,6 @@ function postLogin(username, password, input_key)
 				$("#log").empty();
 				setupSelections(data['SavedSelections']);
 				$("#selections_div").css("display", "block");
-				$("#query_label").css("display", "block");
 				$("#submitButton").css("display", "block");
 			},
 			error: function(data,status){
@@ -153,7 +207,6 @@ function postLogin(username, password, input_key)
 				$("#log").empty();
 				setupSelections(data['SavedSelections']);
 				$("#selections_div").css("display", "block");
-				$("#query_label").css("display", "block");
 				$("#submitButton").css("display", "block");
 			},
 			error: function(data,status){
