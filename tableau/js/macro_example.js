@@ -11,7 +11,10 @@ var DEFAULT_SELECTION = "847ef5ee-5b83-458d-b9e8-292ff7e93db0";
 var MEASURE_CODES = {
 	"L": "Level values",
 	"PY": "% change y/y",
-	"DY": "Difference y/y"
+	"DY": "Difference y/y",
+	"P": "Percentage q/q",
+	"D": "Difference q/q",
+	"GR": "Annualized value"
 };
 
 

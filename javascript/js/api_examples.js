@@ -28,6 +28,9 @@ var sample_selection =
 	// L - Flat annual value
 	// PY - Percentage year/year
 	// DY - Difference year to year
+	// P - Percentage quarter/quarter
+	// D - Difference quarter to quarter
+	// GR - Annualized data
 	Variables: [{ ProductTypeCode: 'WMC', VariableCode: 'GDP$', MeasureCodes: ['L', 'PY', 'DY'] }, 
 		{ ProductTypeCode: 'WMC', VariableCode: 'CPI', MeasureCodes: ['L'] }]
 };

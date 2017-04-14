@@ -57,6 +57,9 @@ sample_selection = {
     #   L:  level values
     #   PY: percentage year/year
     #   DY: difference year to year
+    #   P: percentage quarter/quarter
+    #   D: difference quarter to quarter 
+    #   GR: annualized
     "MeasureCode": "L",
     "Name": "Selection - Updated: 3/16/2017 11:00:50 AM",
 
