@@ -7,7 +7,8 @@
 // -->
 
 var view = (function view() 
-{/*<html>
+{/*
+<html>
 <head>
 	<title>Macro databank example</title>
 	<meta http-equiv="Cache-Control" content="no-store" />
@@ -24,18 +25,20 @@ var view = (function view()
 
 	<div class="header">
 
-	<img id="logo" src="https://d1iydh3qrygeij.cloudfront.net/Media/Default/landing-pages/oelogo1.JPG" />
+	<img id="logo" src="img/oelogo1.jpg" />
 	<h2>Tableau Web Data Connector</h2>
 
 	</div>
 
 	<div class="left-div">
 	
-	<h2>Base URL:</h2>
-	Hostname: <input id = "Hostname" style="width: 175px; margin-right: 15px;"
+	<h2>1. Log in</h2>
+	<h3 style="margin-top: -3px;" >Base URL:</h3>
+	Hostname: <input id = "Hostname" style="width: 175px; margin-right: 15px; 
+                    margin-right: 25px; margin-bottom: 18px; float:right;"
 		  value = "https://services.oxfordeconomics.com"/><br/>
 
-	<h2>Authentication:</h2>
+	<h3>Credentials:</h3>
 	<input id = "ApiKey" style="width: 175px; float:right; margin-right:25px;" value = ""/>
 	<p style="margin-top: 12px;">API key:</p>
 	<p style="margin: 0px 0px 7px 0px;">-- or --</p>
@@ -49,21 +52,24 @@ var view = (function view()
 	</div>
 	
 	<div class="middle-div">
-	<h2 id='query_label'>Query:</h2>
 	<div id="selections_div" style="display:none;">
 	
 	</div>
-	<button id="submitButton" type="button" style='margin-top: 7px; display:none;'>Run query</button>
 	</div>
 	
 	<div class="right-div">
-	<h2>Query information:</h2>
-	<div id="query_info"></div>
+	<div id="submit-div" style="display: none;">
+        <h2 style="display:block;">3. Run selected query</h2>
+	<button id="submitButton" type="button" style='margin-top: 7px; display: block;'>Run query</button>
 	</div>
+        </div>
 	
 	
 
-	<div style="clear:both"></div>
+	<div style="clear:both; margin-bottom: 25px;"></div>
+
+	<div id="query_info">
+        </div>
 
 	<h2>Log:</h3>
 
@@ -72,7 +78,8 @@ var view = (function view()
 	</div>
 </body>
 
-</html>*/}).toString().match(/[^]*\/\*([^]*)\*\/\s*\}$/)[1];
+</html>
+*/}).toString().match(/[^]*\/\*([^]*)\*\/\s*\}$/)[1];
 
 
 var css = (function css() 
@@ -106,11 +113,12 @@ body {
 	}
 	
 .right-div {
-	width: 285px;
+	width: 435px;
 	padding-right: 15px;
 	margin-left: 15px;
 	float: left;
-	}
+        overflow: hidden;
+}
 
 .left-div {
 	width: 300px;
@@ -127,6 +135,16 @@ body {
 	font-size:35px;
 	margin-top: 60px;
 	float: right;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+h3 {
+	font-size:18px;
+	margin-top: 0px;
+        margin-bottom: 7px;
 }
 
 #copyright {
@@ -146,7 +164,10 @@ var DEFAULT_SELECTION = "847ef5ee-5b83-458d-b9e8-292ff7e93db0";
 var MEASURE_CODES = {
 	"L": "Level values",
 	"PY": "% change y/y",
-	"DY": "Difference y/y"
+	"DY": "Difference y/y",
+	"P": "Percentage q/q",
+	"D": "Difference q/q",
+	"GR": "Annualized value"
 };
 
 
@@ -154,7 +175,7 @@ var MEASURE_CODES = {
 // makes a simple get request to any of our API endpoints
 // takes an optional id as input, which is appended to the end
 // of the request url appropriately
-function getHttpResource(path, resource_id, callback) {
+function getHttpResource(path, resource_id, callback, api_key) {
         resource_id = resource_id || "";
 
         if (resource_id)
@@ -164,7 +185,6 @@ function getHttpResource(path, resource_id, callback) {
 
         var hostname = $("#Hostname").val();
         var api_url = hostname + "/api";
-        var api_key = $("#ApiKey").val();
 
         var apiHeader = { "Api-Key": api_key };
 
@@ -190,18 +210,21 @@ function getHttpResource(path, resource_id, callback) {
 // the given selection id
 function fillQueryInfo(id)
 {
-	return function()
-	{
-		$("#log").empty();
-		$("#log").append("Fetching selection information for s_id=" + id);
-		$("#query_info").empty();
-		getHttpResource('/savedselections', id, function(data)
-		{
-                	$("#log").empty();
-			$("#query_info").append('<pre>' + JSON.stringify(data, null, 3)
-		       		+ '</pre>');	
-		});
-	}	
+    return function()
+    {
+        var api_key = $("#ApiKey").val();
+        $("#log").empty();
+        $("#log").append("Fetching selection information for s_id=" + id);
+        $("#query_info").empty();
+        getHttpResource('/savedselections', id, function(data)
+        {
+                $("#log").empty();
+                $("#query_info").append('<h3>Selection settings</h3>');
+                $("#query_info").append('<pre>' + JSON.stringify(data, null, 3)
+                        + '</pre>');	
+                $('#submit-div').css('display','block');
+        }, api_key);
+    }	
 }
 
 
@@ -214,7 +237,9 @@ function setupSelections(selections_list)
 		return;
 	}
 
-	for (i = 0; i < selections_list.length; i++)
+        $("#selections_div").append("<h2>2. Select query</h2>");
+
+	for (var i = 0; i < selections_list.length; i++)
 	{
 		var new_selection = $('<input />',
 		{
@@ -232,10 +257,17 @@ function setupSelections(selections_list)
 		});
 
 		$("#radio_"+i).after(new_label);
-		$("#label_"+i).append(" " + selections_list[i]['Name'] + "<br />");
+
+                var name = selections_list[i]['Name'];
+                if (name.length > 25)
+                {
+                    name = name.substring(0, 25);
+                    name = name + "...";
+                }
+		$("#label_"+i).append(" " + name + "<br />");
 
 		$("#radio_"+i).click(fillQueryInfo(selections_list[i]['Id']));
-	}
+        }
 
 	var new_selection = $('<input />',
 	{
@@ -248,10 +280,15 @@ function setupSelections(selections_list)
 
 	var new_label = $('<label />', 
 	{
-		id: 'label_other',
+		id: 'label_other'
 	});
 	$("#radio_other").after(new_label);
 	$("#label_other").append(" Other: ");
+        $("#radio_other").click(function()
+        {
+            $("#query_info").empty();
+            $('#submit-div').css('display','block');
+        });
 
 	var new_input = $('<input />',
 	{
@@ -259,9 +296,6 @@ function setupSelections(selections_list)
 		placeholder: "enter selection id"
 	});	
 	$("#label_other").append(new_input);
-
-
-	$('#submitButton').css('display','block');
 }
 
 
@@ -283,11 +317,10 @@ function getSelectionId()
 // takes the user credentials provided by the user and attempts to 
 // log in. success changes the api key input field to the one returned
 // in the user object and populates the list of available selections
-function postLogin(username, password, input_key)
+function postLogin(username, password, input_key, callback)
 {
 	$("#selections_div").empty();
 	$("#selections_div").css("display", "none");
-	$("#submitButton").css("display", "none");
 
         var hostname = API_URL;
         var api_url = hostname + "/api";
@@ -308,15 +341,16 @@ function postLogin(username, password, input_key)
 			contentType: 'application/json; charset=utf-8',
 			dataType: 'json',
 			success: function(data, status){
-				$("#ApiKey").val(data["ApiKey"]);
-				$("#log").empty();
-				setupSelections(data['SavedSelections']);
-				$("#selections_div").css("display", "block");
-				$("#submitButton").css("display", "block");
+                            if (callback)
+                            {
+                                callback(data, status);
+                            }
 			},
 			error: function(data,status){
-				$("#log").empty();
-				$("#log").append("Error: couldn't validate credentials");
+                            if (callback)
+                            {
+                                callback(data, status);
+                            }
 			}
 		});
 	}
@@ -338,21 +372,84 @@ function postLogin(username, password, input_key)
 			contentType: 'application/json; charset=utf-8',
 			dataType: 'json',
 			success: function(data, status){
-				$("#ApiKey").val(data["ApiKey"]);
-				$("#log").empty();
-				setupSelections(data['SavedSelections']);
-				$("#selections_div").css("display", "block");
-				$("#submitButton").css("display", "block");
+                            if (callback)
+                            {
+                                callback(data, status);
+                            }
 			},
 			error: function(data,status){
-				$("#log").empty();
-				$("#log").append("Error: couldn't validate credentials");
+                            if (callback)
+                            {
+                                callback(data, status);
+                            }
 			}
 		});
 	}
 
         $.support.cors = true;
 
+}
+
+
+// takes a single download dictionary and a period and returns a 
+// a single row of data corresponding to several years of annual
+// data points or a single quarter across several years
+function buildRow(download_entry, period)
+{
+    var new_row = new Object();
+
+    period = period || "Annual";
+
+    new_row["Location"] = download_entry['Metadata']['Location'];
+    new_row["Indicator"] = download_entry['Metadata']['IndicatorName'];
+    new_row["Units"] = download_entry['Metadata']['Units'];
+    new_row["Scale"] = download_entry['Metadata']['ScaleFactor'];
+    new_row["Measurement"] = MEASURE_CODES[download_entry['MeasureCode']];
+    new_row["Source"] = download_entry['Metadata']['Source'];
+    new_row["Seasonal"] = download_entry['Metadata']['SeasonallyAdjusted'];
+    new_row["BaseYearPrice"] = download_entry['Metadata']['BaseYearPrice'];
+    new_row["BaseYearIndex"] = download_entry['Metadata']['BaseYearIndex'];
+    new_row["HistoricalEndYear"] = download_entry['Metadata']['HistoricalEndYear'];
+    new_row["HistoricalEndQuarter"] = download_entry['Metadata']['HistoricalEndQuarter'];
+    new_row["DateOfLastUpdate"] = download_entry['Metadata']['LastUpdate'];
+    new_row["SourceDetails"] = download_entry['Metadata']['SourceDetails'];
+    new_row["AdditionalSourceDetails"] = download_entry['Metadata']['AdditionalSourceDetails'];
+    new_row["LocationCode"] = download_entry['LocationCode'];
+    new_row["IndicatorCode"] = download_entry['VariableCode'];
+
+    if (period == "Annual")
+    {
+        new_row["Period"] = period;
+        var keys = Object.keys(download_entry['AnnualData']);
+        for(var x = 0; x < keys.length; x++)
+        {
+            var key = "" + keys[x];
+            new_row[key] = download_entry['AnnualData'][key];
+        }
+    }
+    else
+    {
+        new_row["Period"] = "Qtr " + period;
+
+        // iterate through each key-data pair in the quarterly
+        // data list
+        var keys = Object.keys(download_entry['QuarterlyData']);
+        for(var x = 0; x < keys.length; x++)
+        {
+            var key = "" + keys[x];
+            if (key.charAt(5) == ("" + period))
+            {
+                new_row[key.substr(0, 4)] = download_entry['QuarterlyData'][key];
+            }
+        }
+    }
+
+    return new_row;
+}
+
+function isEmpty(test_dict)
+{
+    return Object.keys(test_dict).length == 0;
 }
 
 
@@ -365,69 +462,54 @@ function postLogin(username, password, input_key)
 // in the data table and then running the callback
 function runQuery(table, doneCallback, api_key, selection_id) 
 {
-	if (!selection_id || !api_key)
-	{
-		$("#log").empty();
-		$("#log").append("Error: missing api_key or selection_id");
-	}
+    if (!selection_id || !api_key)
+    {
+        $("#log").empty();
+        $("#log").append("Error: missing api_key or selection_id");
+    }
 
-	var api_url = API_URL;
-	var apiHeader = { "Api-Key": api_key };
-	$.support.cors = true;
-	var resource_address = encodeURI( api_url + '/api/download/' + selection_id + '?includeMetadata=true');
-	$.ajax({
-		url: resource_address,
-		type: 'GET',
-		headers: apiHeader,
-		contentType: 'application/json; charset=utf-8',
-		dataType: 'json',
-		success: function(data, status){
-			var tableData = [];
-			for (i = 0; i < data.length; i++)
-			{
-				console.log("new data row...");
-				var variable_code = data[i]['VariableCode'];
+    var api_url = API_URL;
+    var apiHeader = { "Api-Key": api_key };
+    $.support.cors = true;
+    var resource_address = encodeURI( api_url + '/api/download/' + selection_id + '?includeMetadata=true');
+    $.ajax({
+        url: resource_address,
+        type: 'GET',
+        headers: apiHeader,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function(data, status)
+        {
+            var tableData = [];
+            for (var i = 0; i < data.length; i++)
+            {
+                console.log("new data row...");
+                var variable_code = data[i]['VariableCode'];
+               
+                // build annual data
+                if (!isEmpty(data[i]['AnnualData']))
+                {
+                    tableData.push(buildRow(data[i], "Annual"));
+                }
 
-				var keys = Object.keys(data[i]['AnnualData']);
-				for(x = 0; x < keys.length; x++)
-				{
-					console.log("adding " + keys[x] + " " + variable_code + " data row");
-					tableData.push({
-						"LocationCode": data[i]['LocationCode'],
-						"Location": data[i]['Metadata']['Location'],
-						"VariableCode": data[i]['VariableCode'],
-						"MeasureCode": MEASURE_CODES[data[i]['MeasureCode']],
-						"Year": keys[x],
-						"YearValue": data[i]['AnnualData'][keys[x]],
-						"Quarter": null,
-						"QuarterValue": null
-					});
-				}
+                // build quarterly data
+                if (!isEmpty(data[i]['QuarterlyData']))
+                {
+                    for (var x = 1; x < 5; x++)
+                    {
+                        tableData.push(buildRow(data[i], x));
+                    }
+                }
+            }
 
-				keys = Object.keys(data[i]['QuarterlyData']);
-				for(x = 0; x < keys.length; x++)
-				{
-					console.log("adding " + keys[x] + " " + variable_code + " data row");
-					tableData.push({
-						"LocationCode": data[i]['LocationCode'],
-						"Location": data[i]['Metadata']['Location'],
-						"VariableCode": data[i]['VariableCode'],
-						"MeasureCode": MEASURE_CODES[data[i]['MeasureCode']],
-						"Quarter": keys[x],
-						"QuarterValue": data[i]['QuarterlyData'][keys[x]],
-						"Year": null,
-						"YearValue": null
-					});
-				}
-			}
-
-			table.appendRows(tableData);
-			doneCallback();
-		},
-		error: function(data, status){
-		    console.log("Error with host " + api_url + "...");
-		}
-	});
+            table.appendRows(tableData);
+            doneCallback();
+        },
+        error: function(data, status)
+        {
+            console.log("Error with host " + api_url + "...");
+        }
+    });
 };
 
 var connector = tableau.makeConnector();
@@ -436,26 +518,97 @@ var connector = tableau.makeConnector();
 // populate using the getData method of the user's connection object
 connector.getSchema = function(schemaCallback)
 {
-	var cols = [];
+    getHttpResource('/savedselections', tableau.connectionData, function(data)
+    {
+        var cols = [];
 
-	// add default columns
-	cols.push({ id: "LocationCode", dataType: tableau.dataTypeEnum.string });
-	cols.push({ id: "Location", dataType: tableau.dataTypeEnum.string });
-	cols.push({ id: "VariableCode", dataType: tableau.dataTypeEnum.string });
-	cols.push({ id: "MeasureCode", dataType: tableau.dataTypeEnum.string });
-	cols.push({ id: "Quarter", dataType: tableau.dataTypeEnum.int });
-	cols.push({ id: "QuarterValue", dataType: tableau.dataTypeEnum.float });
-	cols.push({ id: "Year", dataType: tableau.dataTypeEnum.int });
-	cols.push({ id: "YearValue", dataType: tableau.dataTypeEnum.float });
+        // add default columns
+        cols.push({ id: "Location", dataType: tableau.dataTypeEnum.string });
+        cols.push({ id: "Indicator", dataType: tableau.dataTypeEnum.string });
+        cols.push({ id: "Units", dataType: tableau.dataTypeEnum.string });
+        cols.push({ id: "Scale", dataType: tableau.dataTypeEnum.string });
+        cols.push({ id: "Measurement", dataType: tableau.dataTypeEnum.string });
+        cols.push({ id: "Period", dataType: tableau.dataTypeEnum.string });
 
-	// set up table meta data based on selection object
-	var tableSchema = {
-		id: "selection_data",
-		alias: "Selection data from the Oxford Economics Global Data Workstation",
-		columns: cols
-	};
+        // create a new column for each year in annual data
+        console.log("Creating year columns..."); 
+        for(var i = parseInt(data['StartYear']); i <= parseInt(data['EndYear']); i++)
+        {
+            console.log("Creating column for year " + i + "..."); 
+            cols.push({ id: "" + i, dataType: tableau.dataTypeEnum.float });
+        }
 
-	schemaCallback([tableSchema]);
+        cols.push({ id: "Source", dataType: tableau.dataTypeEnum.string });
+
+        cols.push({ 
+            id: "Seasonal", 
+            alias: "Seasonally adjusted", 
+            dataType: tableau.dataTypeEnum.bool 
+        });
+
+        cols.push({ 
+            id: "BaseYearPrice", 
+            alias: "Base year price", 
+            dataType: tableau.dataTypeEnum.string
+        });
+
+        cols.push({ 
+            id: "BaseYearIndex", 
+            alias: "Base year index", 
+            dataType: tableau.dataTypeEnum.string
+        });
+
+        cols.push({ 
+            id: "HistoricalEndYear", 
+            alias: "Historical end year", 
+            dataType: tableau.dataTypeEnum.string 
+        });
+
+        cols.push({ 
+            id: "HistoricalEndQuarter", 
+            alias: "Historical end quarter", 
+            dataType: tableau.dataTypeEnum.int
+        });
+
+        cols.push({ 
+            id: "DateOfLastUpdate", 
+            alias: "Date of last update", 
+            dataType: tableau.dataTypeEnum.date 
+        });
+
+        cols.push({ 
+            id: "SourceDetails", 
+            alias: "Source details", 
+            dataType: tableau.dataTypeEnum.string 
+        });
+
+        cols.push({ 
+            id: "AdditionalSourceDetails", 
+            alias: "Additional source details", 
+            dataType: tableau.dataTypeEnum.string 
+        });
+
+        cols.push({ 
+            id: "LocationCode", 
+            alias: "Location code", 
+            dataType: tableau.dataTypeEnum.string 
+        });
+
+        cols.push({ 
+            id: "IndicatorCode", 
+            alias: "Indicator code", 
+            dataType: tableau.dataTypeEnum.string 
+        });
+
+        // set up table meta data based on selection object
+        var tableSchema = {
+                id: "selection_data",
+                alias: "Selection data from the Oxford Economics Global Data Workstation",
+                columns: cols
+        };
+
+        schemaCallback([tableSchema]);
+    }, tableau.password) 
 }
 
 
@@ -464,26 +617,63 @@ connector.getSchema = function(schemaCallback)
 // fields and passes them to the run query function
 connector.getData = function(table, doneCallback) 
 {
-	runQuery(table, doneCallback, tableau.password, tableau.connectionData);
+    runQuery(table, doneCallback, tableau.password, tableau.connectionData);
 }
 
 
 tableau.registerConnector(connector);
+
+function loginHandler(callback)
+{
+    $("#Password").prop("disabled", true);
+    $("#loginButton").prop('disabled', true);
+    $("#log").empty();
+
+    // in order to save authentication information between steps
+    // they must be set in the tableau object's values. typically,
+    // the authetnication token or api key is kept in the 
+    // tableau.password variable
+    tableau.username = $("#Username").val();
+    postLogin(tableau.username, $("#Password").val(), $("#ApiKey").val(), function(data, status)
+    {
+        $("#log").empty();
+        if ( status == "success")
+        {
+            $("#ApiKey").val(data["ApiKey"]);
+            setupSelections(data['SavedSelections']);
+            $("#selections_div").css("display", "block");
+        }
+        else
+        {
+            $("#log").append("Error: couldn't validate credentials");
+        }
+
+        if (callback)
+        {
+            callback();
+        }
+
+        $("#loginButton").prop("disabled", false);
+        $("#Password").prop("disabled", false);
+    });
+}
+
 
 $(document).ready(function()
 {
 	$("#Selection").val(DEFAULT_SELECTION);
 	$("#loginButton").click(function()
 	{
-		$("#log").empty();
-
-		// in order to save authentication information between steps
-		// they must be set in the tableau object's values. typically,
-		// the authetnication token or api key is kept in the 
-		// tableau.password variable
-		tableau.username = $("#Username").val();
-		postLogin(tableau.username, $("#Password").val(), $("#ApiKey").val());
+            loginHandler();
 	});
+
+	$("#Password").keypress(function(e)
+        {
+            if (e.which == 13)
+            {
+                loginHandler();
+            }
+        });
 
 	// assumes the user has authenticated and then runs the query based
 	// on the selection id provided
