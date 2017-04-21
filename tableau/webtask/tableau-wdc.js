@@ -12,9 +12,13 @@ var view = (function view()
 <head>
 	<title>Macro databank example</title>
 	<meta http-equiv="Cache-Control" content="no-store" />
-
+        <script type='text/javascript'>
+            var img = new Image();
+            img.source = 'https://d1iydh3qrygeij.cloudfront.net/Media/Default/landing-pages/oelogo1.JPG';
+        </script>
 	<link href="tableau-wdc/css/styles.css" type="text/css" rel="stylesheet"/>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" type="text/javascript"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" 
+            type="text/javascript"></script>
 	<script src="https://connectors.tableau.com/libs/tableauwdc-2.2.latest.js" type="text/javascript"></script>
 	<script src="tableau-wdc/js/macro_example.js" type="text/javascript"></script>
 </head>

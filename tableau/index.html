@@ -12,9 +12,13 @@ root for full license information.
 <head>
 	<title>Macro databank example</title>
 	<meta http-equiv="Cache-Control" content="no-store" />
-
+        <script type='text/javascript'>
+            var img = new Image();
+            img.source = 'https://d1iydh3qrygeij.cloudfront.net/Media/Default/landing-pages/oelogo1.JPG';
+        </script>
 	<link href="css/styles.css" type="text/css" rel="stylesheet"/>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" type="text/javascript"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" 
+            type="text/javascript"></script>
 	<script src="https://connectors.tableau.com/libs/tableauwdc-2.2.latest.js" type="text/javascript"></script>
 	<script src="js/macro_example.js" type="text/javascript"></script>
 </head>
@@ -52,21 +56,24 @@ root for full license information.
 	</div>
 	
 	<div class="middle-div">
-	<h2 id='query_label'>2. Select query</h2>
 	<div id="selections_div" style="display:none;">
 	
 	</div>
-	<button id="submitButton" type="button" style='margin-top: 7px; display:none;'>Run query</button>
 	</div>
 	
 	<div class="right-div">
-	<h2>3. View query settings</h2>
-	<div id="query_info"></div>
+	<div id="submit-div" style="display: none;">
+        <h2 style="display:block;">3. Run selected query</h2>
+	<button id="submitButton" type="button" style='margin-top: 7px; display: block;'>Run query</button>
 	</div>
+        </div>
 	
 	
 
-	<div style="clear:both"></div>
+	<div style="clear:both; margin-bottom: 25px;"></div>
+
+	<div id="query_info">
+        </div>
 
 	<h2>Log:</h3>
 
