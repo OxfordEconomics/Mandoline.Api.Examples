@@ -448,6 +448,16 @@ function buildRow(download_entry, period)
         }
     }
 
+    // set up the data series identifier. each row's combined location code,
+    // indicator code, measurment, and period in a single download will be unique
+    new_id = new_row["LocationCode"] + "_" +
+        new_row["IndicatorCode"] + "_" +
+        new_row["Measurement"] + "_" +
+        new_row["Period"];
+    new_id = new_id.toUpperCase();
+    new_id = new_id.replace(/\s/g,"");
+    new_row["Id"] = new_id;
+
     return new_row;
 }
 
@@ -527,6 +537,7 @@ connector.getSchema = function(schemaCallback)
         var cols = [];
 
         // add default columns
+        cols.push({ id: "Id", dataType: tableau.dataTypeEnum.string });
         cols.push({ id: "Location", dataType: tableau.dataTypeEnum.string });
         cols.push({ id: "Indicator", dataType: tableau.dataTypeEnum.string });
         cols.push({ id: "Units", dataType: tableau.dataTypeEnum.string });

@@ -66,8 +66,10 @@ function fillQueryInfo(id)
         getHttpResource('/savedselections', id, function(data)
         {
                 $("#log").empty();
+                $("#query_info").append('<h3>Selection settings</h3>');
                 $("#query_info").append('<pre>' + JSON.stringify(data, null, 3)
                         + '</pre>');	
+                $('#submit-div').css('display','block');
         }, api_key);
     }	
 }
@@ -81,6 +83,8 @@ function setupSelections(selections_list)
 	{
 		return;
 	}
+
+        $("#selections_div").append("<h2>2. Select query</h2>");
 
 	for (var i = 0; i < selections_list.length; i++)
 	{
@@ -100,10 +104,17 @@ function setupSelections(selections_list)
 		});
 
 		$("#radio_"+i).after(new_label);
-		$("#label_"+i).append(" " + selections_list[i]['Name'] + "<br />");
+
+                var name = selections_list[i]['Name'];
+                if (name.length > 25)
+                {
+                    name = name.substring(0, 25);
+                    name = name + "...";
+                }
+		$("#label_"+i).append(" " + name + "<br />");
 
 		$("#radio_"+i).click(fillQueryInfo(selections_list[i]['Id']));
-	}
+        }
 
 	var new_selection = $('<input />',
 	{
@@ -116,10 +127,15 @@ function setupSelections(selections_list)
 
 	var new_label = $('<label />', 
 	{
-		id: 'label_other',
+		id: 'label_other'
 	});
 	$("#radio_other").after(new_label);
 	$("#label_other").append(" Other: ");
+        $("#radio_other").click(function()
+        {
+            $("#query_info").empty();
+            $('#submit-div').css('display','block');
+        });
 
 	var new_input = $('<input />',
 	{
@@ -127,9 +143,6 @@ function setupSelections(selections_list)
 		placeholder: "enter selection id"
 	});	
 	$("#label_other").append(new_input);
-
-
-	$('#submitButton').css('display','block');
 }
 
 
@@ -155,7 +168,6 @@ function postLogin(username, password, input_key, callback)
 {
 	$("#selections_div").empty();
 	$("#selections_div").css("display", "none");
-	$("#submitButton").css("display", "none");
 
         var hostname = API_URL;
         var api_url = hostname + "/api";
@@ -279,6 +291,15 @@ function buildRow(download_entry, period)
         }
     }
 
+    new_id = new_row["LocationCode"] + "_" +
+        new_row["IndicatorCode"] + "_" +
+        new_row["Measurement"] + "_" +
+        new_row["Period"];
+    new_id = new_id.toUpperCase(); 
+    new_id = new_id.replace(/\s/g,"");
+    new_row["Id"] = new_id;
+    
+
     return new_row;
 }
 
@@ -313,7 +334,8 @@ function runQuery(table, doneCallback, api_key, selection_id)
         headers: apiHeader,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
-        success: function(data, status){
+        success: function(data, status)
+        {
             var tableData = [];
             for (var i = 0; i < data.length; i++)
             {
@@ -339,7 +361,8 @@ function runQuery(table, doneCallback, api_key, selection_id)
             table.appendRows(tableData);
             doneCallback();
         },
-        error: function(data, status){
+        error: function(data, status)
+        {
             console.log("Error with host " + api_url + "...");
         }
     });
@@ -356,6 +379,7 @@ connector.getSchema = function(schemaCallback)
         var cols = [];
 
         // add default columns
+        cols.push({ id: "Id", dataType: tableau.dataTypeEnum.string });
         cols.push({ id: "Location", dataType: tableau.dataTypeEnum.string });
         cols.push({ id: "Indicator", dataType: tableau.dataTypeEnum.string });
         cols.push({ id: "Units", dataType: tableau.dataTypeEnum.string });
@@ -475,7 +499,6 @@ function loginHandler(callback)
             $("#ApiKey").val(data["ApiKey"]);
             setupSelections(data['SavedSelections']);
             $("#selections_div").css("display", "block");
-            $("#submitButton").css("display", "block");
         }
         else
         {
