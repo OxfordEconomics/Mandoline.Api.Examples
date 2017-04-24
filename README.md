@@ -31,6 +31,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ### Tableau:
   - *index.html*: example web data connector for tableau
   - *js/api_connector.js*: connector scripts for /index.html web data connector
-  - *webtask/api_connector.js*
+  - *webtask/api_connector.js*: similar to above but adapted for use with Webtask
   
   
