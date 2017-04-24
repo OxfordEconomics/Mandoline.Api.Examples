@@ -1,11 +1,168 @@
-
-// <copyright file="macro_example.js" company="Oxford Economics">
+// <!--
+// <copyright file="tableau-wdc.js" company="Oxford Economics">
 // Copyright (c) 2017 Oxford Economics Ltd. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project
 // root for full license information.
 // </copyright>
+// -->
+
+var view = (function view() 
+{/*
+<html>
+<head>
+	<title>Macro databank example</title>
+	<meta http-equiv="Cache-Control" content="no-store" />
+        <script type='text/javascript'>
+            var img = new Image();
+            img.source = 'https://d1iydh3qrygeij.cloudfront.net/Media/Default/landing-pages/oelogo1.JPG';
+        </script>
+	<link href="tableau-wdc/css/styles.css" type="text/css" rel="stylesheet"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" 
+            type="text/javascript"></script>
+	<script src="https://connectors.tableau.com/libs/tableauwdc-2.2.latest.js" type="text/javascript"></script>
+	<script src="tableau-wdc/js/macro_example.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+	<div class="main">
+
+	<div class="header">
+
+	<img id="logo" src="img/oelogo1.jpg" />
+	<h2>Tableau Web Data Connector</h2>
+
+	</div>
+
+	<div class="left-div">
+	
+	<h2>1. Log in</h2>
+	<h3 style="margin-top: -3px;" >Base URL:</h3>
+	Hostname: <input id = "Hostname" style="width: 175px; margin-right: 15px; 
+                    margin-right: 25px; margin-bottom: 18px; float:right;"
+		  value = "https://services.oxfordeconomics.com"/><br/>
+
+	<h3>Credentials:</h3>
+	<input id = "ApiKey" style="width: 175px; float:right; margin-right:25px;" value = ""/>
+	<p style="margin-top: 12px;">API key:</p>
+	<p style="margin: 0px 0px 7px 0px;">-- or --</p>
+	<input id = "Username" style="width: 175px; float:right; margin-right:25px;"/>
+	<p style="margin-top: 14px; margin-bottom: 0px;">User name:</P>
+	<input id = "Password" type="password" style="width: 175px; margin-right:25px; float:right;"/>
+	<p style="margin-top: 7px; margin-bottom: 7px;">Password:</p>
+	<button id="loginButton" type="button" style="width:80px; margin-left: 190px;">Log in</button>
+	<br />
+
+	</div>
+	
+	<div class="middle-div">
+	<div id="selections_div" style="display:none;">
+	
+	</div>
+	</div>
+	
+	<div class="right-div">
+	<div id="submit-div" style="display: none;">
+        <h2 style="display:block;">3. Run selected query</h2>
+	<button id="submitButton" type="button" style='margin-top: 7px; display: block;'>Run query</button>
+	</div>
+        </div>
+	
+	
+
+	<div style="clear:both; margin-bottom: 25px;"></div>
+
+	<div id="query_info">
+        </div>
+
+	<h2>Log:</h3>
+
+	<div id = "log"></div>
+
+	</div>
+</body>
+
+</html>
+*/}).toString().match(/[^]*\/\*([^]*)\*\/\s*\}$/)[1];
 
 
+var css = (function css() 
+{/*
+h2 {
+   margin-bottom: 7px;
+}
+
+
+body { 
+	background-color: lightgrey; 
+	font-family: Arial;
+	}
+
+.main { 
+	background-color: #FEFEFE;
+	margin-top: -15px;
+	padding: 50px;
+	padding-top: 15px;
+	padding-right:15px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 1125px;
+	overflow: hidden;
+	}
+
+.middle-div {
+	width: 285px;
+	margin-left: 15px;
+	float: left;
+	}
+	
+.right-div {
+	width: 435px;
+	padding-right: 15px;
+	margin-left: 15px;
+	float: left;
+        overflow: hidden;
+}
+
+.left-div {
+	width: 300px;
+	float: left;
+}
+
+.header {
+	width: 1065px;
+	overflow: hidden;
+	margin-bottom: 25px;
+}
+
+.header h2 {
+	font-size:35px;
+	margin-top: 60px;
+	float: right;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+h3 {
+	font-size:18px;
+	margin-top: 0px;
+        margin-bottom: 7px;
+}
+
+#copyright {
+	font-size: 12px;
+	}
+
+#logo {
+	float: left;
+	margin-left: -28px;
+}
+}*/}).toString().match(/[^]*\/\*([^]*)\*\/\s*\}$/)[1];
+
+var js = (function js() 
+{/*
 var API_URL = "https://services.oxfordeconomics.com";
 var DEFAULT_SELECTION = "847ef5ee-5b83-458d-b9e8-292ff7e93db0";
 var MEASURE_CODES = {
@@ -291,14 +448,15 @@ function buildRow(download_entry, period)
         }
     }
 
+    // set up the data series identifier. each row's combined location code,
+    // indicator code, measurment, and period in a single download will be unique
     new_id = new_row["LocationCode"] + "_" +
         new_row["IndicatorCode"] + "_" +
         new_row["Measurement"] + "_" +
         new_row["Period"];
-    new_id = new_id.toUpperCase(); 
+    new_id = new_id.toUpperCase();
     new_id = new_id.replace(/\s/g,"");
     new_row["Id"] = new_id;
-    
 
     return new_row;
 }
@@ -542,3 +700,25 @@ $(document).ready(function()
 		tableau.submit();
 	});
 });
+*/}).toString().match(/[^]*\/\*([^]*)\*\/\s*\}$/)[1];
+
+var Express = require('express');
+var Webtask = require('webtask-tools');
+var app = Express();
+
+app.get('/', function(req, res)
+{
+	res.send(view);
+});
+
+app.get('/css/styles.css', function(req, res)
+{
+	res.send(css);
+});
+
+app.get('/js/macro_example.js', function(req, res)
+{
+	res.send(js);
+});
+
+module.exports = Webtask.fromExpress(app);

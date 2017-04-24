@@ -18,28 +18,28 @@ API_URL = 'https://services.oxfordeconomics.com';
 // data is simply handed off to the callback function
 module.exports = function (context, callback) 
 {
-  var api_url = API_URL + '/api/filedownload';
-  var api_key = context.data.api_key;
-	var api_resource_id = context.data.api_resource_id || "";
-	
-	if (!api_resource_id || !api_key)
-	{
-		callback(400, null);
-	}
-	else
-	{
-	  api_resource_id = "/" + api_resource_id;
-	  
-	  var options = 
-  	{
-  	  method: 'GET',
-  	  followRedirect: false,
-  	  uri: api_url + api_resource_id,
-  	  headers: 
-  	  {
-  	    'Api-Key': api_key
-  	  }
-  	};
+    var api_url = API_URL + '/api/filedownload';
+    var api_key = context.data.api_key;
+    var api_resource_id = context.data.api_resource_id || "";
+
+    if (!api_resource_id || !api_key)
+    {
+            callback(400, null);
+    }
+    else
+    {
+      api_resource_id = "/" + api_resource_id;
+      
+      var options = 
+    {
+      method: 'GET',
+      followRedirect: false,
+      uri: api_url + api_resource_id,
+      headers: 
+      {
+        'Api-Key': api_key
+      }
+    };
   	
     request(options, function(error, response, body)
     {
@@ -52,5 +52,4 @@ module.exports = function (context, callback)
         callback(response.statusCode, error);
       }
     });
-	}
 }
