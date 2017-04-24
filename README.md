@@ -23,3 +23,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ### JS:
   - *index.html*: run the examples
   - *js/api_examples.js*: example script code
+  - *js/manage_selections.js*: view/delete user selections
+  
+### Power BI:
+  - *api_sample_queries.pbix*: example application integration
+  
+### Tableau:
+  - *index.html*: example web data connector for tableau
+  - *js/api_connector.js*: connector scripts for /index.html web data connector
+  - *webtask/api_connector.js*
+  
+  
