@@ -9,11 +9,26 @@ namespace Tests
     using System;
     using System.Threading.Tasks;
     using Core;
+    using Mandoline.Api.Client.ServiceModels;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class SelectionTest
     {
+        [ClassInitialize]
+        public static void Initialize(TestContext context)
+        {
+            SelectionDto sampleSelect = AppConstants.SampleSelection.GetInstance();
+
+            var api = new Mandoline.Api.Client.ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+
+            var newSelection = api.CreateSavedSelectionAsync(
+                sampleSelect,
+                new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).Result;
+
+            AppConstants.SavedSelectionId = newSelection.Result.Id;
+        }
+
         // retrieves saved selection object based on selection id in settings
         // expected: selection object id matches provided selection id
         [TestMethod]
