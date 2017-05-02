@@ -44,10 +44,21 @@ namespace Tests
         [TestMethod]
         public async Task SelectionUpdateTest()
         {
-            var preTestTime = DateTime.Now;
+            // get the selection pre-update, store original LastUpdated value 
+            var api = new Mandoline.Api.Client.ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+            var oldSelection = await api.GetSavedSelection(AppConstants.SavedSelectionId);
+            var preTestUpdateTime = oldSelection.Result.LastUpdate;
+
+            // update saved selection with new name only
             var output = new TestOutput();
             await SavedSelection.RunUpdateSavedSelection(output);
-            Assert.IsTrue(output.ReturnValueDate > preTestTime);
+
+            // get saved selection again, storing new LastUpdated value
+            var newSelection = await api.GetSavedSelection(AppConstants.SavedSelectionId);
+            var postTestUpdateTime = newSelection.Result.LastUpdate;
+
+            // new LastUpdated should be greater than old
+            Assert.IsTrue(postTestUpdateTime > preTestUpdateTime);
         }
 
         // creates a new non-temp saved selection
