@@ -590,6 +590,12 @@ $(document).ready(function(){
 		    getSelection();
 	    }
     });
+    $("#user_pass").keypress(function(e) {
+        if (e.which == 13)
+        {
+            login();
+        }
+    });
     $("#btnLogin").click(function() {
     	login();
     });

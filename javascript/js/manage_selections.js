@@ -160,4 +160,10 @@ $(document).ready(function(){
     $("#btnLogin").click(function() {
     	login();
     });
+    $("#user_pass").keypress(function(e) {
+        if (e.which == 13)
+        {
+            login();
+        }
+    });
 });
