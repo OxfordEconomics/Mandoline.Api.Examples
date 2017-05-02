@@ -38,23 +38,22 @@ namespace Core
         //       i.e. it isn't enough just to include the id in the function params
         public static async Task RunUpdateSavedSelection(Output output)
         {
-            // get our sample selection
-            SelectionDto sampleSelect = AppConstants.SampleSelection.GetInstance();
-
-            // create table for displaying selection data
-            Table.SelectionTable dt = new Table.SelectionTable();
-
-            // change selection object for update
-            sampleSelect.Id = AppConstants.SavedSelectionId;
-            sampleSelect.Name = "Selection - Updated: " + DateTime.Now;
-
             // set up api object for making call
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
+            // change selection object for update
+            // var oldSelect = await api.GetSavedSelection(AppConstants.SavedSelectionId).ConfigureAwait(true);
+            // oldSelect.Result.Id = AppConstants.SavedSelectionId;
+            // oldSelect.Result.Name = "Selection - Updated: " + DateTime.Now.ToString();
+            var oldSelect = AppConstants.SampleSelection.GetInstance();
+            oldSelect.Id = AppConstants.SavedSelectionId;
+            oldSelect.Name = "Selection - Updated: " + DateTime.Now.ToString();
+
             // run update
-            var getResult = await api.UpdateSavedSelectionAsync(
-                sampleSelect.Id,
-                sampleSelect,
+            var updateResult = await api.UpdateSavedSelectionAsync(
+                AppConstants.SavedSelectionId,
+                // oldSelect.Result,
+                oldSelect,
                 new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ConfigureAwait(true);
 
             // check for changed selection
