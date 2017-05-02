@@ -16,7 +16,7 @@ import json
 
 # a sample selection id for running downloads and
 # get, delete, and update example functions
-SELECTION_ID = 'abe27d8e-209a-4a18-a545-df0e81427fe5'
+SELECTION_ID = ''
 API_KEY = ''
 
 # a sample selection dictionary for running downloads 
@@ -24,9 +24,9 @@ API_KEY = ''
 sample_selection = {
     # these fields are generated automatically.
     # it is not necessary to supply these
-    "ContactId": "jamesmills@oxfordeconomics.com",
-    "LastUpdate": "2017-03-16T15:01:01.557",
-    "Id": "2c140fbb-4624-4004-927e-621734f3cb93",
+    # "ContactId": "jamesmills@oxfordeconomics.com",
+    # "LastUpdate": "2017-03-16T15:01:01.557",
+    # "Id": "2c140fbb-4624-4004-927e-621734f3cb93",
     "SelectionType": "QuerySelection",
     "LegacyDatafeedFileStructure": 'false',
     "IsDatafeed": 'false',
@@ -61,7 +61,7 @@ sample_selection = {
     #   D: difference quarter to quarter 
     #   GR: annualized
     "MeasureCode": "L",
-    "Name": "Selection - Updated: 3/16/2017 11:00:50 AM",
+    "Name": "Sample selection - To be deleted",
 
     # sort indicator first. other option is
     # LocationIndicator
@@ -385,6 +385,12 @@ if __name__ == '__main__':
     client = Client()
     API_KEY = client.api_key
 
+    # initialize new selection for purposes of this demo
+    print('Creating new selection...')
+    new_selection = client.create_selection(sample_selection)
+    SELECTION_ID = new_selection['Id']
+    print('New selection created with id: {}'.format(SELECTION_ID))
+
     command_options = [
             { "name": "Quit" },
             { "name": "Log in",
@@ -440,6 +446,8 @@ if __name__ == '__main__':
         choice = input('Command to execute: ')
 
         if choice == '0':
+            print('Removing selection with id: {}'.format(SELECTION_ID))
+            client.delete_selection(SELECTION_ID)
             break
         else:
             try:
