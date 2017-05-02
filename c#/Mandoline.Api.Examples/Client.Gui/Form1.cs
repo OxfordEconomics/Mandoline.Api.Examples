@@ -49,6 +49,15 @@ namespace Client.Gui
 
         private async void ButtonSubmit_Click(object sender, EventArgs e)
         {
+            // check the case that 
+            if (this.comboBox1.Text != "Login" &&
+                (AppConstants.ApiToken == "INVALID_KEY" || AppConstants.ApiToken == string.Empty))
+            {
+                this.label1.Text = "Must be logged in to run this function...";
+                this.label1.Visible = true;
+                return;
+            }
+
             this.label1.Text = "Running " + this.comboBox1.Text + "...";
             this.label1.Visible = true;
 
@@ -102,10 +111,6 @@ namespace Client.Gui
             }
         }
 
-        private void Label2_Click(object sender, EventArgs e)
-        {
-        }
-
         private void PasswordKeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -113,6 +118,23 @@ namespace Client.Gui
                 this.label1.Text = "Running login...";
                 this.label1.Visible = true;
                 Core.User.RunLoginAsync(this.output, this.textBox0.Text, this.textBox1.Text);
+            }
+        }
+
+        private async void Form1_Load(object sender, EventArgs e)
+        {
+            // check for valid api key
+            if (AppConstants.ApiToken != string.Empty)
+            {
+                Console.WriteLine("Checking api key from config settings...");
+                var api = new Mandoline.Api.Client.ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+                var userCheck = await api.GetUserAsync();
+                if (userCheck.Failed == true)
+                {
+                    this.label1.Text = "Invalid api key. Please log in.";
+                    this.label1.Visible = true;
+                    AppConstants.ApiToken = "INVALID_KEY";
+                }
             }
         }
     }

@@ -23,6 +23,9 @@ namespace Core
             // get our sample selection
             SelectionDto sampleSelect = AppConstants.SampleSelection.GetInstance();
 
+            // make sure id is empty
+            sampleSelect.Id = Guid.Empty;
+
             // set up api object for making call
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
@@ -35,25 +38,27 @@ namespace Core
 
         // updates saved selection based on id and SelectionDto sampleSelect
         // note: the selection object passed into this must have the id field set
-        //       i.e. it isn't enough just to include the id in the function params
+        //       i.e. it isn't enough just to include the id i"n the function params
         public static async Task RunUpdateSavedSelection(Output output)
         {
             // set up api object for making call
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
             // change selection object for update
-            // var oldSelect = await api.GetSavedSelection(AppConstants.SavedSelectionId).ConfigureAwait(true);
-            // oldSelect.Result.Id = AppConstants.SavedSelectionId;
-            // oldSelect.Result.Name = "Selection - Updated: " + DateTime.Now.ToString();
-            var oldSelect = AppConstants.SampleSelection.GetInstance();
-            oldSelect.Id = AppConstants.SavedSelectionId;
-            oldSelect.Name = "Selection - Updated: " + DateTime.Now.ToString();
+            var oldSelect = await api.GetSavedSelection(AppConstants.SavedSelectionId).ConfigureAwait(true);
+            if (oldSelect.Reason == System.Net.HttpStatusCode.NotFound)
+            {
+                output.PrintData("Selection not found...");
+                return;
+            }
+
+            oldSelect.Result.Id = AppConstants.SavedSelectionId;
+            oldSelect.Result.Name = "Selection - Updated: " + DateTime.Now.ToString();
 
             // run update
             var updateResult = await api.UpdateSavedSelectionAsync(
                 AppConstants.SavedSelectionId,
-                // oldSelect.Result,
-                oldSelect,
+                oldSelect.Result,
                 new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ConfigureAwait(true);
 
             // check for changed selection
@@ -64,13 +69,7 @@ namespace Core
         // takes output object, selection id
         public static async Task RunGetSavedSelection(Guid s_id, Output output)
         {
-            Console.WriteLine(string.Format("Checking selection with id={0}...", s_id));
-
-            // get our sample selection
-            SelectionDto sampleSelect = AppConstants.SampleSelection.GetInstance();
-
-            // create table for displaying selection data
-            Table.SelectionTable dt = new Table.SelectionTable();
+            // Console.WriteLine(string.Format("Checking selection with id={0}...", s_id));
 
             // set up api object for making call
             var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
@@ -78,8 +77,16 @@ namespace Core
             // run get
             var getResult = await api.GetSavedSelection(s_id).ConfigureAwait(true);
 
-            // process output data
-            output.PrintData(getResult.Result);
+            // check request for success/fail
+            if (getResult.Reason == System.Net.HttpStatusCode.NotFound)
+            {
+                output.PrintData("Saved selection not found...");
+            }
+            else
+            {
+                // process output data
+                output.PrintData(getResult.Result);
+            }
         }
     }
 }

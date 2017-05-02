@@ -60,7 +60,8 @@ namespace Core
             {
                 if (_SavedSelectionId == Guid.Empty)
                 {
-                    _SavedSelectionId = new Guid(ConfigurationManager.AppSettings["SELECTION_ID"]); // set this in AppSettings.config
+                    string newId = ConfigurationManager.AppSettings["SELECTION_ID"];
+                    _SavedSelectionId = (newId == string.Empty || newId == null) ? Guid.Empty : new Guid(newId); // set this in AppSettings.config
                 }
 
                 return _SavedSelectionId;

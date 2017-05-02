@@ -130,7 +130,6 @@
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "User name";
-            this.label2.Click += new System.EventHandler(this.Label2_Click);
             // 
             // label3
             // 
@@ -140,7 +139,6 @@
             this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Password";
-            this.label3.Click += new System.EventHandler(this.Label2_Click);
             // 
             // Form1
             // 
@@ -158,6 +156,7 @@
             this.Controls.Add(this.buttonSubmit);
             this.Name = "Form1";
             this.Text = "Mandoline API client";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
