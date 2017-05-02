@@ -6,7 +6,7 @@
 
 var request = require('request@2.67.0')
 
-API_URL = 'https://services.oxfordeconomics.com';
+API_URL = 'https://services.oxfordeconomics.com/api/';
 
 // this function takes a saved selection id and makes a GET
 // request to the filedownload endpoint, forwarding the download
@@ -18,19 +18,18 @@ API_URL = 'https://services.oxfordeconomics.com';
 // data is simply handed off to the callback function
 module.exports = function (context, callback) 
 {
-    var api_url = API_URL + '/api/filedownload';
+    var api_url = API_URL + context.data.api_path;
     var api_key = context.data.api_key;
     var api_resource_id = context.data.api_resource_id || "";
 
-    if (!api_resource_id || !api_key)
+    if (!api_resource_id || !api_key || !api_url)
     {
             callback(400, null);
     }
-    else
-    {
-      api_resource_id = "/" + api_resource_id;
+
+    api_resource_id = "/" + api_resource_id;
       
-      var options = 
+    var options = 
     {
       method: 'GET',
       followRedirect: false,
@@ -45,10 +44,14 @@ module.exports = function (context, callback)
     {
       if (response.statusCode >= 300 && response.statusCode < 400)
       {
+        console.log(response.headers.location);
         callback(null, response.headers.location);
       }
       else
       {
+        console.log(error);
+        console.log(response);
+        console.log(body);
         callback(response.statusCode, error);
       }
     });

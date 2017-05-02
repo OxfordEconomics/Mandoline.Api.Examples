@@ -4,6 +4,13 @@
 // root for full license information.
 // </copyright>
 
+// this is the number of characters into the URL string to find the
+// generate link id for file and queue download
+GENERATE_LINK_INDEX = 54;
+
+
+WEBTASK_URL = 'https://wt-ec7f34285e98bfc354c433be6ef8e7c3-0.run.webtask.io/file-download';
+
 
 // sample selection: when run, this will download GDP and inflation
 // data for the UK and United States from the year 2015 to 2021 from
@@ -338,6 +345,7 @@ function updateSelection() {
 // at ../webtask/file-download.js
 function getFromWebTasks(path, resource_id) {
 	var payload = {
+                "api_path": path,
 		"api_resource_id": resource_id,
 		"api_key": $("#ApiKey").val()
 	}
@@ -345,7 +353,7 @@ function getFromWebTasks(path, resource_id) {
 	$.support.cors = true;
 	
 	var request = $.ajax({
-		url: 'https://wt-ec7f34285e98bfc354c433be6ef8e7c3-0.run.webtask.io/file-download',
+		url: WEBTASK_URL,
 		type: 'POST',
 		data: JSON.stringify(payload),
 		contentType: 'application/json; charset=utf-8',
@@ -415,27 +423,24 @@ function downloadShaped() {
 // and uses it as a target URL for a GET request, which in turn 
 // returns either a true or false value indicating whether the 
 // download is ready
-function checkQueue(check_url, ready_url) {
+function checkQueue(url, ready_url) {
     var api_key = $("#ApiKey").val();
     var apiHeader = { "Api-Key": api_key };
     $.support.cors = true;
     
     $.ajax({
-    	url: encodeURI(check_url),
+    	url: encodeURI(url),
     	type: 'GET',
     	headers: apiHeader,
     	contentType: 'application/json; charset=utf-8',
     	dataType: 'json',
     	success: function(data, status){
 		$("#log").empty();
+                $("#log").append("Fetching download link...");
+
 		if (data == true)
 		{
-			$("#log").append(
-				"<pre><br/>" 
-				+ "Download ready at: <a href=\"" 
-				+ ready_url
-				+ "\">Click here to download</a>"
-				+ "</pre>");
+                    getFromWebTasks('/generatelink', ready_url.substring(GENERATE_LINK_INDEX));
 		}
 		else
 		{
