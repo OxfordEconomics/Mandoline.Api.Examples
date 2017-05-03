@@ -10,24 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ### Contents:
 0. Configuration
-1. Dependencies
-2. Scripts and files
 
 ### 0. Configuration:
 
-For setting up web data connector on localhost:
-  - download and install a lightweight http server. python comes bundled with the http.server module, which can be executed as a script. other options include NPM's http-server or Mongoose.
-  - start your http server. in the case of python, open a command prompt and change your working directory to where the connector's index.html file is located and run 'python -m http.server 8000 --bind 127.0.0.1'. now the page should be accessible by directing a web browser to 127.0.0.1:8000.
-
-### 2. Scripts and files:
-
-index.html: the web data connector interface, takes input from the user and passes to api_connector.js
-
-js/api_connector.js: 
-  - authenticates the user, processes input and settings
-  - defines function for building table schema
-  - defines function for running http request to populate data tables
-  - passes control to tableau
-
-webtask/tableau-wdc.js: 
-  - combines all of the above into a Webtask application for hosting your connector remotely
+  - after opening the .pbix file, go to the Data section using the tabbed panel on the left
+  - click edit queries in the external data panel at the top
+  - on the lefthand side of the screen, click UserApiKey
+  - enter your api key in CurrentValue
+  - hit close and apply on the top-right part of the page 
