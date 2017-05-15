@@ -1,0 +1,61 @@
+
+button { 
+	width: 500px; 
+	height: 40px; 
+	padding: 5px;
+	margin-bottom:7px;
+	}
+
+body { 
+	background-color: lightgrey; 
+	font-family: Arial;
+	}
+
+input {
+	margin-bottom: 7px;
+}
+
+.main { 
+	margin-top: -15px;
+	padding: 50px;
+	padding-top: 15px;
+	padding-right:15px;
+	background-color: white;
+	margin-left: auto;
+	margin-right: auto;
+	width: 1125px;
+	overflow: hidden;
+	}
+
+.right-div {
+	width: 550px;
+	margin-left: 15px;
+	float: left;
+	}
+
+.left-div {
+	width: 550px;
+	float: left;
+}
+
+.header {
+	width: 1065px;
+	overflow: hidden;
+	margin-bottom: 25px;
+}
+
+.header h2 {
+	font-size:35px;
+	margin-top: 60px;
+	float: right;
+}
+
+#copyright {
+	font-size: 12px;
+	}
+
+#logo {
+	float: left;
+	margin-left: -28px;
+}
+

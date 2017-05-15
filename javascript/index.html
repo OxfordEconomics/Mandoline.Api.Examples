@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<!--
+<copyright file="index.html" company="Oxford Economics">
+Copyright (c) 2017 Oxford Economics Ltd. All rights reserved.
+Licensed under the MIT License. See LICENSE file in the project
+root for full license information.
+</copyright> 
+-->
+
+<html>
+
+<head>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+	</script>
+
+	<script src="js/api_examples.js"></script>
+
+	<link href="css/styles.css" type="text/css" rel="stylesheet" />
+
+	<link href="http://www.oxfordeconomics.com/Modules/OxfordEconomics.Common/Styles/font-awesome.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+	<div class="main">
+
+	<div class="header">
+
+	<img id="logo" src="img/oelogo1.jpg" />
+	<h2>Global Data Workstation API Examples</h2>
+
+	</div>
+
+	<div class="left-div">
+
+		<h3>Log in</h3>
+		User: <input id = "user_name" value = "" style="width:175px;
+			margin-right: 15px;"/> 
+		Password: <input type="password" id = "user_pass" value = ""
+			style="width:175px;"/><br/>
+		
+		<button id = "btnLogin">Log in</button>
+
+		<h3>Server &amp; API Authentication Key</h3>
+		Hostname: <input id = "Hostname" style="width: 175px;
+			margin-right: 15px;"
+			value = "https://services.oxfordeconomics.com"/> 
+		API Key: <input id = "ApiKey" placeholder = ""
+			style="width: 148px;"/>
+
+		<h3>Example Info Requests</h3>
+		<button id = "btnGetDatabanks">Get databanks</button><br/>
+		<button id = "btnGetRegions">Get regions (Macro databank)</button><br/>
+		<button id = "btnGetVariables">Get variables (Macro databank)</button><br/>
+	
+
+		<h3>Example Selection Requests</h3>
+		<button id = "btnCreateSelection">Create selection</button><br/><br/>
+		Selection Id: <input id = "selection_id" value = "" 
+   			placeholder="insert selection id or create a new one (button above)" 
+			style="width:403px;"/> 
+		<button id = "btnGetSelection" title="Gets selection with id given above">Get selection</button><br/>
+		<button id = "btnUpdateSelection" title="Changes name of selection with id given above">
+			Update selection</button><br/>
+	
+	</div>
+
+	<div class="right-div">
+		
+		<h3>Example User Requests</h3>
+		<button id = "btnGetUser">Get user</button><br/>
+
+		<h3>Example Download Requests</h3>
+		<button id = "btnPostA">Annual | All Measures | GBR, USA 
+			| GDP$, CPI | 2015-2021</button><br/>
+		<button id = "btnGetPaged">Same as above (paged response)</button><br/>
+		<button id = "btnDownloadShaped">Shaped download (uses selection id)</button><br/>
+		<button id = "btnDownloadFile">File download (uses selection id)</button><br/>
+		<button id = "btnQueueDownload">Queue download (uses selection id)</button><br/>
+
+		<h3>Simple Custom Request</h3>
+		Location: <input id = "Location" value = "DEU"/> 
+		Indicator: <input id = "Indicator" value = "RCB"/>
+		
+		<button id = "btnPostCustom">Annual | Level Values 
+			| CUSTOM Variable | 2015-2021</button>
+	</div> 
+
+	<div style="clear:both"></div>
+
+	<h3>Results</h3>
+
+	<div id = "log"></div>
+
+	</div>
+
+</body>
+
+</html>
