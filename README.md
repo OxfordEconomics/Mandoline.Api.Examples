@@ -33,4 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   - *js/api_connector.js*: connector scripts for /index.html web data connector
   - *webtask/api_connector.js*: similar to above but adapted for use with Webtask
   
+### R:
+  - *../download_selection.r*: example download of saved selection
+  
   
