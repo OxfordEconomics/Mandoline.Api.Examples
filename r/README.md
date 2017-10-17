@@ -13,6 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   - download and install the R environment at cran.r-project.org
   - start it up and install the dependencies listed below e.g. 
     install.packages('httr')
+  - update download_selection.r with your api key and a saved
+    selection id
   - file > change directory to the location of this script
   - run the script by typing source('download_selection.r')
 

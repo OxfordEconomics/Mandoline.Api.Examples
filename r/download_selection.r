@@ -22,12 +22,12 @@ require('httr')
 require('jsonlite')
 
 # program constants
-# note: API_KEY must be set below
+# note: API_KEY and selection id must be set below
 #
-BASE <- 'https://services.oxfordeconomics.com/api'
 API_KEY <- ''
+SELECTION_ID <- ''
+BASE <- 'https://services.oxfordeconomics.com/api'
 PAGE_SIZE <- 5
-SELECTION_ID <- '/11688972-aff4-4f74-bb13-30b54fd7fab1'
 
 
 # essentially the main function: takes a saved selection id, downloads
