@@ -9,12 +9,12 @@
 # raw output into a usable dataframe. it contains the following functions...
 #
 # download_selection_as_dataframe: the functions listed below are called
-#								   to produce a usable dataframe
+#				   to produce a usable dataframe
 # download_raw_data: the http calls to our API
 # get_quarterly_rows: an internal function for splitting quarterly
-#				      data into multiple rows
+#		      data into multiple rows
 # flatten_dataframe: converts the raw output of the API calls into
-#				     a usable dataframe
+#		     a usable dataframe
 
 
 # import modules
