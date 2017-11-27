@@ -173,7 +173,7 @@ class Client(object):
         while len(new_data) == pagesize:
             page += 1
             new_data = self._get_download(selection, page, pagesize)
-            data.append(new_data)
+            data.extend(new_data)
 
         return data
 
