@@ -50,7 +50,7 @@ download_selection_as_dataframe <- function(selection_id)
 download_raw_data <- function(selection_id)
 {
 	# select resource endpoint, in this case /download
-	endpoint <- '/download'
+	endpoint <- '/download/'
 	options <- '?includemetadata=true&page='
 
 	# set up and run the request
