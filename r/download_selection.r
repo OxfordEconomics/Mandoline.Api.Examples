@@ -27,7 +27,7 @@ require('jsonlite')
 API_KEY <- ''
 SELECTION_ID <- ''
 BASE <- 'https://services.oxfordeconomics.com/api'
-PAGE_SIZE <- 5
+PAGE_SIZE <- 2000
 
 
 # essentially the main function: takes a saved selection id, downloads
@@ -51,7 +51,8 @@ download_raw_data <- function(selection_id)
 {
 	# select resource endpoint, in this case /download
 	endpoint <- '/download'
-	options <- '?includemetadata=true&page='
+	options1 <- '?includemetadata=true&page='
+	options2 <- '&pagesize='
 
 	# set up and run the request
 	raw_data <- data.frame()
@@ -60,7 +61,7 @@ download_raw_data <- function(selection_id)
 	{
 		print(paste('Downloading page', page+1))
 	
-		http_request <- paste(BASE, endpoint, selection_id, options, page, sep='')
+		http_request <- paste(BASE, endpoint, selection_id, options1, page, options2, PAGE_SIZE, sep='')
 
 		http_response <- GET(http_request, add_headers('api-key' = API_KEY))
 
