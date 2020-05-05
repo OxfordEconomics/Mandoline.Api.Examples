@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+
+var requestCount = 0;
+
+function postHttpResource(resource, page, alldata) {
+    var path = '/download?includeMetadata=true&page=' + page + '&pagesize=' + 100;
+	var hostname = $("#Hostname").val();
+	var api_url = hostname + "/api";
+	var api_key = $("#ApiKey").val();
+
+    var jsonResource = JSON.stringify(resource);
+    var apiHeader = { "Api-Key": api_key };
+	
+	$.support.cors = true;	    
+
+    $.ajax({
+        url: encodeURI(api_url + path),
+        type: 'POST',
+        headers: apiHeader,
+        data: jsonResource,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function(data, status, request){
+            // alert("Data: " + JSON.stringify(data, null, 4) + "\nStatus: " + status);			            
+            var totalPages = request.getResponseHeader("Pages");
+            $("#log").append("<pre> Reading page: " + page + " Pages:" + totalPages + " Status: " + status + "</pre>");
+
+            alldata = alldata.concat(data);
+            
+            page++;            
+
+            if (page < totalPages)
+            {
+                postHttpResource(resource, page, alldata);
+            }
+            else
+            {
+                $("#log").append("<pre> Request count: " + ++requestCount + "<br/><hr/>" + JSON.stringify(alldata, null, 4) + "<br/>Status: " + status + "<hr/></pre>");
+            }
+        },
+        error: function(data,status){
+            alert(" Error Status: " + status);
+        }
+    });
+};
+
+function getData(selection) {
+    $("#log").empty();
+
+    postHttpResource(selection, 0, []);
+};
+
+var selectionA =
+{
+    Name: 'API - test',
+    DatabankCode: 'WDMacro',
+    MeasureCode: 'L',
+    StartYear: 2015,
+    EndYear: 2025,
+    StackedQuarters: 'false',
+    Frequency: 'Annual',
+    Sequence: 'EarliestToLatest',
+    Precision: 1,
+    Order: 'IndicatorLocation',
+    GroupingMode: 'false',
+    Regions: [],
+    Variables: [{ ProductTypeCode: 'WMC', VariableCode: 'GDP$', MeasureCodes: ['L', 'PY', 'DY'] }, { ProductTypeCode: 'WMC', VariableCode: 'CPI', MeasureCodes: ['L'] }]
+};
+
+var selectionQ =
+{
+    Name: 'API - test',
+    DatabankCode: 'WDMacro',
+    MeasureCode: 'L',
+    StartYear: 2015,
+    EndYear: 2025,
+    StackedQuarters: 'false',
+    Frequency: 'Quarterly',
+    Sequence: 'EarliestToLatest',
+    Precision: 1,
+    Order: 'IndicatorLocation',
+    GroupingMode: 'false',
+    Regions: [],
+    Variables: [{ ProductTypeCode: 'WMC', VariableCode: 'GDP$', MeasureCodes: ['L', 'PY', 'DY'] }, { ProductTypeCode: 'WMC', VariableCode: 'CPI', MeasureCodes: ['L'] }]
+};
+
+$(document).ready(function(){
+    $("#btnPostA").click(function() {
+        getData(selectionA)
+    });
+    $("#btnPostQ").click(function() {
+        getData(selectionQ)
+    });
+    $("#btnPostBoth").click(function() {
+		var selectionBoth = $.extend({}, selectionQ);
+		selectionBoth.Frequency = 'Both';
+        getData(selectionBoth)
+    });
+    $("#btnPostCustom").click(function() {
+		var selectionCustom = $.extend({}, selectionA);
+		selectionCustom.Regions = [{ DatabankCode: 'WDMacro', RegionCode: $("#Location").val()}];
+		selectionCustom.Variables = [{ ProductTypeCode: 'WMC', VariableCode: $("#Indicator").val(), MeasureCodes: ['L'] }];
+        getData(selectionCustom)
+    });
+});
+</script>
+
+<style>
+button { width: 500px; height: 40px; padding: 5px;}
+body { background-color: lightgrey; font-family: Arial;}
+#copyright {font-size: 12px;}
+</style>
+
+</head>
+
+<body>
+
+<h2>Global Data Workstation API Example</h2>
+
+<h3>Server &amp; API Authentication Key</h3>
+Hostname: <input id = "Hostname" value = "https://services.oxfordeconomics.com"/> API Key: <input id = "ApiKey" value = "ADD API KEY HERE"/>
+
+<h3>Example Requests</h3>
+<button id = "btnPostA">Annual | All Measures | All Regions | GDP$, CPI | 2015-2025</button><br/>
+<button id = "btnPostQ">Quarterly | All Measures | All Regions | GDP$, CPI | 2015-2025</button><br/>
+<button id = "btnPostBoth">Both | All Measures | All Regions | GDP$, CPI | 2015-2025</button>
+
+<h3>Simple Custom Request</h3>
+Location: <input id = "Location" value = "USA"/> Indicator: <input id = "Indicator" value = "RCB"/>
+<p/>
+<button id = "btnPostCustom">Annual | Level Values | CUSTOM Variable | 2015-2025</button>
+<p/>
+<hr/>
+
+<div id = "log"></div>
+
+<!-- Copyright Notice -- Not to be removed from this sample application -->
+<div id="copyright">
+&copy; 2019 - OXFORD ECONOMICS LTD - ALL RIGHTS RESERVED
+<p>
+To use the Global Data Workstation API you must first obtain an API Key.<br/>
+</p>
+<p>
+The API Key is authenticated by your organisation's subscription credentials and<br/>
+provides access only to databanks and variables authorised in the subscription.<br/>
+</p>
+<p>
+Any attempt to circumvent this authorisation and/or use another organistion's API Key will<br/>
+be in breach of the terms and conditions of your subscription contract.<br/>
+</p>
+<p>
+Note, the API does not return any data for unauthorised variable requests, and<br/>
+the API is throttled to prevent abuse and protect the main service.
+</p>
+<p>
+Please <a href="https://www.oxfordeconomics.com/about-us/sales-and-service/inquiries" target="_blank">contact Oxford Economics</a> if you require an API Key or have any technical enquiries.
+</p>
+</div>
+<!-- Copyright Notice -- Not to be removed from this sample application -->
+
+</body>
+</html>
