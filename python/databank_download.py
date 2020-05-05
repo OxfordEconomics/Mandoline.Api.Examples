@@ -40,7 +40,7 @@ def _reached_page_limit(page, page_limit):
 
 def _download_url(base_url, page, page_size):
     url = base_url + '/api/download?includemetadata=true'
-    return url + '&page={0}+&pagesize={1}'.format(page, page_size)
+    return url + '&page={0}&pagesize={1}'.format(page, page_size)
 
 def databank_download(selection_dictionary, page_size=5000, page_limit=-1):
     headers = {'Accept': 'application/json',
@@ -55,7 +55,7 @@ def databank_download(selection_dictionary, page_size=5000, page_limit=-1):
         sys.stdout.flush()
 
         # note: _download_url returns a link of the form 
-        # ../api/download?includemetadata=true&page={page}+&page_size={page_size}
+        # ../api/download?includemetadata=true&page={page}&pagesize={page_size}
         response = requests.post(
             _download_url(BASE_URL, page, page_size), 
             headers=headers, 
@@ -71,7 +71,7 @@ def databank_download(selection_dictionary, page_size=5000, page_limit=-1):
 
         print('contains {0} series, {1} total'.format(len(new_data), len(data_list)))
 
-        if len(new_data) != page_size:
+        if len(new_data) < page_size:
             break
 
     return data_list
