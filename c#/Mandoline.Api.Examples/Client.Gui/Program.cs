@@ -1,29 +1,31 @@
-﻿// <copyright file="Program.cs" company="Oxford Economics">
-// Copyright (c) 2017 Oxford Economics Ltd. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// </copyright>
+﻿// This application entry point is based on ASP.NET Core new project templates and is included
+// as a starting point for app host configuration.
+// This file may need updated according to the specific scenario of the application being upgraded.
+// For more information on ASP.NET Core hosting, see https://docs.microsoft.com/aspnet/core/fundamentals/host/web-host
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Client.Gui
 {
-    internal static class Program
+    public class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        private static void Main()
+        public static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Form1 f = new Form1();
-            Application.Run(f);
+            CreateHostBuilder(args).Build().Run();
         }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

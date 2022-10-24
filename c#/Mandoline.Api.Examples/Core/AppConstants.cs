@@ -32,7 +32,7 @@ namespace Core
             {
                 if (_ApiToken == null)
                 {
-                    _ApiToken = ConfigurationManager.AppSettings["API_TOKEN"] ?? null; // set this in AppSettings.config
+                    _ApiToken = "cb-a9a50e47-574c-4450-89cb-9d2a24508de2"; //ConfigurationManager.AppSettings["API_TOKEN"] ?? null; // set this in AppSettings.config
                 }
 
                 return _ApiToken;
