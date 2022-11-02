@@ -8,20 +8,21 @@ namespace Client.Repl
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Core;
-    using Mandoline.Api.Client;
-    using Replify;
 
-    public class UserCommand : IReplCommand
+    public class UserCommand
     {
+        public Dictionary<string, Func<Task>> commands;
         private Output output;
 
         public UserCommand()
         {
             this.output = new ConsoleOutput();
+            commands = new Dictionary<string, Func<Task>>();
+            commands.Add("LogIn", LogIn);
+            commands.Add("GetUser", GetUser);
+
         }
 
         public async Task GetUser()
@@ -46,7 +47,7 @@ namespace Client.Repl
 
                 try
                 {
-                    await Core.User.RunLoginAsync(this.output, user, pass).ConfigureAwait(true);
+                    await User.RunLoginAsync(this.output, user, pass).ConfigureAwait(true);
                     success = true;
                 }
                 catch (NullReferenceException)
@@ -55,6 +56,7 @@ namespace Client.Repl
                 }
             }
             while (!success);
+
         }
     }
 }

@@ -6,16 +6,10 @@
 
 namespace Client.Repl
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Core;
-    using Mandoline.Api.Client;
-    using Replify;
 
-    public class DownloadCommand : IReplCommand
+    public class DownloadCommand
     {
         private Output output;
 
