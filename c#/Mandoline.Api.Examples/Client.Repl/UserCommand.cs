@@ -13,16 +13,11 @@ namespace Client.Repl
 
     public class UserCommand
     {
-        public Dictionary<string, Func<Task>> commands;
         private Output output;
 
         public UserCommand()
         {
             this.output = new ConsoleOutput();
-            commands = new Dictionary<string, Func<Task>>();
-            commands.Add("LogIn", LogIn);
-            commands.Add("GetUser", GetUser);
-
         }
 
         public async Task GetUser()

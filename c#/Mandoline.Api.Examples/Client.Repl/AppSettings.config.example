@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<appSettings>
+  <add key="API_TOKEN" value=""/> 
+    
+  <!-- Id string for Selection that is either in the user's 
+        selection list or has accessibility set to public -->
+  <add key="SELECTION_ID" value=""/>
+    
+  <add key="BASE_URL" value=""/>
+        
+</appSettings>
