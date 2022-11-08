@@ -4,17 +4,17 @@
 // root for full license information.
 // </copyright>
 
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Mandoline.Api.Client.ServiceModels;
+
 namespace Core
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Configuration;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Mandoline.Api.Client.ServiceModels;
-
     public static class AppConstants
     {
         static AppConstants()
