@@ -13,8 +13,7 @@ namespace Core
     using System.Threading.Tasks;
     using Mandoline.Api.Client;
     using Mandoline.Api.Client.ServiceModels;
-    using Mandoline.Shaping;
-    using Mandoline.Shaping.Models;
+
 
     public class DownloadShaped
     {
