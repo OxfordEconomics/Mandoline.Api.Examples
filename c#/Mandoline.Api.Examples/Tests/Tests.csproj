@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
   </PropertyGroup>
@@ -64,4 +64,15 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="AppSettings.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Target Name="CopyAppConfig" AfterTargets="Build" DependsOnTargets="Build">
+      <CreateItem Include="$(OutputPath)$(AssemblyName).dll.config">
+        <Output TaskParameter="Include" ItemName="FilesToCopy"/>
+      </CreateItem>
+      <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="$(OutputPath)testhost.dll.config" />
+  </Target>
 </Project>
