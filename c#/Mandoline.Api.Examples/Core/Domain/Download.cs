@@ -6,14 +6,12 @@
 
 namespace Core
 {
+    using Core.Client;
+    using Core.Client.ServiceModels;
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
-    using Mandoline.Api.Client;
-    using Mandoline.Api.Client.ServiceModels;
+
 
     public class Download
     {

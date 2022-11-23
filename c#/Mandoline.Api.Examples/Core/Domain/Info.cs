@@ -6,15 +6,8 @@
 
 namespace Core
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
-    using System.Text;
+    using Core.Client;
     using System.Threading.Tasks;
-    using Mandoline.Api.Client;
-    using Mandoline.Api.Client.Models;
-    using Mandoline.Api.Client.ServiceModels;
 
     public class Info
     {

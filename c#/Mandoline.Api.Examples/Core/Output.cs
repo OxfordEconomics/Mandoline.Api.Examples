@@ -4,15 +4,12 @@
 // root for full license information.
 // </copyright>
 
-namespace Core
+namespace Core.Client
 {
-    using System;
+    using Core.Client.Models;
+    using Core.Client.ServiceModels;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
-    using Mandoline.Api.Client.Models;
-    using Mandoline.Api.Client.ServiceModels;
 
     public abstract class Output
     {
@@ -38,11 +35,11 @@ namespace Core
 
         public abstract void PrintData(IEnumerable<Databank> ld);
 
-        public abstract void PrintData(Mandoline.Api.Client.Models.User u);
+        public abstract void PrintData(Models.User u);
 
-        public abstract void PrintData(IEnumerable<Mandoline.Api.Client.Models.User> ul);
+        public abstract void PrintData(IEnumerable<Core.Client.Models.User> ul);
 
-        public abstract void PrintData(Mandoline.Api.Client.Models.User u, string token);
+        public abstract void PrintData(Core.Client.Models.User u, string token);
 
         public abstract void PrintData(SelectionDto s);
     }

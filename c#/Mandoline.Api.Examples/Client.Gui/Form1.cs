@@ -6,18 +6,9 @@
 namespace Client.Gui
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Drawing;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows.Forms;
     using Core;
-    using Mandoline.Api.Client;
-    using Mandoline.Api.Client.Models;
-    using Mandoline.Api.Client.ServiceModels;
+    using Core.Client;
 
     public partial class Form1 : Form
     {
@@ -91,13 +82,13 @@ namespace Client.Gui
                     await SavedSelection.RunCreateSavedSelection(this.output);
                     break;
                 case "GetAllUsers":
-                    await Core.User.RunGetAllUsersAsync(this.output);
+                    await User.RunGetAllUsersAsync(this.output);
                     break;
                 case "Login":
-                    await Core.User.RunLoginAsync(this.output, this.textBox0.Text, this.textBox1.Text);
+                    await User.RunLoginAsync(this.output, this.textBox0.Text, this.textBox1.Text);
                     break;
                 case "GetUser":
-                    await Core.User.RunGetUserAsync(this.output);
+                    await User.RunGetUserAsync(this.output);
                     break;
                 case "GetDatabanks":
                     await Info.RunGetDatabanksAsync(this.output);
@@ -117,7 +108,7 @@ namespace Client.Gui
             {
                 this.label1.Text = "Running login...";
                 this.label1.Visible = true;
-                Core.User.RunLoginAsync(this.output, this.textBox0.Text, this.textBox1.Text);
+                User.RunLoginAsync(this.output, this.textBox0.Text, this.textBox1.Text);
             }
         }
 
@@ -127,7 +118,7 @@ namespace Client.Gui
             if (AppConstants.ApiToken != string.Empty)
             {
                 Console.WriteLine("Checking api key from config settings...");
-                var api = new Mandoline.Api.Client.ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+                var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
                 var userCheck = await api.GetUserAsync();
                 if (userCheck.Failed == true)
                 {

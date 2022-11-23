@@ -10,11 +10,9 @@ namespace Tests
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Core;
-    using Mandoline.Api.Client.Models;
-    using Mandoline.Api.Client.ServiceModels;
+    using Core.Client;
+    using Core.Client.Models;
+    using Core.Client.ServiceModels;
 
     // this implementation of Output directs output to console
     internal class TestOutput : Output
@@ -76,7 +74,7 @@ namespace Tests
         }
 
         // process login output
-        public override void PrintData(Mandoline.Api.Client.Models.User u, string token)
+        public override void PrintData(Core.Client.Models.User u, string token)
         {
             try
             {
@@ -89,16 +87,16 @@ namespace Tests
         }
 
         // process output for multi user response
-        public override void PrintData(IEnumerable<Mandoline.Api.Client.Models.User> ul)
+        public override void PrintData(IEnumerable<Core.Client.Models.User> ul)
         {
-            foreach (Mandoline.Api.Client.Models.User u in ul)
+            foreach (Core.Client.Models.User u in ul)
             {
                 Console.WriteLine("\t{0} {1} - Selections: {2}", u.FirstName, u.LastName, u.SavedSelections.Count());
             }
         }
 
         // process output for single user
-        public override void PrintData(Mandoline.Api.Client.Models.User u)
+        public override void PrintData(Core.Client.Models.User u)
         {
             this.ReturnValueStr = u.ApiKey;
         }

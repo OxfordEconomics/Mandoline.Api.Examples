@@ -9,7 +9,7 @@ namespace Tests
     using System;
     using System.Threading.Tasks;
     using Core;
-    using Mandoline.Api.Client.ServiceModels;
+    using Core.Client.ServiceModels;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -20,7 +20,7 @@ namespace Tests
         {
             SelectionDto sampleSelect = AppConstants.SampleSelection.GetInstance();
 
-            var api = new Mandoline.Api.Client.ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+            var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
             var newSelection = api.CreateSavedSelectionAsync(
                 sampleSelect,
@@ -45,7 +45,7 @@ namespace Tests
         public async Task SelectionUpdateTest()
         {
             // get the selection pre-update, store original LastUpdated value 
-            var api = new Mandoline.Api.Client.ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+            var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
             var oldSelection = await api.GetSavedSelection(AppConstants.SavedSelectionId);
             var preTestUpdateTime = oldSelection.Result.LastUpdate;
 

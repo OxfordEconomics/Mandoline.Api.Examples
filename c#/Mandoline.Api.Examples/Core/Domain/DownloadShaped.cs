@@ -6,13 +6,13 @@
 
 namespace Core
 {
+    using Core.Client;
+    using Core.Client.ServiceModels;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using Mandoline.Api.Client;
-    using Mandoline.Api.Client.ServiceModels;
 
 
     public class DownloadShaped
@@ -32,7 +32,7 @@ namespace Core
                 Pivot = false,
                 StackedQuarters = false,
                 Frequency = FrequencyEnum.Annual,
-                Format = Mandoline.Api.Client.ServiceModels.FormatEnum.Default,
+                Format = Core.Client.ServiceModels.FormatEnum.Default,
             };
 
             // run download
@@ -60,7 +60,7 @@ namespace Core
                 Pivot = false,
                 StackedQuarters = false,
                 Frequency = FrequencyEnum.Annual,
-                Format = Mandoline.Api.Client.ServiceModels.FormatEnum.Default,
+                Format = Core.Client.ServiceModels.FormatEnum.Default,
             };
 
             // run download

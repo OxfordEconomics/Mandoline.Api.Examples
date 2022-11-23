@@ -8,6 +8,7 @@ namespace Client.Repl
 {
     using System.Threading.Tasks;
     using Core;
+    using Core.Client;
 
     public class InfoCommand
     {

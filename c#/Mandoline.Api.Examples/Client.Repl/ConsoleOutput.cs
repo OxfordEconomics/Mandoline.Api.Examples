@@ -13,8 +13,9 @@ namespace Client.Repl
     using System.Text;
     using System.Threading.Tasks;
     using Core;
-    using Mandoline.Api.Client.Models;
-    using Mandoline.Api.Client.ServiceModels;
+    using Core.Client;
+    using Core.Client.Models;
+    using Core.Client.ServiceModels;
 
     // this implementation of Output directs output to console
     internal class ConsoleOutput : Output
@@ -72,23 +73,23 @@ namespace Client.Repl
         }
 
         // process login output
-        public override void PrintData(Mandoline.Api.Client.Models.User u, string token)
+        public override void PrintData(Core.Client.Models.User u, string token)
         {
             Core.AppConstants.ApiToken = token;
             this.PrintData(u);
         }
 
         // process output for multi user response
-        public override void PrintData(IEnumerable<Mandoline.Api.Client.Models.User> ul)
+        public override void PrintData(IEnumerable<Core.Client.Models.User> ul)
         {
-            foreach (Mandoline.Api.Client.Models.User u in ul)
+            foreach (Core.Client.Models.User u in ul)
             {
                 Console.WriteLine("\t{0} {1} - Selections: {2}", u.FirstName, u.LastName, u.SavedSelections.Count());
             }
         }
 
         // process output for login response
-        public override void PrintData(Mandoline.Api.Client.Models.User u)
+        public override void PrintData(Core.Client.Models.User u)
         {
             Console.WriteLine("{0} {1} - Saved selections:", u.FirstName, u.LastName);
             foreach (ResourceLink<Selection> s in u.SavedSelections)

@@ -4,14 +4,11 @@
 // root for full license information.
 // </copyright>
 
+using Core.Client;
+using Core.Client.ServiceModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Mandoline.Api.Client.ServiceModels;
 
 namespace Core
 {

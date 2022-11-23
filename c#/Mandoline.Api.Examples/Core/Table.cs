@@ -6,14 +6,10 @@
 
 namespace Core
 {
-    using System;
+    using Core.Client.ServiceModels;
+    using Core.Client.Models;
     using System.Collections.Generic;
     using System.Data;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Mandoline.Api.Client.Models;
-    using Mandoline.Api.Client.ServiceModels;
 
     public class Table
     {

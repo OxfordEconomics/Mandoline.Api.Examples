@@ -3,23 +3,20 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using Core;
+using Core.Client;
+using Core.Client.ServiceModels;
+using Core.Client.Models;
+
 namespace Client.Gui
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Windows.Forms;
-    using Core;
-    using Mandoline.Api.Client.Models;
-    using Mandoline.Api.Client.ServiceModels;
-
     // this implementation of Output directs output to a DataGridView
     // for a Windows Form applicationv
-    internal class GridOutput : Core.Output
+    internal class GridOutput : Output
     {
         // constructor, must take windows form object to update load status and gridview
         public GridOutput(Form1 f)
@@ -90,10 +87,10 @@ namespace Client.Gui
         }
 
         // process login output
-        public override void PrintData(Mandoline.Api.Client.Models.User u, string token)
+        public override void PrintData(Core.Client.Models.User u, string token)
         {
             // append user info to list, so that we can pass to the DataGridView object
-            var output = new List<Mandoline.Api.Client.Models.User>();
+            var output = new List<Core.Client.Models.User>();
             output.Add(u);
 
             // pass user list to DataGridView object
@@ -107,7 +104,7 @@ namespace Client.Gui
         }
 
         // process output for multi user response
-        public override void PrintData(IEnumerable<Mandoline.Api.Client.Models.User> ul)
+        public override void PrintData(IEnumerable<Core.Client.Models.User> ul)
         {
             // pass user list to DataGridView object
             this.DataGridInstance = ul;
@@ -117,7 +114,7 @@ namespace Client.Gui
         }
 
         // process output for login response
-        public override void PrintData(Mandoline.Api.Client.Models.User u)
+        public override void PrintData(Core.Client.Models.User u)
         {
             Console.WriteLine("User has {0} saved selections...", u.SavedSelections.ToList().Count);
             foreach (ResourceLink<Selection> s in u.SavedSelections)
@@ -126,7 +123,7 @@ namespace Client.Gui
             }
 
             // append user info to list, so that we can pass to the DataGridView object
-            var output = new List<Mandoline.Api.Client.Models.User>();
+            var output = new List<Core.Client.Models.User>();
             output.Add(u);
 
             // pass user list to DataGridView object
