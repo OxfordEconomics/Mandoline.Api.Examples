@@ -140,7 +140,7 @@ namespace Core
 
             var result =
                 from databank in responseTask.Result
-                select new Core.Client.Models.Databank(this)
+                select new Databank(this)
                 {
                     HasAccess = databank.HasAccess,
                     DatabankCode = databank.DatabankCode,
@@ -160,7 +160,7 @@ namespace Core
                             }
                 };
 
-            return Assertion<IEnumerable<Core.Client.Models.Databank>>.Pass(result, responseTask.Reason);
+            return Assertion<IEnumerable<Databank>>.Pass(result, responseTask.Reason);
         }        
 
         
