@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
   </PropertyGroup>
@@ -34,10 +34,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.12" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0-preview-20221003-04" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.0-preview-20221110-04" />
     <PackageReference Include="MSTest.TestFramework" Version="3.0.0-preview-20221110-04" />
     <PackageReference Include="RestSharp" Version="106.12.0" />
+    <PackageReference Include="StyleCop" Version="6.2.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.346202">
       <PrivateAssets>all</PrivateAssets>
@@ -71,7 +72,7 @@
   </ItemGroup>
   <Target Name="CopyAppConfig" AfterTargets="Build" DependsOnTargets="Build">
       <CreateItem Include="$(OutputPath)$(AssemblyName).dll.config">
-        <Output TaskParameter="Include" ItemName="FilesToCopy"/>
+        <Output TaskParameter="Include" ItemName="FilesToCopy" />
       </CreateItem>
       <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="$(OutputPath)testhost.dll.config" />
   </Target>
