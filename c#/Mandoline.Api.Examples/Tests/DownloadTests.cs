@@ -6,7 +6,6 @@
 
 namespace Tests
 {
-    using System;
     using System.Threading.Tasks;
     using Core;
     using Microsoft.VisualStudio.TestTools.UnitTesting;

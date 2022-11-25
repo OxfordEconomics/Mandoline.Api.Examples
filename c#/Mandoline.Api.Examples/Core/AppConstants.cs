@@ -4,16 +4,17 @@
 // root for full license information.
 // </copyright>
 
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Mandoline.Api.Client.ServiceModels;
+
 namespace Core
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Configuration;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Mandoline.Api.Client.ServiceModels;
-
     public static class AppConstants
     {
         static AppConstants()
@@ -23,6 +24,14 @@ namespace Core
             BaseURL = ConfigurationManager.AppSettings["BASE_URL"];
             UserName = ConfigurationManager.AppSettings["USER_NAME"];
             UserPassword = ConfigurationManager.AppSettings["USER_PASS"];
+
+            if (
+                    string.IsNullOrWhiteSpace(BaseURL) ||
+                    string.IsNullOrWhiteSpace(ApiToken)
+               )
+            {
+                Console.WriteLine("Missing config parameters. Please check AppSettings.config");
+            }
         }
 
         // user's api token - default must be set before compile

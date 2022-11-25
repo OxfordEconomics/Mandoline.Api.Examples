@@ -8,14 +8,10 @@ namespace Client.Repl
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Core;
-    using Mandoline.Api.Client;
-    using Replify;
 
-    public class UserCommand : IReplCommand
+    public class UserCommand
     {
         private Output output;
 
@@ -46,7 +42,7 @@ namespace Client.Repl
 
                 try
                 {
-                    await Core.User.RunLoginAsync(this.output, user, pass).ConfigureAwait(true);
+                    await User.RunLoginAsync(this.output, user, pass).ConfigureAwait(true);
                     success = true;
                 }
                 catch (NullReferenceException)
@@ -55,6 +51,7 @@ namespace Client.Repl
                 }
             }
             while (!success);
+
         }
     }
 }
