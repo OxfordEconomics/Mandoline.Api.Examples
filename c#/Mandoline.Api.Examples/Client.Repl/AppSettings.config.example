@@ -7,6 +7,5 @@
   <add key="SELECTION_ID" value=""/>
     
   <add key="BASE_URL" value=""/>
-    
-    
+        
 </appSettings>

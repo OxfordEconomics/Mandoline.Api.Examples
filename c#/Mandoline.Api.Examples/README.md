@@ -12,12 +12,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 0. Configuration
 1. Dependencies
 2. Projects and files
+3. Running the Examples
 
 ### 0. Configuration:
 
-  - copy AppSettings.config.example -> AppSettings.config
-  - insert corresponding values for API_TOKEN
-  - if using a base url other than the default, insert this as well for BASE_URL
+  - copy the AppSettings.config.example template -> AppSettings.config in both Client.Repl & Client.Gui
+  - insert value for API_TOKEN, which is your API Key
+  - insert value for SELECTION_ID that is either in the user's selection list or has accessibility set to public
+  - insert value for BASE_URL, which should be https://services.oxfordeconomics.com
 
 ### 1. Dependencies:
 Core: implementation of Mandoline API examples
@@ -27,7 +29,7 @@ Core: implementation of Mandoline API examples
   - *ServiceModels*: contains domain object definitions e.g. DatabankDto, DataseriesDto
 - *Newton.Json*, *System.Xml*: for easy de-/serializing Json, XML objects
 - *System.Data*: for setting up DataTables corresponding to response data
-- Note: DLL files have been included for Mandoline.Api.Client, as well as Mandoline.Api.Shaping, and can be found in the 'packages' directory
+- Note: DLL files have been included for Mandoline.Api.Client and can be found in the 'packages' directory
 
 Client.Gui: windows form demonstration of Mandoline API calls
 
@@ -35,8 +37,7 @@ Client.Gui: windows form demonstration of Mandoline API calls
 
 Client.Repl: command line demonstration of Mandoline API calls
 
-- *Replify*: the command-line interfaced used by the client
-- *ClearScript* used by Replify to run user-created scripts
+- *Sharprompt*: the command-line interfaced used by the client
 
 ### 2. Projects and files:
 
@@ -60,5 +61,10 @@ Client.Gui: Windows Form demonstration of Mandoline API calls
 
 Client.Repl: command line demonstration of Mandoline API calls
 
-- *\*Command.cs*: the various commands for running corresponding examples in the Repl command line
+- *Command.cs*: the various commands for running corresponding examples in the Repl command line
 - *AppSettings.config*: user-supplied file based on AppSettings.config.example, which contains user values for api token and sample selection id
+
+### 3. Running the Examples:
+To get started running the examples, please ensure that all the steps under step 0 have been completed. Following this, Assuming the project
+is loaded in Visual Studio, you can directly run either the Client.Repl or Cliet.Gui projects and will be presented with a list of CLI commands
+or a graphical interface respectivley to execute API calls. 
