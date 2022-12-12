@@ -4,34 +4,33 @@
 // root for full license information.
 // </copyright>
 
-namespace Client.Repl
+using System.Threading.Tasks;
+using Core;
+using Core.Client;
+
+namespace Client.Repl;
+
+public class DownloadCommand
 {
-    using System.Threading.Tasks;
-    using Core;
-    using Core.Client;
+    private readonly Output output;
 
-    public class DownloadCommand
+    public DownloadCommand()
     {
-        private Output output;
+        this.output = new ConsoleOutput();
+    }
 
-        public DownloadCommand()
-        {
-            this.output = new ConsoleOutput();
-        }
+    public async Task DownloadFile()
+    {
+        await Download.RunDownloadFileAsync(this.output);
+    }
 
-        public async Task DownloadFile()
-        {
-            await Download.RunDownloadFileAsync(this.output);
-        }
+    public async Task RequestDownload()
+    {
+        await Download.RunRequestDownloadAsync(this.output);
+    }
 
-        public async Task RequestDownload()
-        {
-            await Download.RunRequestDownloadAsync(this.output);
-        }
-
-        public async Task RunDownload()
-        {
-            await Download.RunDownloadAsync(this.output);
-        }
+    public async Task RunDownload()
+    {
+        await Download.RunDownloadAsync(this.output);
     }
 }

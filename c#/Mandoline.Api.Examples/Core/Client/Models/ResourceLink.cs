@@ -1,13 +1,14 @@
 ﻿using Core.Client.ServiceModels;
 
-namespace Core.Client.Models
+namespace Core.Client.Models;
+
+public class ResourceLink<T> : ResourceLinkDto
+    where T : class, IApiModel
 {
-    public class ResourceLink<T> : ResourceLinkDto where T: class, ApiModel
+    private readonly ApiClient client;
+
+    public ResourceLink(ApiClient client)
     {
-        private ApiClient client;
-        public ResourceLink(ApiClient client)
-        {
-            this.client = client;
-        }
+        this.client = client;
     }
 }

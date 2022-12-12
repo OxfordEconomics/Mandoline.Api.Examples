@@ -1,46 +1,45 @@
 ﻿using System;
 
-namespace Core.Client.ServiceModels
-{  
+namespace Core.Client.ServiceModels;
+
+/// <summary>
+/// Dashboard model.
+/// </summary>
+public class DashboardDto
+{
     /// <summary>
-    /// Dashboard model
+    /// Unique identifier (Guid) for this dashboard.
     /// </summary>
-    public class DashboardDto
+    public Guid Id { get; set; }
+
+    /// <summary>
+    /// Human readable name for this dashboard.
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
+    /// Display order.
+    /// </summary>
+    public int DisplayOrder { get; set; }
+
+    /// <summary>
+    /// Contact Id of dashboard owner.
+    /// </summary>
+    public string OwnerContactId { get; set; }
+
+    public bool IsValid()
     {
-        /// <summary>
-        /// Unique identifier (Guid) for this dashboard
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// Human readable name for this dashboard
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Display order
-        /// </summary>
-        public int DisplayOrder { get; set; }
-
-        /// <summary>
-        /// Contact Id of dashboard owner
-        /// </summary>
-        public string OwnerContactId { get; set; }
-
-
-        public bool IsValid()
+        if (string.IsNullOrWhiteSpace(this.Name))
         {
-            if (String.IsNullOrWhiteSpace(Name))
-            {
-                return false;
-            }
-
-            return true;
-        }        
-
-        public override int GetHashCode()
-        {
-            return (this.Name + "¬" + this.DisplayOrder).GetHashCode();
+            return false;
         }
+
+        return true;
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
+    {
+        return (this.Name + "¬" + this.DisplayOrder).GetHashCode();
     }
 }

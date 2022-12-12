@@ -1,23 +1,26 @@
-﻿
-namespace Core.Client.ServiceModels
+﻿namespace Core.Client.ServiceModels;
+
+public enum FileFormat
 {
-    public enum FileFormat { Excel, Csv };
+    Excel,
+    Csv,
+}
+;
 
-    public class ControllerDownloadRequestDto
-    {
-        /// <summary>
-        /// array of selections
-        /// </summary>
-        public SelectionDto[] selections { get; set; }
+public class ControllerDownloadRequestDto
+{
+    /// <summary>
+    /// array of selections.
+    /// </summary>
+    public SelectionDto[] selections { get; set; }
 
-        /// <summary>
-        /// File format
-        /// </summary>
-        public FileFormat format { get; set; }
+    /// <summary>
+    /// File format.
+    /// </summary>
+    public FileFormat format { get; set; }
 
-        /// <summary>
-        /// download request name
-        /// </summary>
-        public string name { get; set; }
-    }
+    /// <summary>
+    /// download request name.
+    /// </summary>
+    public string name { get; set; }
 }

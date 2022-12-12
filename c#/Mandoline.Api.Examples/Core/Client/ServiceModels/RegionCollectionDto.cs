@@ -1,15 +1,12 @@
-﻿
-namespace Core.Client.ServiceModels
+﻿namespace Core.Client.ServiceModels;
+
+/// <summary>
+/// Collection of variables.
+/// </summary>
+public class RegionCollectionDto
 {
     /// <summary>
-    /// Collection of variables
+    /// Collection of variables.
     /// </summary>
-    public class RegionCollectionDto
-    {
-        /// <summary>
-        /// Collection of variables
-        /// </summary>
-        public RegionDto[] Regions { get; set; }
-
-    }
+    public RegionDto[] Regions { get; set; }
 }

@@ -1,36 +1,34 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
+namespace Core.Client.Models;
 
-namespace Core.Client.Models
+public class User : ServiceModels.UserDto, IApiModel
 {
-    public class User : ServiceModels.UserDto, ApiModel
+    /// <inheritdoc/>
+    public ApiClient Client { get; set; }
+
+    /// <summary>
+    /// Links to users saved selections.
+    /// </summary>
+    [JsonIgnore]
+    public new IEnumerable<ResourceLink<Selection>> SavedSelections
     {
-        public ApiClient Client { get; set; }
-
-        /// <summary>
-        /// Links to users saved selections
-        /// </summary>
-        [JsonIgnore]
-        public new IEnumerable<ResourceLink<Selection>> SavedSelections
+        get
         {
-            get
+            if (base.SavedSelections == null)
             {
-                if (base.SavedSelections == null)
-                {
-                    return new ResourceLink<Selection>[] { };
-                }
-
-                return from s in base.SavedSelections
-                       select new ResourceLink<Selection>(Client)
-                       {
-                           Id = s.Id,
-                           Name = s.Name,
-                           Url = s.Url
-                       };
+                return new ResourceLink<Selection>[] { };
             }
+
+            return from s in base.SavedSelections
+                   select new ResourceLink<Selection>(this.Client)
+                   {
+                       Id = s.Id,
+                       Name = s.Name,
+                       Url = s.Url,
+                   };
         }
-       
     }
 }

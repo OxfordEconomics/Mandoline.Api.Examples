@@ -1,10 +1,9 @@
 ﻿using Core.Client.ServiceModels;
 
-namespace Core.Client.Models
-{
-    public class DashboardWidget : DashboardWidgetDto, ApiModel
-    {
-        public ApiClient Client { get; set; }
+namespace Core.Client.Models;
 
-    }
+public class DashboardWidget : DashboardWidgetDto, IApiModel
+{
+    /// <inheritdoc/>
+    public ApiClient Client { get; set; }
 }

@@ -1,18 +1,16 @@
-﻿using Core.Client.ServiceModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Core.Client.ServiceModels;
 
-namespace Core.Client.Models
+namespace Core.Client.Models;
+
+public class Databank : DatabankDto
 {
-    public class Databank : DatabankDto
-    {                
-        public ApiClient apiClient;
+    public ApiClient ApiClient;
 
-        public Databank(ApiClient apiClient)
-        {            
-            this.apiClient = apiClient;
-        }
-
-        public new IEnumerable<TreeLink> Trees { get; set; }
-       
+    public Databank(ApiClient apiClient)
+    {
+        this.ApiClient = apiClient;
     }
+
+    public new IEnumerable<TreeLink> Trees { get; set; }
 }

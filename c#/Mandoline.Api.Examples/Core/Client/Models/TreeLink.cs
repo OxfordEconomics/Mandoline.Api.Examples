@@ -1,15 +1,13 @@
 ﻿using Core.Client.ServiceModels;
 
-namespace Core.Client.Models
+namespace Core.Client.Models;
+
+public class TreeLink : TreeLinkDto
 {
-    public class TreeLink : TreeLinkDto
+    private readonly ApiClient client;
+
+    public TreeLink(ApiClient client)
     {
-        private ApiClient client;
-
-        public TreeLink(ApiClient client)
-        {
-            this.client = client;
-        }
-
+        this.client = client;
     }
 }

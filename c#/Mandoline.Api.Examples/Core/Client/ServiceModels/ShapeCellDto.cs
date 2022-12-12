@@ -1,9 +1,6 @@
-﻿
-namespace Core.Client.ServiceModels
+﻿namespace Core.Client.ServiceModels;
+
+public class ShapeCellDto
 {
-    public class ShapeCellDto
-    {
-        public string Value { get; set; }
-        
-    }
+    public string Value { get; set; }
 }

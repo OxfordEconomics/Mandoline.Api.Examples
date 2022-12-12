@@ -1,9 +1,8 @@
-﻿
-namespace Core.Client.Models
+﻿namespace Core.Client.Models;
+
+public class ErrorDto
 {
-    public class ErrorDto
-    {
-        public string Message { get; set; }
-        public string MessageDetails { get; set; }
-    }
+    public string Message { get; set; }
+
+    public string MessageDetails { get; set; }
 }

@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Client.ServiceModels;
 
-namespace Core.Client.Models.Requests
+namespace Core.Client.Models.Requests;
+
+public class ShapedDownloadRequest
 {
-    public class ShapedDownloadRequest
-    {
-        public ShapeConfigurationDto Config { get; internal set; }
-        public SelectionDto Selection { get; internal set; }
-    }
+    public ShapeConfigurationDto Config { get; internal set; }
+
+    public SelectionDto Selection { get; internal set; }
 }

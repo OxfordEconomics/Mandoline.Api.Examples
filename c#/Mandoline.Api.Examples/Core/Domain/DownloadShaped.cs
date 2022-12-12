@@ -4,73 +4,71 @@
 // root for full license information.
 // </copyright>
 
-namespace Core
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Core.Client;
+using Core.Client.ServiceModels;
+
+namespace Core;
+
+public class DownloadShaped
 {
-    using Core.Client;
-    using Core.Client.ServiceModels;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
-
-    public class DownloadShaped
+    // runs simple shaped stream download
+    public static async Task RunDownloadShapedStreamAsync(Output output)
     {
-        // runs simple shaped stream download
-        public static async Task RunDownloadShapedStreamAsync(Output output)
+        // get our sample selection
+        SelectionDto sampleSelect = AppConstants.SampleSelection.GetInstance();
+
+        // set up api object for making call
+        ApiClient api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+
+        // set up simple configuration for shape request
+        ShapeConfigurationDto config = new ShapeConfigurationDto()
         {
-            // get our sample selection
-            SelectionDto sampleSelect = AppConstants.SampleSelection.GetInstance();
+            Pivot = false,
+            StackedQuarters = false,
+            Frequency = FrequencyEnum.Annual,
+            Format = Core.Client.ServiceModels.FormatEnum.Default,
+        };
 
-            // set up api object for making call
-            var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+        // run download
+        Client.Models.Assertion<Client.Models.ShapedStreamResult> shapedResult = await api.DownloadShapedStreamAsync(
+            sampleSelect,
+            config,
+            new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ConfigureAwait(true);
 
-            // set up simple configuration for shape request
-            var config = new ShapeConfigurationDto()
-            {
-                Pivot = false,
-                StackedQuarters = false,
-                Frequency = FrequencyEnum.Annual,
-                Format = Core.Client.ServiceModels.FormatEnum.Default,
-            };
+        // process data
+        output.PrintData(shapedResult.Result);
+    }
 
-            // run download
-            var shapedResult = await api.DownloadShapedStreamAsync(
-                sampleSelect,
-                config,
-                new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ConfigureAwait(true);
+    // runs simple shaped download
+    public static async Task RunDownloadShapedAsync(Output output)
+    {
+        // get our sample selection
+        SelectionDto sampleSelect = AppConstants.SampleSelection.GetInstance();
 
-            // process data
-            output.PrintData(shapedResult.Result);
-        }
+        // set up api object for making call
+        ApiClient api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
-        // runs simple shaped download
-        public static async Task RunDownloadShapedAsync(Output output)
+        // set up simple configuration for shape request
+        ShapeConfigurationDto config = new ShapeConfigurationDto()
         {
-            // get our sample selection
-            SelectionDto sampleSelect = AppConstants.SampleSelection.GetInstance();
+            Pivot = false,
+            StackedQuarters = false,
+            Frequency = FrequencyEnum.Annual,
+            Format = Core.Client.ServiceModels.FormatEnum.Default,
+        };
 
-            // set up api object for making call
-            var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+        // run download
+        Client.Models.Assertion<Client.Models.ShapedStreamResult> shapedResult = await api.DownloadShapedAsync(
+            sampleSelect,
+            config,
+            new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ConfigureAwait(true);
 
-            // set up simple configuration for shape request
-            var config = new ShapeConfigurationDto()
-            {
-                Pivot = false,
-                StackedQuarters = false,
-                Frequency = FrequencyEnum.Annual,
-                Format = Core.Client.ServiceModels.FormatEnum.Default,
-            };
-
-            // run download
-            var shapedResult = await api.DownloadShapedAsync(
-                sampleSelect,
-                config,
-                new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5)).Token).ConfigureAwait(true);
-
-            // process output data
-            output.PrintData(shapedResult.Result);
-        }
+        // process output data
+        output.PrintData(shapedResult.Result);
     }
 }

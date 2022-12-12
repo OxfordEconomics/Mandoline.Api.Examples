@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Client;
-namespace Core.Client
+
+namespace Core.Client;
+
+public interface IApiModel
 {
-    public interface ApiModel
-    {
-        ApiClient Client { get; set; }
-    }
+    ApiClient Client { get; set; }
 }

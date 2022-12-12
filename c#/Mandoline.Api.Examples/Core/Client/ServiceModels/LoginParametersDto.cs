@@ -1,19 +1,17 @@
-﻿
-namespace Core.Client.ServiceModels
+﻿namespace Core.Client.ServiceModels;
+
+/// <summary>
+/// Login parameters.
+/// </summary>
+public class LoginParametersDto
 {
     /// <summary>
-    /// Login parameters
+    /// Username.
     /// </summary>
-    public class LoginParametersDto
-    {
-        /// <summary>
-        /// Username
-        /// </summary>
-        public string Username { get; set; }
+    public string Username { get; set; }
 
-        /// <summary>
-        /// Password
-        /// </summary>
-        public string Password { get; set; }
-    }
+    /// <summary>
+    /// Password.
+    /// </summary>
+    public string Password { get; set; }
 }

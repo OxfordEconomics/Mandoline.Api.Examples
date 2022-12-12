@@ -1,25 +1,24 @@
 ﻿using System;
 
-namespace Core.Client.ServiceModels
+namespace Core.Client.ServiceModels;
+
+/// <summary>
+/// Link to a resource.
+/// </summary>
+public class ResourceLinkDto
 {
     /// <summary>
-    /// Link to a resource
+    /// Selection id.
     /// </summary>
-    public class ResourceLinkDto
-    {
-        /// <summary>
-        /// Selection id
-        /// </summary>
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        /// <summary>
-        /// Selection name
-        /// </summary>
-        public string Name { get; set; }
+    /// <summary>
+    /// Selection name.
+    /// </summary>
+    public string Name { get; set; }
 
-        /// <summary>
-        /// Selection url
-        /// </summary>
-        public string Url { get; set; }
-    }
+    /// <summary>
+    /// Selection url.
+    /// </summary>
+    public string Url { get; set; }
 }
