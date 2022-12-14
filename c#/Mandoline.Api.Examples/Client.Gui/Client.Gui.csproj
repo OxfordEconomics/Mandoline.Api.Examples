@@ -13,6 +13,9 @@
     <Copyright>Copyright (c) 2017 Oxford Economics Ltd. All rights reserved.</Copyright>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="AppSettings.config" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="appsettings.Development.json" />
     <Content Include="appsettings.json" />
     <Content Include="Docs\curl_examples.txt" />
