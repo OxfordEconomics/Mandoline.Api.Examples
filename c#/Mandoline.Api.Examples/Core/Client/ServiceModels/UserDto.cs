@@ -9,22 +9,22 @@ namespace Core.Client.ServiceModels;
 public class UserDto
 {
     /// <summary>
-    /// user surname.
+    /// Gets or sets user surname.
     /// </summary>
     public string LastName { get; set; }
 
     /// <summary>
-    /// user forename.
+    /// Gets or sets user forename.
     /// </summary>
     public string FirstName { get; set; }
 
     /// <summary>
-    /// Links to users saved selections.
+    /// Gets or sets links to users saved selections.
     /// </summary>
     public IEnumerable<ResourceLinkDto> SavedSelections { get; set; }
 
     /// <summary>
-    /// Users api key.
+    /// Gets or sets users api key.
     /// </summary>
     public string ApiKey { get; set; }
 }

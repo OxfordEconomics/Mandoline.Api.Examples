@@ -41,7 +41,7 @@ public class SerializableDictionary2<TKey, TValue> : Dictionary<TKey, TValue>, I
     private static readonly XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
 
     /// <summary>
-    /// Initializes a new instance of the
+    /// Gets initializes a new instance of the
     /// <see cref="SerializableDictionary2&lt;TKey, TValue&gt;"/> class.
     /// </summary>
 

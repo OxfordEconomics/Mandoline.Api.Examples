@@ -15,7 +15,7 @@ namespace Core;
 
 public class ApiClient
 {
-    private readonly string _clientName;
+    private readonly string _clientName = null;
     private MandolineWebRequestBuilder _requestBuilder;
 
     /// <summary>
@@ -344,6 +344,15 @@ public class ApiClient
         return data;
     }
 
+    public async Task<Assertion<T>> PerformGet<T>(string url, CancellationToken cancel = default(CancellationToken))
+        where T : class
+    {
+        Guard.NotNullOrEmpty(() => url, url);
+
+        MandolineWebRequest request = this._requestBuilder.CreateRequest(url);
+        return await request.Execute<T>(null, "GET", cancel);
+    }
+
     /// <summary>
     /// Get an existing selection.
     /// </summary>
@@ -360,15 +369,6 @@ public class ApiClient
         selection.IsTemporarySelection = true;
         Assertion<SelectionDto> result = await this.CreateSavedSelectionAsync(selection, cancel);
         return result;
-    }
-
-    public async Task<Assertion<T>> PerformGet<T>(string url, CancellationToken cancel = default(CancellationToken))
-        where T : class
-    {
-        Guard.NotNullOrEmpty(() => url, url);
-
-        MandolineWebRequest request = this._requestBuilder.CreateRequest(url);
-        return await request.Execute<T>(null, "GET", cancel);
     }
 
     private async Task<Assertion<T>> PerformPost<T>(object parameter, string url, CancellationToken cancel = default(CancellationToken), bool allowAutoRedirect = false)

@@ -8,22 +8,22 @@ namespace Core.Client.ServiceModels;
 public class DashboardDto
 {
     /// <summary>
-    /// Unique identifier (Guid) for this dashboard.
+    /// Gets or sets unique identifier (Guid) for this dashboard.
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Human readable name for this dashboard.
+    /// Gets or sets human readable name for this dashboard.
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// Display order.
+    /// Gets or sets display order.
     /// </summary>
     public int DisplayOrder { get; set; }
 
     /// <summary>
-    /// Contact Id of dashboard owner.
+    /// Gets or sets contact Id of dashboard owner.
     /// </summary>
     public string OwnerContactId { get; set; }
 

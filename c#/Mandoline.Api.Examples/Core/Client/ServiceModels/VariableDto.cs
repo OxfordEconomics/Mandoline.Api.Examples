@@ -6,22 +6,22 @@
 public class VariableDto
 {
     /// <summary>
-    /// Databank code of databank this variable belongs to.
+    /// Gets or sets databank code of databank this variable belongs to.
     /// </summary>
     public string DatabankCode { get; set; }
 
     /// <summary>
-    /// Product type this variable belongs to.
+    /// Gets or sets product type this variable belongs to.
     /// </summary>
     public string ProductTypeCode { get; set; }
 
     /// <summary>
-    /// Variable code.
+    /// Gets or sets variable code.
     /// </summary>
     public string VariableCode { get; set; }
 
     /// <summary>
-    /// Human readable name for this variable.
+    /// Gets or sets human readable name for this variable.
     /// </summary>
     public string VariableName { get; set; }
 }

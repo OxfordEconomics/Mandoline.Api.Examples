@@ -10,7 +10,7 @@ public class User : ServiceModels.UserDto, IApiModel
     public ApiClient Client { get; set; }
 
     /// <summary>
-    /// Links to users saved selections.
+    /// Gets links to users saved selections.
     /// </summary>
     [JsonIgnore]
     public new IEnumerable<ResourceLink<Selection>> SavedSelections

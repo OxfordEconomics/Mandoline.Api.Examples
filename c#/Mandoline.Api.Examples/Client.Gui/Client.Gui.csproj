@@ -9,7 +9,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
     <Copyright>Copyright (c) 2017 Oxford Economics Ltd. All rights reserved.</Copyright>
   </PropertyGroup>
   <ItemGroup>

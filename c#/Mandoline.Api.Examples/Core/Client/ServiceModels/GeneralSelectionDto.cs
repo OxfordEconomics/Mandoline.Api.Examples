@@ -3,7 +3,7 @@
 public class GeneralSelectionDto
 {
     /// <summary>
-    /// Human readable name for this selection.
+    /// Gets or sets human readable name for this selection.
     /// </summary>
     public string Name { get; set; }
 
@@ -18,7 +18,7 @@ public class GeneralSelectionDto
     public virtual SelectionTypeEnum SelectionType { get; set; }
 
     /// <summary>
-    /// Is the selection listed among saved selections.
+    /// Gets or sets is the selection listed among saved selections.
     /// </summary>
     public ListingTypeEnum ListingType { get; set; }
 }

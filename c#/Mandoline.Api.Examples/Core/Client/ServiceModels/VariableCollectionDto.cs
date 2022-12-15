@@ -6,7 +6,7 @@
 public class VariableCollectionDto
 {
     /// <summary>
-    /// Collection of variables.
+    /// Gets or sets collection of variables.
     /// </summary>
     public VariableDto[] Variables { get; set; }
 }

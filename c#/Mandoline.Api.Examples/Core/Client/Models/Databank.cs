@@ -5,7 +5,7 @@ namespace Core.Client.Models;
 
 public class Databank : DatabankDto
 {
-    public ApiClient ApiClient;
+    private ApiClient ApiClient;
 
     public Databank(ApiClient apiClient)
     {

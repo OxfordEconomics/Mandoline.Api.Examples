@@ -6,12 +6,12 @@
 public class LoginParametersDto
 {
     /// <summary>
-    /// Username.
+    /// Gets or sets username.
     /// </summary>
     public string Username { get; set; }
 
     /// <summary>
-    /// Password.
+    /// Gets or sets password.
     /// </summary>
     public string Password { get; set; }
 }

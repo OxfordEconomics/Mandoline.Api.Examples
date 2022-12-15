@@ -80,6 +80,48 @@ internal class MandolineWebRequest
         }
     }
 
+    private static Assertion<T> HandleWebException<T>(WebException we)
+        where T : class
+    {
+        if (we.Response == null)
+        {
+            return Assertion<T>.Fail(default(T), HttpStatusCode.InternalServerError, we.Status + " " + we.Message);
+        }
+
+        HttpWebResponse response = we.Response as HttpWebResponse;
+        string content = string.Empty;
+        using (StreamReader reader = new StreamReader(we.Response.GetResponseStream()))
+        {
+            content = reader.ReadToEnd();
+        }
+
+        string msg = content;
+
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                ErrorDto errorObject = JsonConvert.DeserializeObject<ErrorDto>(content);
+
+                msg = errorObject.MessageDetails;
+                if (string.IsNullOrWhiteSpace(msg))
+                {
+                    msg = errorObject.Message;
+                }
+            }
+        }
+        catch (JsonException)
+        {
+        }
+
+        if (string.IsNullOrWhiteSpace(msg))
+        {
+            msg = we.Message;
+        }
+
+        return Assertion<T>.Fail(default(T), response.StatusCode, msg);
+    }
+
     public async Task<Assertion<T>> Execute<T>(object parameter, string method = "POST", CancellationToken cancel = default(CancellationToken))
         where T : class
     {
@@ -122,13 +164,6 @@ internal class MandolineWebRequest
             Trace.WriteLine($"{method} {this._uri} ({e.Message})");
             throw;
         }
-    }
-
-    public class StreamResult<T1, T2>
-    {
-        public T1 FirstObject { get; set; }
-
-        public IEnumerable<T2> Remaining { get; set; }
     }
 
     public async Task<Assertion<StreamResult<T1, T2>>> ExecuteStream<T1, T2>(
@@ -252,48 +287,6 @@ internal class MandolineWebRequest
         }
     }
 
-    private static Assertion<T> HandleWebException<T>(WebException we)
-        where T : class
-    {
-        if (we.Response == null)
-        {
-            return Assertion<T>.Fail(default(T), HttpStatusCode.InternalServerError, we.Status + " " + we.Message);
-        }
-
-        HttpWebResponse response = we.Response as HttpWebResponse;
-        string content = string.Empty;
-        using (StreamReader reader = new StreamReader(we.Response.GetResponseStream()))
-        {
-            content = reader.ReadToEnd();
-        }
-
-        string msg = content;
-
-        try
-        {
-            if (!string.IsNullOrWhiteSpace(content))
-            {
-                ErrorDto errorObject = JsonConvert.DeserializeObject<ErrorDto>(content);
-
-                msg = errorObject.MessageDetails;
-                if (string.IsNullOrWhiteSpace(msg))
-                {
-                    msg = errorObject.Message;
-                }
-            }
-        }
-        catch (JsonException)
-        {
-        }
-
-        if (string.IsNullOrWhiteSpace(msg))
-        {
-            msg = we.Message;
-        }
-
-        return Assertion<T>.Fail(default(T), response.StatusCode, msg);
-    }
-
     private async Task<string> ReadToEndWithCancellationToken(StreamReader reader, CancellationToken token)
     {
         try
@@ -359,7 +352,9 @@ internal class MandolineWebRequest
 
     private async Task<Assertion<Stream>> GetResponseStreamWithoutExceptionHandling(Uri uri, object parameter, string method, CancellationToken cancel, string accept)
     {
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
 
         if (this._proxy != null)
         {
@@ -470,5 +465,12 @@ internal class MandolineWebRequest
 
             return Assertion<Stream>.Fail(null, response.StatusCode, msg);
         }
+    }
+
+    public class StreamResult<T1, T2>
+    {
+        public T1 FirstObject { get; set; }
+
+        public IEnumerable<T2> Remaining { get; set; }
     }
 }

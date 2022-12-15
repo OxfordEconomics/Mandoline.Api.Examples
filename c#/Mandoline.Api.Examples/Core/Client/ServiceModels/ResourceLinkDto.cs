@@ -8,17 +8,17 @@ namespace Core.Client.ServiceModels;
 public class ResourceLinkDto
 {
     /// <summary>
-    /// Selection id.
+    /// Gets or sets selection id.
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Selection name.
+    /// Gets or sets selection name.
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// Selection url.
+    /// Gets or sets selection url.
     /// </summary>
     public string Url { get; set; }
 }

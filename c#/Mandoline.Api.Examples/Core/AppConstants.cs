@@ -74,15 +74,22 @@ public static class AppConstants
 
         set
         {
+#pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             if (value != null)
             {
                 _SavedSelectionId = value;
             }
+#pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
         }
     }
 
     // base url for api calls
     public static string BaseURL { get; set; }
+
+    // private members corresponding to public variables
+    private static string _ApiToken { get; set; }
+
+    private static Guid _SavedSelectionId { get; set; }
 
     // simple example selection: draws GDP and inflation data from the US, the UK, France, and Germany
     public class SampleSelection : SelectionDto
@@ -163,9 +170,4 @@ public static class AppConstants
             return instance;
         }
     }
-
-    // private members corresponding to public variables
-    private static string _ApiToken { get; set; }
-
-    private static Guid _SavedSelectionId { get; set; }
 }

@@ -47,11 +47,12 @@ public enum ListingTypeEnum
 // TODO: trim down
 
 // [Serializable, XmlRoot("Selection", Namespace = "http://www.oxfordeconomics.com/schemas/Core.Client.Models")]
-[Serializable, XmlRoot("Selection", Namespace = "http://www.oxfordeconomics.com/schemas/Mandoline.Domain.Models")]
+[Serializable]
+[XmlRoot("Selection", Namespace = "http://www.oxfordeconomics.com/schemas/Mandoline.Domain.Models")]
 public class SelectionDto : GeneralSelectionDto
 {
     /// <summary>
-    /// Unique and persistant id for this saved selection.
+    /// Gets or sets unique and persistant id for this saved selection.
     /// </summary>
     public Guid Id { get; set; }
 
@@ -78,7 +79,7 @@ public class SelectionDto : GeneralSelectionDto
     public DateTime LastUpdate { get; set; }
 
     /// <summary>
-    /// Link to download this selection.
+    /// Gets or sets link to download this selection.
     /// </summary>
     public string DownloadUrl { get; set; }
 

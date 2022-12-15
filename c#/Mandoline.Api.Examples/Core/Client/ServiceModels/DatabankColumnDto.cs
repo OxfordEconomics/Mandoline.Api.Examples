@@ -6,17 +6,17 @@
 public class DatabankColumnDto
 {
     /// <summary>
-    /// Human readable column name.
+    /// Gets or sets human readable column name.
     /// </summary>
     public string ColumnName { get; set; }
 
     /// <summary>
-    /// Display Order.
+    /// Gets or sets display Order.
     /// </summary>
     public int DisplayOrder { get; set; }
 
     /// <summary>
-    /// Metadata field to find values.
+    /// Gets or sets metadata field to find values.
     /// </summary>
     public string MetadataFieldName { get; set; }
 }

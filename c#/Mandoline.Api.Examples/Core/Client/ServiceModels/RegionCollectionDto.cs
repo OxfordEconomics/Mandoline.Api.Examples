@@ -6,7 +6,7 @@
 public class RegionCollectionDto
 {
     /// <summary>
-    /// Collection of variables.
+    /// Gets or sets collection of variables.
     /// </summary>
     public RegionDto[] Regions { get; set; }
 }

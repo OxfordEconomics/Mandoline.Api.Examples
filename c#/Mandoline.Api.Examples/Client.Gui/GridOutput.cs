@@ -9,8 +9,8 @@ using System.Data;
 using System.Linq;
 using Core;
 using Core.Client;
-using Core.Client.ServiceModels;
 using Core.Client.Models;
+using Core.Client.ServiceModels;
 
 namespace Client.Gui;
 

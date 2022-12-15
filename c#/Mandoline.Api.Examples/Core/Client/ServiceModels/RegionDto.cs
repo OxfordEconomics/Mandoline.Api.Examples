@@ -6,17 +6,17 @@
 public class RegionDto
 {
     /// <summary>
-    /// code of region, unique within containing databank.
+    /// Gets or sets code of region, unique within containing databank.
     /// </summary>
     public string RegionCode { get; set; }
 
     /// <summary>
-    /// Human readable name for this region.
+    /// Gets or sets human readable name for this region.
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// Databank code of containing databank.
+    /// Gets or sets databank code of containing databank.
     /// </summary>
     public string DatabankCode { get; set; }
 }
