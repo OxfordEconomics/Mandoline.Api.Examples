@@ -39,7 +39,6 @@ public class ApiClient
 
     public void SetUrl(string url)
     {
-        Trace.WriteLine("ApiClient(" + url + ")");
         this._requestBuilder = new MandolineWebRequestBuilder(url, null, this._clientName, null);
     }
 

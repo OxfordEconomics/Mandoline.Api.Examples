@@ -28,15 +28,11 @@ internal class ConsoleOutput : Output
     private string StatusLabelText { get; set; }
 
     // status isn't indicated in this client
-
-    /// <inheritdoc/>
     public override void UpdateStatus(string v)
     {
     }
 
     // status isn't indicated in this client
-
-    /// <inheritdoc/>
     public override void UpdateStatus(bool v)
     {
     }
@@ -61,8 +57,6 @@ internal class ConsoleOutput : Output
     }
 
     // updates gridview with selection object information
-
-    /// <inheritdoc/>
     public override void PrintData(SelectionDto s)
     {
         // create table for displaying selection data
@@ -79,8 +73,6 @@ internal class ConsoleOutput : Output
     }
 
     // process login output
-
-    /// <inheritdoc/>
     public override void PrintData(Core.Client.Models.User u, string token)
     {
         Core.AppConstants.ApiToken = token;
@@ -88,8 +80,6 @@ internal class ConsoleOutput : Output
     }
 
     // process output for multi user response
-
-    /// <inheritdoc/>
     public override void PrintData(IEnumerable<Core.Client.Models.User> ul)
     {
         foreach (Core.Client.Models.User u in ul)
@@ -99,8 +89,6 @@ internal class ConsoleOutput : Output
     }
 
     // process output for login response
-
-    /// <inheritdoc/>
     public override void PrintData(Core.Client.Models.User u)
     {
         Console.WriteLine("{0} {1} - Saved selections:", u.FirstName, u.LastName);
@@ -111,8 +99,6 @@ internal class ConsoleOutput : Output
     }
 
     // process output for list of databanks
-
-    /// <inheritdoc/>
     public override void PrintData(IEnumerable<Databank> ld)
     {
         foreach (DatabankDto d in ld)
@@ -122,8 +108,6 @@ internal class ConsoleOutput : Output
     }
 
     // process output for collection of variables
-
-    /// <inheritdoc/>
     public override void PrintData(VariableCollectionDto vc)
     {
         Table.VariableTable dt = new Table.VariableTable();
@@ -138,8 +122,6 @@ internal class ConsoleOutput : Output
     }
 
     // process output for collection of variables
-
-    /// <inheritdoc/>
     public override void PrintData(RegionCollectionDto regions)
     {
         Table.RegionTable dt = new Table.RegionTable();
@@ -154,8 +136,6 @@ internal class ConsoleOutput : Output
     }
 
     // output for single string data output (catch-all option for anything that returns single point of data)
-
-    /// <inheritdoc/>
     public override void PrintData(string s)
     {
         DataTable dt = new DataTable();
@@ -165,8 +145,6 @@ internal class ConsoleOutput : Output
     }
 
     // shaped table output
-
-    /// <inheritdoc/>
     public override void PrintData(ShapedStreamResult result)
     {
         Table.ShapeTable dt = new Table.ShapeTable(result);
@@ -174,8 +152,6 @@ internal class ConsoleOutput : Output
     }
 
     // output for download request
-
-    /// <inheritdoc/>
     public override void PrintData(ControllerDownloadResponseDto response, string filename, string ready)
     {
         // create table for displaying selection data
@@ -187,8 +163,6 @@ internal class ConsoleOutput : Output
     }
 
     // output for downloads
-
-    /// <inheritdoc/>
     public override void PrintData(List<DataseriesDto> ld)
     {
         // set up download table
@@ -230,8 +204,6 @@ internal class ConsoleOutput : Output
     }
 
     // output for paged downloads
-
-    /// <inheritdoc/>
     public override void PrintData(List<List<DataseriesDto>> ld)
     {
         // set up download table
@@ -262,7 +234,7 @@ internal class ConsoleOutput : Output
                 if (d.QuarterlyData != null)
                 {
                     // make a new row for each quarterly data point
-                    foreach (KeyValuePair<string, double?> entry in d.QuarterlyData)
+                    foreach (var entry in d.QuarterlyData)
                     {
                         // note the cells representing annual data are left blank
                         dt.Rows.Add(x + 1, d.DatabankCode, d.VariableCode, d.LocationCode, null, null, entry.Key, entry.Value);

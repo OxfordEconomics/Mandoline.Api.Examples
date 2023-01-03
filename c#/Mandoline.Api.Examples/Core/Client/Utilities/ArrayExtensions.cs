@@ -8,7 +8,7 @@ public static class ArrayExtensions
     {
         for (int i = 0; i < square.GetLength(0); i++)
         {
-            List<T> row = new List<T>(square.GetLength(1));
+            var row = new List<T>(square.GetLength(1));
             for (int j = 0; j < square.GetLength(1); j++)
             {
                 row.Add(square[i, j]);

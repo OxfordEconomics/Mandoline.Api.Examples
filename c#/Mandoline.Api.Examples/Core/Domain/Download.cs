@@ -85,7 +85,7 @@ public class Download
         const int PAGE_SIZE = 5;
 
         // initialize api object
-        ApiClient api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+        var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
         // this will track which page of data is currently being requested from the api
         int page = 0;

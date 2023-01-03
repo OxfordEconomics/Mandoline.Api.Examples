@@ -21,7 +21,7 @@ internal class Program
     private static async Task Main(string[] args)
     {
         // Entry point fo REPL command line interface
-        Dictionary<string, Func<Task>> commands = new Dictionary<string, Func<Task>>();
+        var commands = new Dictionary<string, Func<Task>>();
 
         UserCommand userCommands = new UserCommand();
         commands.Add("GetUser", userCommands.GetUser);

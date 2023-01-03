@@ -6,8 +6,6 @@ public enum FileFormat
     Csv,
 }
 
-;
-
 public class ControllerDownloadRequestDto
 {
     /// <summary>

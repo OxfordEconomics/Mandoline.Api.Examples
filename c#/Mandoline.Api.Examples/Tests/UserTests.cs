@@ -19,7 +19,7 @@ public class UserTests
     [TestMethod]
     public async Task UserGetTest()
     {
-        TestOutput output = new TestOutput();
+        var output = new TestOutput();
         await User.RunGetUserAsync(output);
         Assert.AreEqual(AppConstants.ApiToken, output.ReturnValueStr);
     }
@@ -29,7 +29,7 @@ public class UserTests
     [TestMethod]
     public async Task UserLoginTest()
     {
-        TestOutput output = new TestOutput();
+        var output = new TestOutput();
         await User.RunLoginAsync(output, AppConstants.UserName, AppConstants.UserPassword);
         Assert.AreNotEqual(string.Empty, output.ReturnValueStr);
     }
@@ -39,7 +39,7 @@ public class UserTests
     [TestMethod]
     public async Task UserLoginFailTest()
     {
-        TestOutput output = new TestOutput();
+        var output = new TestOutput();
         await User.RunLoginAsync(output, AppConstants.UserName, string.Empty);
         Assert.AreEqual(string.Empty, output.ReturnValueStr);
     }
