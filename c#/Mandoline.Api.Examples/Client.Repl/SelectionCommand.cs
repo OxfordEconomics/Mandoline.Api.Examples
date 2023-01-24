@@ -1,36 +1,36 @@
 ﻿// <copyright file="SelectionCommand.cs" company="Oxford Economics">
 // Copyright (c) 2017 Oxford Economics Ltd. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project 
+// Licensed under the MIT License. See LICENSE file in the project
 // root for full license information.
 // </copyright>
 
-namespace Client.Repl
+using System.Threading.Tasks;
+using Core;
+using Core.Client;
+
+namespace Client.Repl;
+
+public class SelectionCommand
 {
-    using System.Threading.Tasks;
-    using Core;
+    private readonly Output output;
 
-    public class SelectionCommand
+    public SelectionCommand()
     {
-        private Output output;
+        this.output = new ConsoleOutput();
+    }
 
-        public SelectionCommand()
-        {
-            this.output = new ConsoleOutput();
-        }
+    public async Task GetSelection()
+    {
+        await SavedSelection.RunGetSavedSelection(AppConstants.SavedSelectionId, this.output);
+    }
 
-        public async Task GetSelection()
-        {
-            await SavedSelection.RunGetSavedSelection(AppConstants.SavedSelectionId, this.output);
-        }
+    public async Task CreateSelection()
+    {
+        await SavedSelection.RunCreateSavedSelection(this.output);
+    }
 
-        public async Task CreateSelection()
-        {
-            await SavedSelection.RunCreateSavedSelection(this.output);
-        }
-
-        public async Task UpdateSelection()
-        {
-            await SavedSelection.RunUpdateSavedSelection(this.output);
-        }
+    public async Task UpdateSelection()
+    {
+        await SavedSelection.RunUpdateSavedSelection(this.output);
     }
 }

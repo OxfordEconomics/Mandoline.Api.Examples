@@ -4,51 +4,43 @@
 // root for full license information.
 // </copyright>
 
-namespace Core
+using System.Threading.Tasks;
+using Core.Client;
+
+namespace Core;
+
+public class Info
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Mandoline.Api.Client;
-    using Mandoline.Api.Client.Models;
-    using Mandoline.Api.Client.ServiceModels;
-
-    public class Info
+    // downloads the full list of available databanks, loading up onto the DataGridView
+    public static async Task RunGetDatabanksAsync(Output output)
     {
-        // downloads the full list of available databanks, loading up onto the DataGridView
-        public static async Task RunGetDatabanksAsync(Output output)
-        {
-            // set up api object for making call
-            var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+        // set up api object for making call
+        ApiClient api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
-            // queue asynchronous api call
-            var databanksTask = await api.GetDatabanksAsync().ConfigureAwait(true);
-            output.PrintData(databanksTask.Result);
-        }
+        // queue asynchronous api call
+        Client.Models.Assertion<System.Collections.Generic.IEnumerable<Client.Models.Databank>> databanksTask = await api.GetDatabanksAsync().ConfigureAwait(true);
+        output.PrintData(databanksTask.Result);
+    }
 
-        // get variables for a given databank code
-        public static async Task RunGetVariablesAsync(Output output)
-        {
-            // set up api object for making call
-            var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+    // get variables for a given databank code
+    public static async Task RunGetVariablesAsync(Output output)
+    {
+        // set up api object for making call
+        ApiClient api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
-            // queue asynchronous api call
-            var variablesTask = await api.GetVariablesAsync("WDMacro").ConfigureAwait(true);
-            output.PrintData(variablesTask.Result);
-        }
+        // queue asynchronous api call
+        Client.Models.Assertion<Client.ServiceModels.VariableCollectionDto> variablesTask = await api.GetVariablesAsync("WDMacro").ConfigureAwait(true);
+        output.PrintData(variablesTask.Result);
+    }
 
-        // get regions for a given databank code
-        public static async Task RunGetRegionsAsync(Output output)
-        {
-            // set up api object for making call
-            var api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
+    // get regions for a given databank code
+    public static async Task RunGetRegionsAsync(Output output)
+    {
+        // set up api object for making call
+        ApiClient api = new ApiClient(AppConstants.BaseURL, AppConstants.ApiToken);
 
-            // queue asynchronous api call
-            var regionsTask = await api.GetRegionsAsync("WDMacro").ConfigureAwait(true);
-            output.PrintData(regionsTask.Result);
-        }
+        // queue asynchronous api call
+        Client.Models.Assertion<Client.ServiceModels.RegionCollectionDto> regionsTask = await api.GetRegionsAsync("WDMacro").ConfigureAwait(true);
+        output.PrintData(regionsTask.Result);
     }
 }

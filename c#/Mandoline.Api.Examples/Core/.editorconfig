@@ -1,0 +1,20 @@
+# NOTE: Requires **VS2019 16.3** or later
+
+# New Rule Set
+# Description:  
+
+# Code files
+[*.{cs,vb}]
+
+
+# CS8073: The result of the expression is always the same since a value of this type is never equal to 'null'
+dotnet_diagnostic.CS8073.severity = suggestion
+
+# Default severity for analyzer diagnostics with category 'Style'
+dotnet_analyzer_diagnostic.category-Style.severity = silent
+
+# Default severity for analyzer diagnostics with category 'Naming'
+dotnet_analyzer_diagnostic.category-Naming.severity = none
+
+# Default severity for analyzer diagnostics with category 'StyleCop.CSharp.NamingRules'
+dotnet_analyzer_diagnostic.category-StyleCop.CSharp.NamingRules.severity = silent
