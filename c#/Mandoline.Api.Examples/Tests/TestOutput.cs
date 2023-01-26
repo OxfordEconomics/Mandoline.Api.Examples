@@ -4,151 +4,174 @@
 // root for full license information.
 // </copyright>
 
-namespace Tests
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using Core.Client;
+using Core.Client.Models;
+using Core.Client.ServiceModels;
+
+namespace Tests;
+
+// this implementation of Output directs output to console
+internal class TestOutput : Output
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Core;
-    using Mandoline.Api.Client.Models;
-    using Mandoline.Api.Client.ServiceModels;
+    // value to check while testing
+    public string ReturnValueStr;
+    public int ReturnValueInt;
+    public DateTime ReturnValueDate;
 
-    // this implementation of Output directs output to console
-    internal class TestOutput : Output
+    // ensure that api operations are performed synchronously
+    public TestOutput()
     {
-        // value to check while testing
-        public string ReturnValueStr;
-        public int ReturnValueInt;
-        public DateTime ReturnValueDate;
+        this.ReturnValueStr = string.Empty;
+        this.ReturnValueInt = -1;
+        this.ReturnValueDate = DateTime.MinValue;
+    }
 
-        // ensure that api operations are performed synchronously
-        public TestOutput()
+    // for updating status text
+    private string StatusLabelText
+    {
+        set
         {
-            this.ReturnValueStr = string.Empty;
-            this.ReturnValueInt = -1;
-            this.ReturnValueDate = DateTime.MinValue;
+            Console.WriteLine(value);
         }
+    }
 
-        // for updating status text
-        private string StatusLabelText
+    /// <inheritdoc/>
+    public override void UpdateStatus(string v)
+    {
+        this.StatusLabelText = v;
+    }
+
+    /// <inheritdoc/>
+    public override void UpdateStatus(bool v)
+    {
+    }
+
+    public void PrintTable(DataTable table)
+    {
+        foreach (DataRow row in table.Rows)
         {
-            set
+            for (int x = 0; x < table.Columns.Count; x++)
             {
-                Console.WriteLine(value);
-            }
-        }
-
-        public override void UpdateStatus(string v)
-        {
-            this.StatusLabelText = v;
-        }
-
-        public override void UpdateStatus(bool v)
-        {
-        }
-
-        public void PrintTable(DataTable table)
-        {
-            foreach (DataRow row in table.Rows)
-            {
-                for (int x = 0; x < table.Columns.Count; x++)
+                if (x != 0 && row[x].ToString() != string.Empty)
                 {
-                    if (x != 0 && row[x].ToString() != string.Empty)
-                    {
-                        Console.Write(" - ");
-                    }
-
-                    Console.Write("{0}", row[x].ToString());
+                    Console.Write(" - ");
                 }
 
-                Console.WriteLine();
+                Console.Write("{0}", row[x].ToString());
             }
-        }
 
-        // updates gridview with selection object information
-        public override void PrintData(SelectionDto s)
-        {
-            this.ReturnValueDate = s.LastUpdate;
-            this.ReturnValueStr = s.Id.ToString();
+            Console.WriteLine();
         }
+    }
 
-        // process login output
-        public override void PrintData(Mandoline.Api.Client.Models.User u, string token)
-        {
-            try
-            {
-                this.ReturnValueStr = token;
-            }
-            catch (NullReferenceException)
-            {
-                this.ReturnValueStr = string.Empty;
-            }
-        }
+    // updates gridview with selection object information
 
-        // process output for multi user response
-        public override void PrintData(IEnumerable<Mandoline.Api.Client.Models.User> ul)
-        {
-            foreach (Mandoline.Api.Client.Models.User u in ul)
-            {
-                Console.WriteLine("\t{0} {1} - Selections: {2}", u.FirstName, u.LastName, u.SavedSelections.Count());
-            }
-        }
+    /// <inheritdoc/>
+    public override void PrintData(SelectionDto s)
+    {
+        this.ReturnValueDate = s.LastUpdate;
+        this.ReturnValueStr = s.Id.ToString();
+    }
 
-        // process output for single user
-        public override void PrintData(Mandoline.Api.Client.Models.User u)
-        {
-            this.ReturnValueStr = u.ApiKey;
-        }
+    // process login output
 
-        // process output for list of databanks
-        public override void PrintData(IEnumerable<Databank> ld)
+    /// <inheritdoc/>
+    public override void PrintData(Core.Client.Models.User u, string token)
+    {
+        try
         {
-            this.ReturnValueInt = ld.Count();
+            this.ReturnValueStr = token;
         }
+        catch (NullReferenceException)
+        {
+            this.ReturnValueStr = string.Empty;
+        }
+    }
 
-        // process output for collection of variables
-        public override void PrintData(VariableCollectionDto vc)
-        {
-            this.ReturnValueInt = vc.Variables.Count();
-        }
+    // process output for multi user response
 
-        // process output for collection of regions 
-        public override void PrintData(RegionCollectionDto regions)
+    /// <inheritdoc/>
+    public override void PrintData(IEnumerable<Core.Client.Models.User> ul)
+    {
+        foreach (Core.Client.Models.User u in ul)
         {
-            this.ReturnValueInt = regions.Regions.Count();
+            Console.WriteLine("\t{0} {1} - Selections: {2}", u.FirstName, u.LastName, u.SavedSelections.Count());
         }
+    }
 
-        // output for single string data output (catch-all option for anything that returns single point of data)
-        public override void PrintData(string s)
-        {
-            this.ReturnValueStr = s;
-        }
+    // process output for single user
 
-        // shaped table output
-        public override void PrintData(ShapedStreamResult result)
-        {
-            this.ReturnValueInt = result.Rows.Count();
-        }
+    /// <inheritdoc/>
+    public override void PrintData(Core.Client.Models.User u)
+    {
+        this.ReturnValueStr = u.ApiKey;
+    }
 
-        // output for download request
-        public override void PrintData(ControllerDownloadResponseDto response, string filename, string ready)
-        {
-            this.ReturnValueStr = response.ReadyUrl;
-        }
+    // process output for list of databanks
 
-        // output for downloads
-        public override void PrintData(List<DataseriesDto> ld)
-        {
-            this.ReturnValueInt = ld.Count();
-        }
+    /// <inheritdoc/>
+    public override void PrintData(IEnumerable<Databank> ld)
+    {
+        this.ReturnValueInt = ld.Count();
+    }
 
-        // output for downloads
-        public override void PrintData(List<List<DataseriesDto>> ld)
-        {
-            this.ReturnValueInt = ld.Count();
-        }
+    // process output for collection of variables
+
+    /// <inheritdoc/>
+    public override void PrintData(VariableCollectionDto vc)
+    {
+        this.ReturnValueInt = vc.Variables.Count();
+    }
+
+    // process output for collection of regions
+
+    /// <inheritdoc/>
+    public override void PrintData(RegionCollectionDto regions)
+    {
+        this.ReturnValueInt = regions.Regions.Count();
+    }
+
+    // output for single string data output (catch-all option for anything that returns single point of data)
+
+    /// <inheritdoc/>
+    public override void PrintData(string s)
+    {
+        this.ReturnValueStr = s;
+    }
+
+    // shaped table output
+
+    /// <inheritdoc/>
+    public override void PrintData(ShapedStreamResult result)
+    {
+        this.ReturnValueInt = result.Rows.Count();
+    }
+
+    // output for download request
+
+    /// <inheritdoc/>
+    public override void PrintData(ControllerDownloadResponseDto response, string filename, string ready)
+    {
+        this.ReturnValueStr = response.ReadyUrl;
+    }
+
+    // output for downloads
+
+    /// <inheritdoc/>
+    public override void PrintData(List<DataseriesDto> ld)
+    {
+        this.ReturnValueInt = ld.Count();
+    }
+
+    // output for downloads
+
+    /// <inheritdoc/>
+    public override void PrintData(List<List<DataseriesDto>> ld)
+    {
+        this.ReturnValueInt = ld.Count();
     }
 }

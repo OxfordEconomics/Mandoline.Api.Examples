@@ -4,39 +4,33 @@
 // root for full license information.
 // </copyright>
 
-namespace Client.Repl
+using System.Threading.Tasks;
+using Core;
+using Core.Client;
+
+namespace Client.Repl;
+
+public class InfoCommand
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Core;
-    using Mandoline.Api.Client;
-    using Replify;
+    private readonly Output output;
 
-    public class InfoCommand : IReplCommand
+    public InfoCommand()
     {
-        private Output output;
+        this.output = new ConsoleOutput();
+    }
 
-        public InfoCommand()
-        {
-            this.output = new ConsoleOutput();
-        }
+    public async Task GetDatabanks()
+    {
+        await Info.RunGetDatabanksAsync(this.output);
+    }
 
-        public async Task GetDatabanks()
-        {
-            await Info.RunGetDatabanksAsync(this.output);
-        }
+    public async Task GetVariables()
+    {
+        await Info.RunGetVariablesAsync(this.output);
+    }
 
-        public async Task GetVariables()
-        {
-            await Info.RunGetVariablesAsync(this.output);
-        }
-
-        public async Task GetRegions()
-        {
-            await Info.RunGetRegionsAsync(this.output);
-        }
+    public async Task GetRegions()
+    {
+        await Info.RunGetRegionsAsync(this.output);
     }
 }

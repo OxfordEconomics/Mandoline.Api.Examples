@@ -1,0 +1,569 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Core</name>
+    </assembly>
+    <members>
+        <member name="M:Core.ApiClient.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Core.ApiClient"/> class.
+            Create new instance of the ApiClient using a specific url.
+            </summary>
+        </member>
+        <member name="M:Core.ApiClient.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Core.ApiClient"/> class.
+            Create new instance of the ApiClient using a specific url.
+            </summary>
+        </member>
+        <member name="M:Core.ApiClient.SetApiKey(System.String)">
+            <summary>
+            Login user using an api key.
+            </summary>
+            <param name="apiKey">api key.</param>
+            <returns>ApiClient.</returns>
+        </member>
+        <member name="M:Core.ApiClient.LoginAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Login using username and password.
+            </summary>
+            <param name="username">username.</param>
+            <param name="password">password.</param>
+            <returns>User corresponding to provided username / password.</returns>
+        </member>
+        <member name="M:Core.ApiClient.GetDatabanksAsync">
+            <summary>
+            Retrieve all databanks.
+            </summary>
+            <returns>list of databanks.</returns>
+        </member>
+        <member name="M:Core.ApiClient.CreateSavedSelectionAsync(Core.Client.ServiceModels.SelectionDto,System.Threading.CancellationToken)">
+            <summary>
+            Create a new saved selection.
+            </summary>
+            <param name="selectionToCreate">selection to create.</param>
+            <returns>created selection.</returns>
+        </member>
+        <member name="M:Core.ApiClient.DownloadAsync(Core.Client.ServiceModels.SelectionDto,System.Threading.CancellationToken,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Download a selection.
+            </summary>
+            <param name="selection">selection to download.</param>
+            <returns>dataseries.</returns>
+        </member>
+        <member name="M:Core.ApiClient.DownloadShapedAsync(Core.Client.ServiceModels.SelectionDto,Core.Client.ServiceModels.ShapeConfigurationDto,System.Threading.CancellationToken)">
+            <summary>
+            Download a shaped selection.
+            </summary>
+            <param name="selection">selection to download.</param>
+            <returns>dataseries.</returns>
+        </member>
+        <member name="M:Core.ApiClient.DownloadShapedStreamAsync(Core.Client.ServiceModels.SelectionDto,Core.Client.ServiceModels.ShapeConfigurationDto,System.Threading.CancellationToken)">
+            <summary>
+            Download shaped streaming.
+            </summary>
+            <param name="selection">selection to download.</param>
+            <returns>dataseries.</returns>
+        </member>
+        <member name="M:Core.ApiClient.GetConcreteSelection(Core.Client.ServiceModels.SelectionDto,System.Threading.CancellationToken)">
+            <summary>
+            Get an existing selection.
+            </summary>
+            <param name="selection">selection to download.</param>
+            <returns>dataseries.</returns>
+        </member>
+        <member name="P:Core.Client.Models.Dashboard.Client">
+            <inheritdoc/>
+        </member>
+        <member name="P:Core.Client.Models.DashboardWidget.Client">
+            <inheritdoc/>
+        </member>
+        <member name="P:Core.Client.Models.Selection.Client">
+            <inheritdoc/>
+        </member>
+        <member name="P:Core.Client.Models.User.Client">
+            <inheritdoc/>
+        </member>
+        <member name="P:Core.Client.Models.User.SavedSelections">
+            <summary>
+            Gets links to users saved selections.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.ControllerDownloadRequestDto.selections">
+            <summary>
+            Gets or sets array of selections.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.ControllerDownloadRequestDto.format">
+            <summary>
+            Gets or sets file format.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.ControllerDownloadRequestDto.name">
+            <summary>
+            Gets or sets download request name.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.ControllerDownloadResponseDto.ReadyUrl">
+            <summary>
+            Gets or sets url to poll to find when download is ready.
+            </summary>
+        </member>
+        <member name="T:Core.Client.ServiceModels.DashboardDto">
+            <summary>
+            Dashboard model.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DashboardDto.Id">
+            <summary>
+            Gets or sets unique identifier (Guid) for this dashboard.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DashboardDto.Name">
+            <summary>
+            Gets or sets human readable name for this dashboard.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DashboardDto.DisplayOrder">
+            <summary>
+            Gets or sets display order.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DashboardDto.OwnerContactId">
+            <summary>
+            Gets or sets contact Id of dashboard owner.
+            </summary>
+        </member>
+        <member name="M:Core.Client.ServiceModels.DashboardDto.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DashboardWidgetDto.Id">
+            <summary>
+            Gets or sets unique identifier (Guid) for this dashboard widget.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DashboardWidgetDto.SelectionId">
+            <summary>
+            Gets or sets id of selection associated with this widget.
+            </summary>
+        </member>
+        <member name="T:Core.Client.ServiceModels.DatabankDto">
+            <summary>
+            Databank.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DatabankDto.Name">
+            <summary>
+            Gets or sets the name of the databank.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DatabankDto.DatabankCode">
+            <summary>
+            Gets or sets the databank code for this databank.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DatabankDto.StartYear">
+            <summary>
+            Gets or sets the start year for this databank.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DatabankDto.EndYear">
+            <summary>
+            Gets or sets the end year for this databank.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DatabankDto.HasQuarterlyData">
+            <summary>
+            Gets or sets does this databank contain quarterly data.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DatabankDto.Trees">
+            <summary>
+            Gets or sets all available trees for this databank.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DatabankDto.Url">
+            <summary>
+            Gets or sets url to this databank entity.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DatabankDto.MapUrl">
+            <summary>
+            Gets or sets url to the map entities for this databank.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DatabankDto.HasAccess">
+            <summary>
+            Gets or sets a value indicating whether does the user have access to this databank.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DatabankDto.DatabankColumns">
+            <summary>
+            Gets or sets databank columns available on this databank.
+            </summary>
+        </member>
+        <member name="T:Core.Client.ServiceModels.DataseriesDto">
+            <summary>
+            web layer data series.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DataseriesDto.DatabankCode">
+            <summary>
+            Gets or sets databank code of databank the series belongs to.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DataseriesDto.LocationCode">
+            <summary>
+            Gets or sets region code of dataseries.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.DataseriesDto.VariableCode">
+            <summary>
+            Gets or sets variable code of data series.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.GeneralSelectionDto.Name">
+            <summary>
+            Gets or sets human readable name for this selection.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.GeneralSelectionDto.ListingType">
+            <summary>
+            Gets or sets is the selection listed among saved selections.
+            </summary>
+        </member>
+        <member name="T:Core.Client.ServiceModels.LoginParametersDto">
+            <summary>
+            Login parameters.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.LoginParametersDto.Username">
+            <summary>
+            Gets or sets username.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.LoginParametersDto.Password">
+            <summary>
+            Gets or sets password.
+            </summary>
+        </member>
+        <member name="T:Core.Client.ServiceModels.RegionCollectionDto">
+            <summary>
+            Collection of variables.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.RegionCollectionDto.Regions">
+            <summary>
+            Gets or sets collection of variables.
+            </summary>
+        </member>
+        <member name="T:Core.Client.ServiceModels.RegionDto">
+            <summary>
+            Location class.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.RegionDto.RegionCode">
+            <summary>
+            Gets or sets code of region, unique within containing databank.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.RegionDto.Name">
+            <summary>
+            Gets or sets human readable name for this region.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.RegionDto.DatabankCode">
+            <summary>
+            Gets or sets databank code of containing databank.
+            </summary>
+        </member>
+        <member name="T:Core.Client.ServiceModels.ResourceLinkDto">
+            <summary>
+            Link to a resource.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.ResourceLinkDto.Id">
+            <summary>
+            Gets or sets selection id.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.ResourceLinkDto.Name">
+            <summary>
+            Gets or sets selection name.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.ResourceLinkDto.Url">
+            <summary>
+            Gets or sets selection url.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.SelectionDto.Id">
+            <summary>
+            Gets or sets unique and persistant id for this saved selection.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.SelectionDto.DownloadUrl">
+            <summary>
+            Gets or sets link to download this selection.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.SelectionDto.SelectionType">
+            <inheritdoc/>
+        </member>
+        <member name="P:Core.Client.ServiceModels.SelectionRegionDto.DatabankCode">
+            <summary>
+            Gets or sets databank containing region.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.SelectionRegionDto.RegionCode">
+            <summary>
+            Gets or sets region code within databank.
+            </summary>
+        </member>
+        <member name="T:Core.Client.ServiceModels.TreeLinkDto">
+            <summary>
+            Presentational tree for a data facet.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.TreeLinkDto.Name">
+            <summary>
+            Gets or sets name of the tree.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.TreeLinkDto.TreeCode">
+            <summary>
+            Gets or sets tree Code.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.TreeLinkDto.Url">
+            <summary>
+            Gets or sets url to this tree.
+            </summary>
+        </member>
+        <member name="T:Core.Client.ServiceModels.UserDto">
+            <summary>
+            Mandoline user.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.UserDto.LastName">
+            <summary>
+            Gets or sets user surname.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.UserDto.FirstName">
+            <summary>
+            Gets or sets user forename.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.UserDto.SavedSelections">
+            <summary>
+            Gets or sets links to users saved selections.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.UserDto.ApiKey">
+            <summary>
+            Gets or sets users api key.
+            </summary>
+        </member>
+        <member name="T:Core.Client.ServiceModels.VariableCollectionDto">
+            <summary>
+            Collection of variables.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.VariableCollectionDto.Variables">
+            <summary>
+            Gets or sets collection of variables.
+            </summary>
+        </member>
+        <member name="T:Core.Client.ServiceModels.VariableDto">
+            <summary>
+            internal representation of a Variable / Indicator eg GDP, CPI.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.VariableDto.DatabankCode">
+            <summary>
+            Gets or sets databank code of databank this variable belongs to.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.VariableDto.ProductTypeCode">
+            <summary>
+            Gets or sets product type this variable belongs to.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.VariableDto.VariableCode">
+            <summary>
+            Gets or sets variable code.
+            </summary>
+        </member>
+        <member name="P:Core.Client.ServiceModels.VariableDto.VariableName">
+            <summary>
+            Gets or sets human readable name for this variable.
+            </summary>
+        </member>
+        <member name="T:Core.Client.DatabankColumnDto">
+            <summary>
+            Databank column information.
+            </summary>
+        </member>
+        <member name="P:Core.Client.DatabankColumnDto.ColumnName">
+            <summary>
+            Gets or sets human readable column name.
+            </summary>
+        </member>
+        <member name="P:Core.Client.DatabankColumnDto.DisplayOrder">
+            <summary>
+            Gets or sets display Order.
+            </summary>
+        </member>
+        <member name="P:Core.Client.DatabankColumnDto.MetadataFieldName">
+            <summary>
+            Gets or sets metadata field to find values.
+            </summary>
+        </member>
+        <member name="M:Core.Client.Utilities.WebRequestExtensions.GetResponseAsync(System.Net.WebRequest,System.Threading.CancellationToken)">
+             <summary>
+            
+             </summary>
+             <param name="request"></param>
+             <param name="token"></param>
+             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the result of the asynchronous operation.</returns>
+        </member>
+        <member name="T:Core.Client.Constants">
+            <summary>
+            General constants without a better home.
+            </summary>
+        </member>
+        <member name="F:Core.Client.Constants.REQUEST_USER_PROPERTY">
+            <summary>
+            Request Property containing current user.
+            </summary>
+        </member>
+        <member name="F:Core.Client.Constants.API_KEY_KEY">
+            <summary>
+            ApiKey field sent in Headers or query string.
+            </summary>
+        </member>
+        <member name="F:Core.Client.Constants.CLIENT_KEY">
+            <summary>
+            Identifier for the client using the api.
+            </summary>
+        </member>
+        <member name="T:Guard">
+            <summary>
+            Common guard class for argument validation.
+            </summary>
+            <nuget id="netfx-Guard" />
+        </member>
+        <member name="M:Guard.NotNull``1(System.Linq.Expressions.Expression{System.Func{``0}},``0)">
+            <summary>
+            Ensures the given <paramref name="value"/> is not null.
+            Throws <see cref="T:System.ArgumentNullException"/> otherwise.
+            </summary>
+            <exception cref="T:System.ArgumentException">The <paramref name="value"/> is null.</exception>
+        </member>
+        <member name="M:Guard.NotNullOrEmpty(System.Linq.Expressions.Expression{System.Func{System.String}},System.String)">
+            <summary>
+            Ensures the given string <paramref name="value"/> is not null or empty.
+            Throws <see cref="T:System.ArgumentNullException"/> in the first case, or
+            <see cref="T:System.ArgumentException"/> in the latter.
+            </summary>
+            <exception cref="T:System.ArgumentException">The <paramref name="value"/> is null or an empty string.</exception>
+        </member>
+        <member name="M:Guard.GetParameterName(System.Linq.Expressions.Expression)">
+            <summary>
+            Ensures the given string <paramref name="value"/> is valid according
+            to the <paramref name="validate"/> function. Throws <see cref="T:System.ArgumentNullException"/>
+            otherwise.
+            </summary>
+            <exception cref="T:System.ArgumentException">The <paramref name="value"/> is not valid according
+            to the <paramref name="validate"/> function.</exception>
+        </member>
+        <member name="T:SerializeDictionary.SerializableDictionary2`2">
+            <summary>
+            Represents an XML serializable collection of keys and values.
+            </summary>
+            <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
+            <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
+        </member>
+        <member name="F:SerializeDictionary.SerializableDictionary2`2.DEFAULTITEMTAG">
+            <summary>
+            The default XML tag name for an item.
+            </summary>
+        </member>
+        <member name="F:SerializeDictionary.SerializableDictionary2`2.DEFAULTKEYTAG">
+            <summary>
+            The default XML tag name for a key.
+            </summary>
+        </member>
+        <member name="F:SerializeDictionary.SerializableDictionary2`2.DEFAULTVALUETAG">
+            <summary>
+            The default XML tag name for a value.
+            </summary>
+        </member>
+        <member name="F:SerializeDictionary.SerializableDictionary2`2.keySerializer">
+            <summary>
+            The XML serializer for the key type.
+            </summary>
+        </member>
+        <member name="F:SerializeDictionary.SerializableDictionary2`2.valueSerializer">
+            <summary>
+            The XML serializer for the value type.
+            </summary>
+        </member>
+        <member name="P:SerializeDictionary.SerializableDictionary2`2.ItemTagName">
+            <summary>
+            Gets initializes a new instance of the
+            <see cref="T:SerializeDictionary.SerializableDictionary2`2"/> class.
+            </summary>
+             <summary>
+             Initializes a new instance of the
+             <see cref="T:SerializeDictionary.SerializableDictionary2`2"/> class.
+             </summary>
+            
+             <param name="info">A
+               <see cref="T:System.Runtime.Serialization.SerializationInfo"/> object
+               containing the information required to serialize the
+               <see cref="T:System.Collections.Generic.Dictionary`2"/>.
+             </param>
+            
+             <param name="context">A
+               <see cref="T:System.Runtime.Serialization.StreamingContext"/> structure
+               containing the source and destination of the serialized stream
+               associated with the
+               <see cref="T:System.Collections.Generic.Dictionary`2"/>.
+             </param>
+            
+             <summary>
+             Gets the XML tag name for an item.
+             </summary>
+        </member>
+        <member name="P:SerializeDictionary.SerializableDictionary2`2.KeyTagName">
+            <summary>
+            Gets the XML tag name for a key.
+            </summary>
+        </member>
+        <member name="P:SerializeDictionary.SerializableDictionary2`2.ValueTagName">
+            <summary>
+            Gets the XML tag name for a value.
+            </summary>
+        </member>
+        <member name="M:SerializeDictionary.SerializableDictionary2`2.GetSchema">
+            <summary>
+            Gets the XML schema for the XML serialization.
+            </summary>
+            <returns>An XML schema for the serialized object.</returns>
+        </member>
+        <member name="M:SerializeDictionary.SerializableDictionary2`2.ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Deserializes the object from XML.
+            </summary>
+            <param name="reader">The XML representation of the object.</param>
+        </member>
+        <member name="M:SerializeDictionary.SerializableDictionary2`2.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Serializes this instance to XML.
+            </summary>
+            <param name="writer">The writer to serialize to.</param>
+        </member>
+    </members>
+</doc>
