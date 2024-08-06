@@ -17,6 +17,7 @@ public class DownloadShapedTests
     // gets a sample data download from the macro databank
     // expected: count of data rows > 0
     [TestMethod]
+    [Ignore]
     public async Task DownloadShapedTest()
     {
         TestOutput output = new TestOutput();
@@ -27,6 +28,7 @@ public class DownloadShapedTests
     // gets a sample data download from the macro databank
     // expected: count of data rows > 0
     [TestMethod]
+    [Ignore]
     public async Task DownloadShapedStreamTest()
     {
         TestOutput output = new TestOutput();

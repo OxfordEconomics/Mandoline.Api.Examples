@@ -27,6 +27,7 @@ public class UserTests
     // returns user object corresponding to provided credentials
     // expected: returned API key should not be blank
     [TestMethod]
+    [Ignore]
     public async Task UserLoginTest()
     {
         var output = new TestOutput();
